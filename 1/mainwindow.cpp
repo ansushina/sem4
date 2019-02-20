@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "alg.h"
 #include <QLabel>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -41,7 +42,11 @@ void MainWindow::draw_all(QPainter &paint)
         find_point(answ.c1, l, &(answ.p1), answ.r1);
         find_point(answ.c2,l,&(answ.p2), answ.r2);
 
-        QLabel *pl1 = new QLabel();
+        char l1[30+1];
+        snprintf(l1,31,"%d (%d;%d)",1,answ.p1.x,answ.p1.y);
+        //QLabel *pl1 = new QLabel(l1);
+       // pl1->show();
+
         paint.drawLine(answ.p1.x,answ.p1.y,answ.p2.x,answ.p2.y);
         paint.drawLine(answ.c1.x,answ.c1.y, answ.c2.x,answ.c2.y);
         paint.drawLine(answ.c1.x,answ.c1.y, answ.p1.x,answ.p1.y);
@@ -157,9 +162,19 @@ void MainWindow::find_second(cent c, double r, struct okr o)
 void MainWindow::on_pushButton_2_clicked()
 {
     cent c;
+
     double r = 0;
     struct okr o1;
-     unsigned long long int p = points.size();
+    unsigned long long int p = points.size();
+    unsigned long long int p2 = points2.size();
+    if (p < 3 || p2 < 3)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Недостаточно точек для решения задачи.");
+        msgBox.exec();
+        return;
+    }
+
      for (unsigned int i = 0; i < p - 2; i++)
      {
          for(unsigned int j = i + 1; j < p - 1; j++)
@@ -208,4 +223,28 @@ void MainWindow::on_pushButton_5_clicked()
     ui->listWidget_2->clear();
     points2.clear();
     init();
+}
+
+void MainWindow::on_lineEdit_returnPressed()
+{
+    on_pushButton_clicked();
+}
+
+void MainWindow::on_lineEdit_2_returnPressed()
+{
+    on_pushButton_4_clicked();
+}
+
+void MainWindow::on_listWidget_itemClicked(QListWidgetItem *item)
+{
+    //..->listWidget->
+    QString x = "";
+    std::cout <<"clicked " << std::endl;
+    x = item->text();
+    std::cout << x.toStdString() << std::endl;
+}
+
+void MainWindow::on_listWidget_itemPressed(QListWidgetItem *item)
+{
+    std::cout <<"pressed " << std::endl;
 }

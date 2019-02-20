@@ -6,6 +6,7 @@
 #include <QPaintEvent>
 #include <vector>
 #include "alg.h"
+#include <QListWidgetItem>
 
 namespace Ui {
 class MainWindow;
@@ -65,6 +66,14 @@ private slots:
    void on_pushButton_4_clicked();
 
    void on_pushButton_5_clicked();
+
+   void on_lineEdit_returnPressed();
+
+   void on_lineEdit_2_returnPressed();
+
+   void on_listWidget_itemClicked(QListWidgetItem *item);
+
+   void on_listWidget_itemPressed(QListWidgetItem *item);
 
 private:
    std::vector<cent> points;
