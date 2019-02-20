@@ -22,7 +22,7 @@ struct line
 };
 
 int find_kosat(cent c1, cent c2, double r1, double r2, line_t *l);
-void find_point(cent c, line_t l, cent *p);
+void find_point(cent c, line_t l, cent *p, double r);
 int find_s(cent c1, double r1, cent c2, double r2, double *s);
 int find_circle(cent p1, cent p2, cent p3, cent *c1, double *r);
 

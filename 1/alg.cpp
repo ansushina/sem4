@@ -29,8 +29,14 @@ int find_kosat(cent c1, cent c2, double r1, double r2, line_t *l)
     return 0;
 }
 
-void find_point(cent c, line_t l, cent *p)
+void find_point(cent c, line_t l, cent *p, double r)
 {
+    if (l.b == 0)
+    {
+        p->x = c.x + r;
+        p->y = c.y;
+        return;
+    }
     double k = -l.a/l.b;
     double b = -l.c/l.b;
 

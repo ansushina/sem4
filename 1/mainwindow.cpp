@@ -38,8 +38,8 @@ void MainWindow::draw_all(QPainter &paint)
     if (rc == 0)
     {
         paint.setPen(QPen(Qt::blue,3,Qt::SolidLine));
-        find_point(answ.c1, l, &(answ.p1));
-        find_point(answ.c2,l,&(answ.p2));
+        find_point(answ.c1, l, &(answ.p1), answ.r1);
+        find_point(answ.c2,l,&(answ.p2), answ.r2);
 
         QLabel *pl1 = new QLabel();
         paint.drawLine(answ.p1.x,answ.p1.y,answ.p2.x,answ.p2.y);
@@ -78,7 +78,6 @@ void MainWindow::init()
 
 void MainWindow::on_pushButton_clicked()
 {
-
     QString x = "";
     x = ui->lineEdit->text();
     QStringList u = x.split(" ", QString::SkipEmptyParts);
@@ -95,17 +94,13 @@ void MainWindow::on_pushButton_clicked()
     else {
         ui->lineEdit->clear();
     }
-    unsigned long long int p =  points.size();
-    for (unsigned int i = 0; i < p; i++)
-    {
-          std::cout << points[i].x << std::endl;
-    }
 }
 
 void MainWindow::on_pushButton_3_clicked()
 {
     ui->listWidget->clear();
     points.clear();
+    init();
 }
 
 void MainWindow::do_something(cent c1, double r1, cent c2, double r2, struct okr o1, struct okr o2)
@@ -206,15 +201,11 @@ void MainWindow::on_pushButton_4_clicked()
     else {
         ui->lineEdit_2->clear();
     }
-   /* unsigned long long int p =  points2.size();
-    for (unsigned int i = 0; i < p; i++)
-    {
-          std::cout << points[i].x << std::endl;
-    }*/
 }
 
 void MainWindow::on_pushButton_5_clicked()
 {
     ui->listWidget_2->clear();
     points2.clear();
+    init();
 }
