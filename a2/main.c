@@ -6,11 +6,12 @@
 
 #define FROM -5.
 #define TO 5.1
-#define STEP 0.2
+#define STEP 1
 #define filename "t.txt"
     double func(double x)
 {
-	return x*x*x - x*x + x;
+	//return cos(x)-x;
+	return x*x*x;
 }
 
 void tabl()

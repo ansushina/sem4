@@ -5,6 +5,11 @@
 #include<math.h>
 
 #define EPS 0.000001
+double fun(double x)
+{
+	//return cos(x)-x;
+	return x*x*x;
+}
 
 int find_pos(double main_x,double *all_x, int all_count)
 {
@@ -173,6 +178,16 @@ int  process(int n, double main_x, double *x, double *y, double *answ)
 	printf("%lf %lf %lf %lf", a[pos],b[pos],c[pos],d[pos]);
 	*answ = (a[pos] + b[pos]*(main_x - x[pos - 1]) + c[pos]*(main_x - x[pos - 1])*(main_x - x[pos - 1]) + 
 	    (main_x - x[pos - 1])*(main_x - x[pos - 1])*(main_x - x[pos - 1])*d[pos]);
+	double a1;
+	
+	printf("\n \n x           вычисл       точное    погрешность\n");
+	for (int pos = 1; pos < n; pos++)
+	{
+		main_x = x[pos-1] + 0.001;
+		a1 = (a[pos] + b[pos]*(main_x - x[pos - 1]) + c[pos]*(main_x - x[pos - 1])*(main_x - x[pos - 1]) + 
+	    (main_x - x[pos - 1])*(main_x - x[pos - 1])*(main_x - x[pos - 1])*d[pos]);
+		printf("%11lf %11lf %11lf %11lf\n", main_x, a1, fun(main_x), (fun(main_x) - a1)*100/fun(main_x));
+	}
 	
 	
 	return OK;
