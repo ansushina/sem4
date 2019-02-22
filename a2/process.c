@@ -21,7 +21,8 @@ int find_pos(double main_x,double *all_x, int all_count)
 	pos = i - 1;
 	if (pos == -1 || (pos == all_count - 1 && main_x != all_x[all_count-1]))
 	{
-		//printf("\n!!!\n ЭКСТАРПОЛЯЦИЯ \n!!!\n\n");
+		printf("\n!!!\n ЭКСТАРПОЛЯЦИЯ \n!!!\n\n");
+		return -1;
 		if (pos == -1)
 			pos = 0;
 	}
@@ -100,7 +101,7 @@ void find_u(double *u, int n, double *z, double *nu)
 
 void find_main_a(double *a, int n, double *y)
 {
-	for(int i = 1; i < n; i++)
+	for(int i = 1; i < n + 1; i++)
 	{
 		a[i] = y[i-1];
 	}
@@ -108,7 +109,7 @@ void find_main_a(double *a, int n, double *y)
 
 void find_main_d(double *d, int n, double *c, double *h)
 {
-	for(int i = 1; i < n; i++)
+	for(int i = 1; i < n + 1; i++)
 	{
 		d[i] = (c[i+1] - c[i])/3/h[i];
 	}
@@ -124,6 +125,11 @@ void find_main_b(double *b, int n, double *y, double *h, double *c)
 
 int  process(int n, double main_x, double *x, double *y, double *answ)
 {
+    int pos = find_pos(main_x, x, n);
+	if (pos == -1)
+		return ERR_PROC;
+	pos++;
+
 	double h[n + 1];
 	double big_a[n + 2];
 	double big_b[n + 2];
@@ -135,6 +141,11 @@ int  process(int n, double main_x, double *x, double *y, double *answ)
 	double a[n+1];
 	double b[n+1];
 	double d[n+1];
+	
+	for (int i = 0; i < n+1; i++)
+	{
+		b[i] = 0;
+	}
 	
 	if (find_h(h, n, x) != 0)
 		return ERR;
@@ -157,8 +168,7 @@ int  process(int n, double main_x, double *x, double *y, double *answ)
 	find_main_d(d, n, c, h);
 	find_main_b(b, n , y, h, c);
 	
-	int pos = find_pos(main_x, x, n);
-	pos++;
+
 	
 	printf("%lf %lf %lf %lf", a[pos],b[pos],c[pos],d[pos]);
 	*answ = (a[pos] + b[pos]*(main_x - x[pos - 1]) + c[pos]*(main_x - x[pos - 1])*(main_x - x[pos - 1]) + 

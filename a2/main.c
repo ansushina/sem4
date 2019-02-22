@@ -5,7 +5,7 @@
 #include<math.h>
 
 #define FROM -5.
-#define TO 5.
+#define TO 5.1
 #define STEP 0.2
 #define filename "t.txt"
     double func(double x)
