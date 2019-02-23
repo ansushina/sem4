@@ -134,6 +134,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
 void MainWindow::draw_all(QPainter &paint)
 {
     line_t l;
+    answ.flag = true;
     int rc = find_kosat(answ.c1, answ.c2, answ.r1, answ.r2, &l);
     if (rc == 0)
     {
@@ -146,22 +147,22 @@ void MainWindow::draw_all(QPainter &paint)
         QString s1 = QString(l1);
         std::cout<< l1<< std::endl;
 
-        snprintf(l1,31,"%d (%.2f;%.2f)",answ.o1.n1,answ.o1.p1.x,answ.o1.p1.y);
+        snprintf(l1,31,"%d (%.2f;%.2f)",answ1.o1.n1,answ1.o1.p1.x,answ1.o1.p1.y);
         QString s2 = QString(l1);
 
-        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ.o1.n2,answ.o1.p2.x,answ.o1.p2.y);
+        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ1.o1.n2,answ1.o1.p2.x,answ1.o1.p2.y);
         QString s3 = QString(l1);
 
-        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ.o1.n3,answ.o1.p3.x,answ.o1.p3.y);
+        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ1.o1.n3,answ1.o1.p3.x,answ1.o1.p3.y);
         QString s4 = QString(l1);
 
-        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ.o2.n1,answ.o2.p1.x,answ.o2.p1.y);
+        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ1.o2.n1,answ1.o2.p1.x,answ1.o2.p1.y);
         QString s5 = QString(l1);
 
-        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ.o2.n2,answ.o2.p2.x,answ.o2.p2.y);
+        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ1.o2.n2,answ1.o2.p2.x,answ1.o2.p2.y);
         QString s6 = QString(l1);
 
-        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ.o2.n3,answ.o2.p3.x,answ.o2.p3.y);
+        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ1.o2.n3,answ1.o2.p3.x,answ1.o2.p3.y);
         QString s7 = QString(l1);
         //pl1.show();
 
@@ -183,10 +184,10 @@ void MainWindow::draw_all(QPainter &paint)
         draw_o(paint, answ.o2,2);
         paint.setPen(QPen(Qt::green,3,Qt::SolidLine));
 
-        paint.drawLine(answ.p1.x,answ.p1.y,answ.p2.x,answ.p2.y);
-        paint.drawLine(answ.c1.x,answ.c1.y, answ.c2.x,answ.c2.y);
-        paint.drawLine(answ.c1.x,answ.c1.y, answ.p1.x,answ.p1.y);
-        paint.drawLine(answ.p2.x,answ.p2.y, answ.c2.x,answ.c2.y);
+        paint.drawLine(int(answ.p1.x),int(answ.p1.y),int(answ.p2.x),int(answ.p2.y));
+        paint.drawLine(int(answ.c1.x),int(answ.c1.y), int(answ.c2.x),int(answ.c2.y));
+        paint.drawLine(int(answ.c1.x),int(answ.c1.y), int(answ.p1.x),int(answ.p1.y));
+        paint.drawLine(int(answ.p2.x),int(answ.p2.y), int(answ.c2.x),int(answ.c2.y));
     }
 }
 
@@ -215,6 +216,7 @@ void MainWindow::draw_circle(QPainter &paint, cent c, double r)
 void MainWindow::init()
 {
     answ.s = 0;
+    answ.flag = false;
 }
 
 void MainWindow::do_something(cent c1, double r1, cent c2, double r2, struct okr o1, struct okr o2)
@@ -360,6 +362,34 @@ void MainWindow::on_pushButton_3_clicked()
              }
          }
      }
+
+
+     QMessageBox msgBox;
+     char l[300];
+     snprintf(l,300,"Первая окружность:\n "
+                   "%d (%lf;%lf)\n "
+                   "%d (%lf;%lf)\n "
+                   "%d (%lf;%lf)\n "
+                   "Вторая окружность:\n "
+                   "%d (%lf;%lf)\n"
+                   "%d (%lf;%lf)\n"
+                   "%d (%lf;%lf)\n"
+                   "Площадь фигуры: "
+                   "s = %lf",
+              answ.o1.n1,answ.o1.p1.x,answ.o1.p1.y,
+              answ.o1.n2,answ.o1.p2.x,answ.o1.p2.y,
+              answ.o1.n3,answ.o1.p3.x,answ.o1.p3.y,
+              answ.o2.n1,answ.o2.p1.x,answ.o2.p1.y,
+              answ.o2.n2,answ.o2.p2.x,answ.o2.p2.y,
+              answ.o2.n3,answ.o2.p3.x,answ.o2.p3.y,
+              answ.s);
+     QString s6 = QString(l);
+
+     msgBox.setText(l);
+     msgBox.exec();
+
+     answ1 = answ;
+     answ.flag = false;
      update();
 }
 

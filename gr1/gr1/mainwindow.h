@@ -39,6 +39,8 @@ struct answer
 
    cent p1;
    cent p2;
+
+   bool flag;
 };
 
 
@@ -79,6 +81,7 @@ private:
    std::vector<cent> points;
    std::vector<cent> points2;
    struct answer answ;
+   struct answer answ1;
     Ui::MainWindow *ui;
 };
 
