@@ -5,11 +5,13 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <math.h>
+#include <QString>
+#include <QFont>
 
 #define KXMAX 680
-#define KYMAX 680
+#define KYMAX 700
 #define KXMIN 20
-#define KYMIN 20
+#define KYMIN 40
 #define MAX 700
 
 
@@ -52,56 +54,58 @@ void MainWindow::mashtab()
 
     double k = kx < ky ? kx:ky;
 
-    answ.c1.x = round((answ.c1.x - xmin)*k);
-    answ.c1.y = round((ymax - answ.c1.y)*k);
+    answ.c1.x = round(KXMIN + (answ.c1.x - xmin)*k);
+    answ.c1.y = round(KYMIN + (ymax - answ.c1.y)*k);
   //  answ.c1.x = MAX - answ.c1.x;
    // answ.c1.y = MAX - answ.c1.y;
 
 
-    answ.c2.x = round((answ.c2.x - xmin)*k);
-    answ.c2.y = round((ymax - answ.c2.y)*k);
+    answ.c2.x = round(KXMIN + (answ.c2.x - xmin)*k);
+    answ.c2.y = round(KYMIN + (ymax - answ.c2.y)*k);
   //  answ.c2.x = MAX - answ.c2.x;
    // answ.c2.y = MAX - answ.c2.y;
 
-    answ.o1.p1.x = round((answ.o1.p1.x - xmin)*k);
-    answ.o1.p1.y = round((ymax - answ.o1.p1.y)*k);
+    answ.o1.p1.x = round(KXMIN + (answ.o1.p1.x - xmin)*k);
+    answ.o1.p1.y = round(KYMIN + (ymax - answ.o1.p1.y)*k);
    // answ.o1.p1.x = MAX - answ.o1.p1.x;
    // answ.o1.p1.y = MAX - answ.o1.p1.y;
 
-    answ.o1.p2.x = round((answ.o1.p2.x - xmin)*k);
-    answ.o1.p2.y = round((ymax - answ.o1.p2.y)*k);
+    answ.o1.p2.x = round(KXMIN + (answ.o1.p2.x - xmin)*k);
+    answ.o1.p2.y = round(KYMIN + (ymax - answ.o1.p2.y)*k);
    // answ.o1.p2.x = MAX - answ.o1.p2.x;
   //  answ.o1.p2.y = MAX - answ.o1.p2.y;
 
-    answ.o1.p3.x = round((answ.o1.p3.x - xmin)*k);
-    answ.o1.p3.y = round((ymax - answ.o1.p3.y)*k);
+    answ.o1.p3.x = round(KXMIN + (answ.o1.p3.x - xmin)*k);
+    answ.o1.p3.y = round(KYMIN + (ymax - answ.o1.p3.y)*k);
    // answ.o1.p3.x = MAX - answ.o1.p3.x;
   //  answ.o1.p3.y = MAX - answ.o1.p3.y;
 
-    answ.o2.p1.x = round((answ.o2.p1.x - xmin)*k);
-    answ.o2.p1.y = round((ymax - answ.o2.p1.y)*k);
+    answ.o2.p1.x = round(KXMIN + (answ.o2.p1.x - xmin)*k);
+    answ.o2.p1.y = round(KYMIN + (ymax - answ.o2.p1.y)*k);
   //  answ.o2.p1.x = MAX - answ.o2.p1.x;
   //  answ.o2.p1.y = MAX - answ.o2.p1.y;
 
-    answ.o2.p2.x = round((answ.o2.p2.x - xmin)*k);
-    answ.o2.p2.y = round((ymax - answ.o2.p2.y)*k);
+    answ.o2.p2.x = round(KXMIN + (answ.o2.p2.x - xmin)*k);
+    answ.o2.p2.y = round(KYMIN + (ymax - answ.o2.p2.y)*k);
   //  answ.o2.p2.x = MAX - answ.o2.p2.x;
   //  answ.o2.p2.y = MAX - answ.o2.p2.y;
 
-    answ.o2.p3.x = round((answ.o2.p3.x - xmin)*k);
-    answ.o2.p3.y = round((ymax - answ.o2.p3.y)*k);
+    answ.o2.p3.x = round(KXMIN + (answ.o2.p3.x - xmin)*k);
+    answ.o2.p3.y = round(KYMIN + (ymax - answ.o2.p3.y)*k);
    // answ.o2.p3.x = MAX - answ.o2.p3.x;
    // answ.o2.p3.y = MAX - answ.o2.p3.y;
 
-    answ.p1.x = round((answ.p1.x - xmin)*k);
-    answ.p1.y = round((ymax - answ.p1.y)*k);
+    answ.p1.x = round(KXMIN + (answ.p1.x - xmin)*k);
+    answ.p1.y = round(KYMIN + (ymax - answ.p1.y)*k);
    // answ.p1.x = MAX - answ.p1.x;
     //answ.p1.y = MAX - answ.p1.y;
 
-    answ.p2.x = round((answ.p2.x - xmin)*k);
-    answ.p2.y = round((ymax - answ.p2.y)*k);
+    answ.p2.x = round(KXMIN + (answ.p2.x - xmin)*k);
+    answ.p2.y = round(KYMIN + (ymax - answ.p2.y)*k);
    // answ.p2.x = MAX - answ.p2.x;
   //  answ.p2.y = MAX - answ.p2.y;
+    answ.r1 *= k;
+    answ.r2 *= k;
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -138,17 +142,46 @@ void MainWindow::draw_all(QPainter &paint)
         find_point(answ.c2,l,&(answ.p2), answ.r2);
 
         char l1[30+1];
-        snprintf(l1,31,"%d (%d;%d)",1,answ.p1.x,answ.p1.y);
-        //QLabel pl1(l1,this);
+        snprintf(l1,31,"%d (%.2f;%.2f)",1,answ.p1.x,answ.p1.y);
+        QString s1 = QString(l1);
+        std::cout<< l1<< std::endl;
+
+        snprintf(l1,31,"%d (%.2f;%.2f)",answ.o1.n1,answ.o1.p1.x,answ.o1.p1.y);
+        QString s2 = QString(l1);
+
+        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ.o1.n2,answ.o1.p2.x,answ.o1.p2.y);
+        QString s3 = QString(l1);
+
+        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ.o1.n3,answ.o1.p3.x,answ.o1.p3.y);
+        QString s4 = QString(l1);
+
+        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ.o2.n1,answ.o2.p1.x,answ.o2.p1.y);
+        QString s5 = QString(l1);
+
+        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ.o2.n2,answ.o2.p2.x,answ.o2.p2.y);
+        QString s6 = QString(l1);
+
+        snprintf(l1,31,"%d (%.2lf;%.2lf)",answ.o2.n3,answ.o2.p3.x,answ.o2.p3.y);
+        QString s7 = QString(l1);
         //pl1.show();
 
         mashtab();
+        QFont f("Times");
+        f.setPixelSize(11);
+        paint.setFont(f);
+        paint.drawText(int(answ.p1.x + 10),int(answ.p1.y + 5), s1);
+        paint.drawText(int(answ.o1.p1.x+10),int(answ.o1.p1.y+5), s2);
+        paint.drawText(int(answ.o1.p2.x+10),int(answ.o1.p2.y+5), s3);
+        paint.drawText(int(answ.o1.p3.x+10),int(answ.o1.p3.y+5), s4);
+        paint.drawText(int(answ.o2.p1.x+10),int(answ.o2.p1.y+5), s5);
+        paint.drawText(int(answ.o2.p2.x+10),int(answ.o2.p2.y+5), s6);
+        paint.drawText(int(answ.o2.p3.x+10),int(answ.o2.p3.y+5), s7);
 
         draw_circle(paint, answ.c1, answ.r1);
         draw_o(paint, answ.o1,1);
         draw_circle(paint, answ.c2, answ.r2);
         draw_o(paint, answ.o2,2);
-        paint.setPen(QPen(Qt::blue,3,Qt::SolidLine));
+        paint.setPen(QPen(Qt::green,3,Qt::SolidLine));
 
         paint.drawLine(answ.p1.x,answ.p1.y,answ.p2.x,answ.p2.y);
         paint.drawLine(answ.c1.x,answ.c1.y, answ.c2.x,answ.c2.y);
@@ -161,11 +194,11 @@ void MainWindow::draw_o(QPainter &paint, struct okr o, int i)
 {
     if (i == 1)
     {
-        paint.setPen(QPen(Qt::red,5,Qt::SolidLine));
+        paint.setPen(QPen(Qt::red,10,Qt::SolidLine));
     }
     else
     {
-        paint.setPen(QPen(Qt::green,5,Qt::SolidLine));
+        paint.setPen(QPen(Qt::blue,10,Qt::SolidLine));
     }
     paint.drawPoint(int(o.p1.x),int(o.p1.y));
     paint.drawPoint(int(o.p2.x),int(o.p2.y));
