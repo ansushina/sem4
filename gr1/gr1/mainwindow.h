@@ -39,8 +39,6 @@ struct answer
 
    cent p1;
    cent p2;
-
-   bool flag;
 };
 
 
@@ -76,6 +74,12 @@ private slots:
    void on_lineEdit_returnPressed();
 
    void on_lineEdit_2_returnPressed();
+
+   void on_pushButton_6_clicked();
+
+   void on_pushButton_7_clicked();
+
+   void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
 
 private:
    std::vector<cent> points;
