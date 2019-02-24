@@ -103,6 +103,12 @@ void MainWindow::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
     QPainter paint(this);
+    paint.setPen(QPen(Qt::black,1,Qt::SolidLine));
+
+    paint.drawLine(10,710,10,690);
+    paint.drawLine(10,710,30,710);
+    paint.drawText(7,685,"y");
+    paint.drawText(35,715,"x");
 
     if (answ.s != 0.0)
     {
@@ -396,8 +402,12 @@ void MainWindow::on_lineEdit_2_returnPressed()
 
 void MainWindow::on_pushButton_6_clicked()
 {
-   //QList<QListWidgetItem *> a = ui->listWidget->selectedItems();
+   //QList<QListWidgetItem *> a = ui->listWidget->selectedItems()
    QListWidgetItem *b = ui->listWidget->currentItem();
+   if (b == NULL)
+   {
+       return;
+   }
    QString s = b->text();
    QStringList u = s.split(" ", QString::SkipEmptyParts);
 
@@ -406,7 +416,7 @@ void MainWindow::on_pushButton_6_clicked()
    a.y = u[1].toDouble();
    ui->listWidget->takeItem(int(ui->listWidget->row(ui->listWidget->currentItem())));
 
-   int k;
+   unsigned int k = 0;
    for(unsigned int i = 0; i < points.size(); i++)
    {
        if (points[i].x == a.x && points[i].y == a.y)
@@ -428,6 +438,10 @@ void MainWindow::on_pushButton_6_clicked()
 void MainWindow::on_pushButton_7_clicked()
 {
     QListWidgetItem *b = ui->listWidget_2->currentItem();
+    if (b == NULL)
+    {
+        return;
+    }
     QString s = b->text();
     QStringList u = s.split(" ", QString::SkipEmptyParts);
 
