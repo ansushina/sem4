@@ -7,6 +7,7 @@
 #include <math.h>
 #include <QString>
 #include <QFont>
+#include "dialog.h"
 
 #define KXMAX 680
 #define KYMAX 700
@@ -471,7 +472,24 @@ void MainWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 {
     //int row = ui->listWidget->currentIndex().row();
      //QModelIndex index = Model->index(row);
-     //ui->listWidget->setCurrentIndex(index);
-    // ui->listWidget->edit();
+    //ui->listWidget->setCurrentIndex(index);
+   // ui->listWidget->edit();
+   Dialog d;
+   d.init(this);
+   d.setModal(true);
+   d.exec();
+}
 
+void MainWindow::change(QString s, cent a)
+{
+   size_t k;
+   for(size_t i = 0; i < points.size(); i++)
+   {
+       if (ui->listWidget->item(i)->isSelected())
+       {
+           points[i].x = a.x;
+           points[i].y = a.y;
+           ui->listWidget->item(i)->setText(s);
+       }
+    }
 }

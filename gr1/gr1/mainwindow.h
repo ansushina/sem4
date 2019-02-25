@@ -56,6 +56,7 @@ public:
     void do_something(cent c1, double r1, cent c2, double r2, struct okr o1, struct okr o2);
     void draw_all(QPainter &paint);
     void mashtab();
+    void change(QString s, cent a);
 
 protected :
    void paintEvent(QPaintEvent *event);
