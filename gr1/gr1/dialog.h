@@ -15,13 +15,14 @@ class Dialog : public QDialog
 public:
     explicit Dialog(QWidget *parent = nullptr);
     ~Dialog();
-    void init(MainWindow *w);
+    void init(MainWindow *w, int u);
 private slots:
 
     void on_buttonBox_accepted();
 
 private:
     MainWindow *main;
+    int i;
     Ui::Dialog *ui;
 };
 

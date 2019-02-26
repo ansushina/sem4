@@ -56,7 +56,7 @@ public:
     void do_something(cent c1, double r1, cent c2, double r2, struct okr o1, struct okr o2);
     void draw_all(QPainter &paint);
     void mashtab();
-    void change(QString s, cent a);
+    void change(QString s, cent a, int i);
 
 protected :
    void paintEvent(QPaintEvent *event);
@@ -82,11 +82,14 @@ private slots:
 
    void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
 
+   void on_listWidget_2_doubleClicked(const QModelIndex &index);
+
 private:
    std::vector<cent> points;
    std::vector<cent> points2;
    struct answer answ;
    struct answer answ1;
+   cent zero;
     Ui::MainWindow *ui;
 };
 

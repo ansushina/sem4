@@ -36,6 +36,11 @@
       <height>3</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
     </property>
@@ -181,7 +186,7 @@
     <property name="geometry">
      <rect>
       <x>850</x>
-      <y>630</y>
+      <y>620</y>
       <width>80</width>
       <height>23</height>
      </rect>
@@ -194,7 +199,7 @@
     <property name="geometry">
      <rect>
       <x>1000</x>
-      <y>630</y>
+      <y>620</y>
       <width>80</width>
       <height>23</height>
      </rect>
@@ -274,7 +279,7 @@
      <x>0</x>
      <y>0</y>
      <width>1153</width>
-     <height>17</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>

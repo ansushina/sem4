@@ -15,9 +15,11 @@ Dialog::~Dialog()
     delete ui;
 }
 
-void Dialog::init(MainWindow *w)
+void Dialog::init(MainWindow *w, int u)
 {
     main = w;
+
+    i = u;
 }
 
 void Dialog::on_buttonBox_accepted()
@@ -31,7 +33,7 @@ void Dialog::on_buttonBox_accepted()
         cent a;
         a.x = u[0].toDouble();
         a.y = u[1].toDouble();
-        main->change(x, a);
+        main->change(x, a, i);
         this->close();
     }
     else {

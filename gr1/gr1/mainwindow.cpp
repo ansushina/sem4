@@ -84,6 +84,9 @@ void MainWindow::mashtab()
 
     answ.p2.x = round(KXMIN + (answ.p2.x - xmin)*k);
     answ.p2.y = round(KYMIN + (ymax - answ.p2.y)*k);
+
+    zero.x = round(KXMIN + (0 - xmin)*k);
+    zero.y = round(KYMIN + (ymax - 0)*k);
     answ.r1 *= k;
     answ.r2 *= k;
 }
@@ -126,6 +129,12 @@ void MainWindow::draw_all(QPainter &paint)
         draw_o(paint, answ.o1,1);
         draw_circle(paint, answ.c2, answ.r2);
         draw_o(paint, answ.o2,2);
+
+        paint.setPen(QPen(Qt::black,1,Qt::SolidLine));
+        paint.drawLine(int(zero.x),int(15),int(zero.x),int(715));
+        paint.drawLine(int(0),int(zero.y),int(770),int(zero.y));
+
+
         paint.setPen(QPen(Qt::green,3,Qt::SolidLine));
 
         paint.drawLine(int(answ.p1.x),int(answ.p1.y),int(answ.p2.x),int(answ.p2.y));
@@ -352,14 +361,14 @@ void MainWindow::on_pushButton_3_clicked()
 
      QMessageBox msgBox;
      char l[300];
-     snprintf(l,300,"Первая окружность:\n "
+     snprintf(l,300," Первая окружность:\n "
                    "%d (%lf;%lf)\n "
                    "%d (%lf;%lf)\n "
                    "%d (%lf;%lf)\n "
                    "Вторая окружность:\n "
-                   "%d (%lf;%lf)\n"
-                   "%d (%lf;%lf)\n"
-                   "%d (%lf;%lf)\n"
+                   "%d (%lf;%lf)\n "
+                   "%d (%lf;%lf)\n "
+                   "%d (%lf;%lf)\n "
                    "Площадь фигуры: "
                    "s = %lf",
               answ.o1.n1,answ.o1.p1.x,answ.o1.p1.y,
@@ -470,26 +479,46 @@ void MainWindow::on_pushButton_7_clicked()
 
 void MainWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 {
-    //int row = ui->listWidget->currentIndex().row();
-     //QModelIndex index = Model->index(row);
-    //ui->listWidget->setCurrentIndex(index);
-   // ui->listWidget->edit();
+    Q_UNUSED(item);
    Dialog d;
-   d.init(this);
+   d.init(this,1);
    d.setModal(true);
    d.exec();
 }
 
-void MainWindow::change(QString s, cent a)
+void MainWindow::change(QString s, cent a, int i)
 {
-   size_t k;
-   for(size_t i = 0; i < points.size(); i++)
+   if (i == 1)
    {
-       if (ui->listWidget->item(i)->isSelected())
+       for(size_t i = 0; i < points.size(); i++)
        {
-           points[i].x = a.x;
-           points[i].y = a.y;
-           ui->listWidget->item(i)->setText(s);
+           if (ui->listWidget->item(i)->isSelected())
+           {
+               points[i].x = a.x;
+               points[i].y = a.y;
+               ui->listWidget->item(i)->setText(s);
+           }
        }
-    }
+   }
+   else
+   {
+       for(size_t i = 0; i < points2.size(); i++)
+       {
+           if (ui->listWidget_2->item(i)->isSelected())
+           {
+               points2[i].x = a.x;
+               points2[i].y = a.y;
+               ui->listWidget_2->item(i)->setText(s);
+           }
+       }
+   }
+}
+
+void MainWindow::on_listWidget_2_doubleClicked(const QModelIndex &index)
+{
+    Q_UNUSED(index);
+    Dialog d;
+    d.init(this,2);
+    d.setModal(true);
+    d.exec();
 }
