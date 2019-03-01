@@ -5,10 +5,10 @@
 
 #define A 350.
 #define B 350.
-#define R 100.
+#define R 150.
 //y = c - (x-d)(x-d)
-#define C 350.
-#define D 350.
+#define C 400.
+#define D 400.
 #define PI 3.14
 
 double MainWindow::f(double x)
@@ -73,20 +73,24 @@ void MainWindow::init()
         okr.push_back(p);
     }
 
-    /*for (double i = a + r; i < a - r; i += step)
+    for (double x = d; f(x) >  b - sqrt(r*r - (x-a)*(x-a)); x+=2)
     {
         p p;
-        p.x = i;
-        p.y = b - sqrt(r*r - (i-a)*(i-a));
-        okr.push_back(p);
+        p.x = x;
+        p.y = f(x);
+        strih_1.push_back(p);
+        p.y = b - sqrt(r*r - (x-a)*(x-a));
+        strih_2.push_back(p);
     }
-    for (double i = a - r; i >= a + r; i += step)
+    for (double x = d; f(x) > b - sqrt(r*r - (x-a)*(x-a)); x-=2)
     {
         p p;
-        p.x = i;
-        p.y = b + sqrt(r*r - (i-a)*(i-a));
-        okr.push_back(p);
-    }*/
+        p.x = x;
+        p.y = f(x);
+        strih_1.push_back(p);
+        p.y = b - sqrt(r*r - (x-a)*(x-a));
+        strih_2.push_back(p);
+    }
 
     double from = d - sqrt(2*r + c - b);
     double to = d + sqrt(2*r + c - b);
@@ -115,6 +119,11 @@ void MainWindow::paintEvent(QPaintEvent *event)
     paint.setPen(QPen(Qt::black,1,Qt::SolidLine));
     draw_circle(paint);
     draw_grafic(paint);
+
+    for (size_t i = 0; i < strih_1.size(); i++)
+    {
+        paint.drawLine(int(strih_1[i].x), int(strih_1[i].y), int(strih_2[i].x), int(strih_2[i].y));
+    }
     paint.setPen(QPen(Qt::white,1,Qt::SolidLine));
     paint.setBrush(Qt::white);
     paint.drawRect(770,0,300,770);
@@ -146,6 +155,8 @@ void MainWindow::on_perenos_button_clicked()
 {
     points_prev = points;
     okr_prev = okr;
+    strih_1_prev = strih_1;
+    strih_2_prev = strih_2;
     QString x = ui->dx->text();
     QStringList u = x.split(" ", QString::SkipEmptyParts);
     if (u.count() != 1)
@@ -171,6 +182,14 @@ void MainWindow::on_perenos_button_clicked()
     {
         perenos(okr[i], dx, dy);
     }
+    for (size_t i = 0; i < strih_1.size(); i++)
+    {
+        perenos(strih_1[i], dx, dy);
+    }
+    for (size_t i = 0; i < strih_2.size(); i++)
+    {
+        perenos(strih_2[i], dx, dy);
+    }
 
    update();
     //void perenos(p &a, double dx, double dy);
@@ -180,6 +199,9 @@ void MainWindow::on_mastab_buttob_clicked()
 {
     points_prev = points;
     okr_prev = okr;
+    strih_1_prev = strih_1;
+    strih_2_prev = strih_2;
+
     //void mastab(p &a, double xm, double ym, double kx, double ky)
     QString x = ui->xm->text();
     QStringList u = x.split(" ", QString::SkipEmptyParts);
@@ -224,6 +246,14 @@ void MainWindow::on_mastab_buttob_clicked()
     {
         mastab(okr[i], xm, ym, kx, ky);
     }
+    for (size_t i = 0; i < strih_1.size(); i++)
+    {
+        mastab(strih_1[i], xm, ym, kx, ky);
+    }
+    for (size_t i = 0; i < strih_2.size(); i++)
+    {
+        mastab(strih_2[i], xm, ym, kx, ky);
+    }
     update();
 }
 
@@ -231,6 +261,8 @@ void MainWindow::on_povorot_button_clicked()
 {
     points_prev = points;
     okr_prev = okr;
+    strih_1_prev = strih_1;
+    strih_2_prev = strih_2;
     //void povorot(p &a, double xc, double yc, double alpha)
     QString x = ui->xc->text();
     QStringList u = x.split(" ", QString::SkipEmptyParts);
@@ -266,6 +298,14 @@ void MainWindow::on_povorot_button_clicked()
     {
         povorot(okr[i], xc, yc, alpha);
     }
+    for (size_t i = 0; i < strih_1.size(); i++)
+    {
+        povorot(strih_1[i], xc, yc, alpha);
+    }
+    for (size_t i = 0; i < strih_2.size(); i++)
+    {
+        povorot(strih_2[i], xc, yc, alpha);
+    }
     update();
 }
 
@@ -273,6 +313,8 @@ void MainWindow::on_return_one_button_clicked()
 {
     points = points_prev;
     okr = okr_prev;
+    strih_1 = strih_1_prev;
+    strih_2 = strih_2_prev;
     update();
 }
 
@@ -280,6 +322,8 @@ void MainWindow::on_pushButton_clicked()
 {
     points.clear();
     okr.clear();
+    strih_1.clear();
+    strih_2.clear();
     init();
     update();
 }

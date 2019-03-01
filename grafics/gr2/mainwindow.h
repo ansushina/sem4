@@ -60,9 +60,13 @@ private:
 
     std::vector<p> points;
     std::vector<p> okr;
+    std::vector<p> strih_1;
+    std::vector<p> strih_2;
 
     std::vector<p> points_prev;
     std::vector<p> okr_prev;
+    std::vector<p> strih_1_prev;
+    std::vector<p> strih_2_prev;
 };
 
 #endif // MAINWINDOW_H
