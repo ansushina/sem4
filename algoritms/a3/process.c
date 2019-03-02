@@ -1,6 +1,13 @@
 #include"io.h"
 #include"process.h"
 #include"errors.h"
+
+struct point 
+{
+	double x;
+	double y;
+	double z;
+}
 // копирование массива
 void copy_mas(double *x, double *y, double *ax, double *ay, int beg, int end)
 {
@@ -10,6 +17,48 @@ void copy_mas(double *x, double *y, double *ax, double *ay, int beg, int end)
 		x[j] = ax[i];
 		y[j] = ay[i];
 		j++;
+	}
+}
+
+void free_matrix(struct point **p, int nx)
+{
+	if (!p)
+		return;
+	for (int i = 0; i < nx; i++)
+	{
+		free(p[i]);
+	}
+	free(p);
+}
+
+struct point **allocate_matrix(int nx, int ny)
+{
+	struct point **p = malloc((nx+1) * sizeof(struct point *));
+	if (!p)
+		return NULL;
+	for (int i = 0; i < nx + 1; i++)
+	{
+		p[i] = malloc((ny+1) * sizeof(struct point));
+		if (!(p[i]))
+			free_matrix(p,i);
+	}
+	return p;
+}
+
+
+void make_tabl(double **all, int begx, int endx, int begy, int endy, int nx, int ny,
+    struct point ***tabl)
+{
+	struct point **p = allocate_matrix(nx, ny);
+	for (int i = 0; i < nx + 1, i++)
+	{
+		for (int j = 0, i < ny + 1, j++)
+		{
+			p[i][j].x = all[0][begx + i];
+			p[i][j].y = all[1][begy + j];
+			p[i][j].z;
+			
+		}
 	}
 }
 // поиск позиции

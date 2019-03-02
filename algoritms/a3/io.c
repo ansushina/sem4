@@ -113,3 +113,11 @@ int read_all(char *fname, double **all, int *all_count, int *nx, int *ny, double
 	}
 	return rc;
 }
+
+void print_tabl(double **all, int n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		printf();
+	}
+}
