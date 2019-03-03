@@ -128,7 +128,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     paint.setBrush(Qt::white);
     paint.drawRect(770,0,300,770);
     paint.drawRect(0,715, 1050, 50 );
-    paint.drawRect(0,0,1050,15);
+    paint.drawRect(0,0,1050,13);
 }
 
 void MainWindow::draw_circle(QPainter &paint)

@@ -71,7 +71,7 @@
      <rect>
       <x>790</x>
       <y>30</y>
-      <width>201</width>
+      <width>210</width>
       <height>641</height>
      </rect>
     </property>
@@ -83,7 +83,8 @@
  Исходное изображение:
  (x-a)*(x-a)+(y-b)*(y-b) = r*r
  y = c - (x-d)*(x-d) 
- a = 350  b = 350 r = 150 c= 350 d = 350</string>
+ a = 350  b = 350 r = 150
+ c= 350 d = 350</string>
        </property>
       </widget>
      </item>
@@ -161,9 +162,9 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Мастабирование:
- Введите коэфиценты мастабирования
- и точку мастабирования
+        <string>Масштабирование:
+ Введите коэфиценты масштабирования
+ и точку масштабирования
 </string>
        </property>
       </widget>
@@ -331,7 +332,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>17</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
