@@ -4,8 +4,8 @@
 #include<stdio.h>
 #include<math.h>
 
-#define FROM -0
-#define TO 1.6
+#define FROM -5
+#define TO 5
 #define STEP 0.4
 #define filename "t.txt"
 
@@ -26,8 +26,8 @@ void tabl1()
 			for(double j = FROM; j <= TO; j += STEP)
 			{
 			    fprintf(file, "%10f %10f %10f\n", i, j, func(i,j));
-			    if ((-FROM + TO)/STEP < 40)
-			        printf("%10f %10f %10f\n", i, j, func(i,j));
+			    //if ((-FROM + TO)/STEP < 40)
+			      //  printf("%10f %10f %10f\n", i, j, func(i,j));
 			}
 		}
 		fclose(file);
