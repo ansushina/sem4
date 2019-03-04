@@ -59,23 +59,33 @@ int main(int argc, char *argv[])
 		//double *x, *y;
 		int cx, cy;
 		
-		print_tabl(all,all_count);
+                //print_tabl(all,all_count);
 		
 		//int make_tabl(struct point ***tabl, double **all, int count_all, int *cx, int *cy)
 		rc = make_tabl(&tabl, all, all_count, &cx, &cy);
 		if (rc == OK)
 		{
-			/*struct point **new;
+                        struct point **new;
 			rc = make_new_tabl(nx, ny, main_x, main_y, &new, tabl, cx, cy);
 			if (rc == OK)
 			{
 				printf("ok");
+                                double answer;
+                                rc = process(new, main_x, main_y, nx, ny, &answer);
+                                if (!rc)
+                                {
+                                    printf("\n %lf \n", answer);
+                                }
+                                else
+                                {
+                                    printf("error");
+                                }
 			}
 			else 
 			{
 				printf("MEMORY ERROR\n");
 			}
-			free_matrix(tabl, cx);*/
+                        free_matrix(tabl, cx);
 			
 		}
 		else if (rc == ERR_MEMORY)

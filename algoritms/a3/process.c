@@ -2,8 +2,6 @@
 #include"process.h"
 #include"errors.h"
 
-
-
 struct point **allocate_matrix(int nx, int ny)
 {
 	struct point **p = malloc((nx+1) * sizeof(struct point *));
@@ -57,10 +55,12 @@ void copy_tabl(struct point **tabl, int begx, int endx, int begy, int endy, stru
 	{
 		for (int j = begy; j < endy; j++)
 		{
-			new[i][j].x = tabl[i][j].x;
-			new[i][j].y = tabl[i][j].y;
-			new[i][j].z = tabl[i][j].z;
+                        new[i - begx][j-begy].x = tabl[i][j].x;
+                        new[i - begx][j-begy].y = tabl[i][j].y;
+                        new[i - begx][j-begy].z = tabl[i][j].z;
+                        printf("%lf %lf %lf   ", new[i - begx][j-begy].x , new[i - begx][j-begy].y, new[i - begx][j-begy].z);
 		}
+                printf("\n");
 	}
 }
 
@@ -78,6 +78,7 @@ void free_matrix(struct point **p, int nx)
 // поиск позиции
 int find_pos_x(double mx, struct point **all, int cx)
 {
+    printf("FInd pos x\n");
 	int pos;
 	int i;
 	if (mx > all[0][0].x) //значения в таблице по возрастанию
@@ -95,10 +96,13 @@ int find_pos_x(double mx, struct point **all, int cx)
 		if (pos == -1)
 			pos = 0;
 	}
+        printf("%d\n", pos);
 	return pos;
 }
+
 int find_pos_y(double mx, struct point **all, int cx)
 {
+    printf("FInd pos y\n");
 	int pos;
 	int i;
 	if (mx > all[0][0].y) //значения в таблице по возрастанию
@@ -116,12 +120,14 @@ int find_pos_y(double mx, struct point **all, int cx)
 		if (pos == -1)
 			pos = 0;
 	}
+        printf("%d\n", pos);
 	return pos;
 }
 
 // найдем начало и конец массива для копирования
 int find_beg_end(int pos, int *b, int *e, int cx, int n)
 {
+    printf("find beg end ");
 	int j = 1;
 	int p = 1;
 	int begin = pos, end = pos;
@@ -149,6 +155,7 @@ int find_beg_end(int pos, int *b, int *e, int cx, int n)
 	}
 	if (j != n + 1)// вернем ошибку, если недостаточно точек
 		return ERR;
+        printf("%d %d\n", begin, end);
 	*b = begin;
 	*e = end;
 	return OK;
@@ -177,97 +184,93 @@ int make_new_tabl(int nx, int ny, double mx, double my, struct point ***new, str
 		return rc;
 	}
 	
-	copy_tabl(all, bx, ex, by, ey, n);
+        copy_tabl(all, bx, ex+1, by, ey+1, n);
 	
 	*new = n;
 	
 	return OK;
 }
 
-/*int make_new_mas(int n, double main_x, double **x, double **y, double *all_x, 
-    double *all_y, int all_count)
+int process(struct point **tabl, double mx, double my, int nx, int ny, double *a)
 {
-	// найдем позицию
-	int pos = find_pos(main_x, all_x, all_count);
-	
-	double *nx = malloc((n + 1) * sizeof(double));
-	if (!nx)
-		return ERR_MEMORY;
-	double *ny = malloc((n + 1) * sizeof(double));
-	if (!ny)
-	{
-		free(nx);
-		return ERR_MEMORY;
-	}
-	
-	int begin, end, rc;
-	//printf("\nall count %d\n", all_count);
-	// найдем, какую часть таблицы нужно взять
-	rc = find_beg_end(pos, &begin, &end, all_count, n);
-	if (rc != OK)
-	{
-		free(nx);
-		free(ny);
-		return rc;
-	}
-	printf("Отрезок: [%lf; %lf]\n\n", all_x[begin], all_x[end]);
-	// сформируем новую таблицу 
-	copy_mas(nx, ny, all_x, all_y, begin, end);
-	
-	*x = nx;
-	*y = ny;
-	
-	return OK;
-}*/
+   double new_y[nx+1];
+   double y[ny+1];
+   double z[ny+1];
+   double answ;
+   int rc = OK;
 
-// интерполяция
-/*int process(int n, double x, double *new_x, double *new_y, double *answ)
+    for (int i = 0; i < nx+1; i++)
+    {
+
+        for (int j = 0; j < ny+1; j++)
+        {
+            y[j] = tabl[i][j].y;
+            z[j] = tabl[i][j].z;
+        }
+        rc = polenom_method(ny, my, y, z, &answ);
+        if (rc)
+            return rc;
+        new_y[i] = answ;
+    }
+
+    double x[nx+1];
+    for ( int i = 0; i < nx+1; i++)
+    {
+        x[i] = tabl[i][0].x;
+    }
+
+    rc = polenom_method(nx, mx, x, new_y, &answ);
+    *a = answ;
+    return rc;
+}
+
+int polenom_method(int n, double x, double *new_x, double *new_y, double *answ)
 {
-	double raz[n + 1];// массив для хранения разностей
+        double raz[n + 1];// массив для хранения разностей
     double a[n + 1];// массив для промежуточных вычислений
-	
-	for (int i = 0; i < n + 1; i++)
-	{
-		a[i] = new_y[i];
-	}
 
-	int count = 0; // индекс первого икса в разности
-	int pos = 0; // позиция в массиве/индекс 
-	int j = 0; // номер интерации
-	int flag = 1; 
-	
-	for (int i = 0; i < n && flag; i++)
-	{
-		pos = 0;
-		for (count = 0; count < n - i; count++)
-		{
-			if (new_x[count + i + 1] - new_x[count] == 0) // проверка деления на ноль
-			{
-				flag = 0;
-				return ERR;
-			}
-			a[count] = (a[pos + 1] - a[pos]) / (new_x[count + i + 1] - new_x[count]);
-			pos++;
-			printf("%lf ", a[count]);
-		}
-		raz[j] = a[0];
-		printf("\n");
-		//printf("\n%lf\n", raz[j]);
-		j++;
-	}
-	
-	double answer = new_y[0];
-	double b; // промежуточное произведение
-	for(int i = 0; i < n; i++)
-	{
-		b = raz[i];
-		for(int j = 0; j < i + 1; j++)
-		{
-			b *= (x - new_x[j]);
-		}
-		answer += b;
-	}
-	//printf("answer: %lf \n", answer);
-	*answ = answer;
-	return OK;
-}*/
+        for (int i = 0; i < n + 1; i++)
+        {
+                a[i] = new_y[i];
+        }
+
+        int count = 0; // индекс первого икса в разности
+        int pos = 0; // позиция в массиве/индекс
+        int j = 0; // номер интерации
+        int flag = 1;
+
+        for (int i = 0; i < n && flag; i++)
+        {
+                pos = 0;
+                for (count = 0; count < n - i; count++)
+                {
+                        if (new_x[count + i + 1] - new_x[count] == 0) // проверка деления на ноль
+                        {
+                                flag = 0;
+                                return ERR;
+                        }
+                        a[count] = (a[pos + 1] - a[pos]) / (new_x[count + i + 1] - new_x[count]);
+                        pos++;
+                        printf("%lf ", a[count]);
+                }
+                raz[j] = a[0];
+                printf("\n");
+                //printf("\n%lf\n", raz[j]);
+                j++;
+        }
+
+        double answer = new_y[0];
+        double b; // промежуточное произведение
+        for(int i = 0; i < n; i++)
+        {
+                b = raz[i];
+                for(int j = 0; j < i + 1; j++)
+                {
+                        b *= (x - new_x[j]);
+                }
+                answer += b;
+        }
+        //printf("answer: %lf \n", answer);
+        *answ = answer;
+        return OK;
+}
