@@ -2,34 +2,7 @@
 #include"process.h"
 #include"errors.h"
 
-struct point 
-{
-	double x;
-	double y;
-	double z;
-}
-// копирование массива
-void copy_mas(double *x, double *y, double *ax, double *ay, int beg, int end)
-{
-	int j = 0;
-	for (int i = beg; i <= end; i++)
-	{
-		x[j] = ax[i];
-		y[j] = ay[i];
-		j++;
-	}
-}
 
-void free_matrix(struct point **p, int nx)
-{
-	if (!p)
-		return;
-	for (int i = 0; i < nx; i++)
-	{
-		free(p[i]);
-	}
-	free(p);
-}
 
 struct point **allocate_matrix(int nx, int ny)
 {
@@ -45,37 +18,99 @@ struct point **allocate_matrix(int nx, int ny)
 	return p;
 }
 
-
-void make_tabl(double **all, int begx, int endx, int begy, int endy, int nx, int ny,
-    struct point ***tabl)
+int make_tabl(struct point ***tabl, double **all, int count_all, int *cx, int *cy)
 {
-	struct point **p = allocate_matrix(nx, ny);
-	for (int i = 0; i < nx + 1, i++)
+	int countx = 0;
+	int county = 0;
+
+	while (all[0][countx] == all[0][0])
 	{
-		for (int j = 0, i < ny + 1, j++)
+		countx++;
+	}
+	
+	county = count_all / countx;
+	
+	struct point **t = allocate_matrix(countx-1, county-1);
+	if (!t)
+		return ERR_MEMORY;
+	
+	for (int i = 0; i < countx; i++)
+	{
+		for (int j = 0; j < county; j++)
 		{
-			p[i][j].x = all[0][begx + i];
-			p[i][j].y = all[1][begy + j];
-			p[i][j].z;
-			
+			t[i][j].x = all[0][i*countx];
+            t[i][j].y = all[1][j];
+			t[i][j].z = all[2][i*countx + j];
+			printf("%lf %lf %lf   ", t[i][j].x, t[i][j].y, t[i][j].z);
+		}
+		printf("\n");
+	}
+	*tabl = t;
+	*cx = countx;
+	*cy = county;
+	return OK;
+}
+
+void copy_tabl(struct point **tabl, int begx, int endx, int begy, int endy, struct point **new)
+{
+	for (int i = begx; i < endx; i++)
+	{
+		for (int j = begy; j < endy; j++)
+		{
+			new[i][j].x = tabl[i][j].x;
+			new[i][j].y = tabl[i][j].y;
+			new[i][j].z = tabl[i][j].z;
 		}
 	}
 }
+
+void free_matrix(struct point **p, int nx)
+{
+	if (!p)
+		return;
+	for (int i = 0; i < nx; i++)
+	{
+		free(p[i]);
+	}
+	free(p);
+}
+
 // поиск позиции
-int find_pos(double main_x,double *all_x, int all_count)
+int find_pos_x(double mx, struct point **all, int cx)
 {
 	int pos;
 	int i;
-	if (main_x > all_x[0]) //значения в таблице по возрастанию
+	if (mx > all[0][0].x) //значения в таблице по возрастанию
 	{
-		for (i = 0; i < all_count && main_x >= all_x[i]; i++);
+		for (i = 0; i < cx && mx >= all[i][0].x; i++);
 	}
 	else // случай убывания
 	{
-		for (i = 0; i < all_count && main_x < all_x[i]; i++);
+		for (i = 0; i < cx && mx < all[i][0].x; i++);
 	}
 	pos = i - 1;
-	if (pos == -1 || (pos == all_count - 1 && main_x != all_x[all_count-1]))
+	if (pos == -1 || (pos == cx - 1 && mx != all[cx-1][0].x))
+	{
+		printf("\n!!!\n ЭКСТАРПОЛЯЦИЯ \n!!!\n\n");
+		if (pos == -1)
+			pos = 0;
+	}
+	return pos;
+}
+int find_pos_y(double mx, struct point **all, int cx)
+{
+	int pos;
+	int i;
+	if (mx > all[0][0].y) //значения в таблице по возрастанию
+	{
+		for (i = 0; i < cx && mx >= all[0][i].y; i++);
+	}
+	else // случай убывания
+	{
+		for (i = 0; i < cx && mx < all[0][i].y; i++);
+	}
+	pos = i - 1;
+	if (pos == -1 || (pos == cx - 1 && mx != all[0][cx-1].y))
 	{
 		printf("\n!!!\n ЭКСТАРПОЛЯЦИЯ \n!!!\n\n");
 		if (pos == -1)
@@ -85,30 +120,30 @@ int find_pos(double main_x,double *all_x, int all_count)
 }
 
 // найдем начало и конец массива для копирования
-int find_beg_end(int pos, int *b, int *e, int all_count, int n)
+int find_beg_end(int pos, int *b, int *e, int cx, int n)
 {
 	int j = 1;
 	int p = 1;
 	int begin = pos, end = pos;
-	if (all_count < n + 1)
+	if (cx < n + 1)
 	{
 		return ERR;
 	}
+	
 	while (j != n + 1) // пока не наберем n+1 
 	{
-		if (pos + p < all_count ) // берем строку снизу
+		if (pos + p < cx ) // берем строку снизу
 		{
 			end++;
 			j++;
 		}
-		
 		if (pos - p >= 0 && j != n + 1) // берем строку сверху
 		{
 			begin--;
 			j++;
 		}
 		p++;
-		if (pos - p < 0 && pos + p > all_count) // если недостаточно точек, выходим из цикла
+		if (pos - p < 0 && pos + p > cx) // если недостаточно точек, выходим из цикла
 			break;
 		//printf(" %d %d \n", begin, end);
 	}
@@ -119,7 +154,37 @@ int find_beg_end(int pos, int *b, int *e, int all_count, int n)
 	return OK;
 }
 
-int make_new_mas(int n, double main_x, double **x, double **y, double *all_x, 
+int make_new_tabl(int nx, int ny, double mx, double my, struct point ***new, struct point **all, int cx, int cy)
+{
+	int posx = find_pos_x(mx, all, cx);
+	int posy = find_pos_y(my, all, cy);
+	
+	struct point **n = allocate_matrix(nx, ny);
+	if (!n)
+		return ERR_MEMORY;
+	
+	int bx,ex,by,ey, rc;
+	rc = find_beg_end(posx, &bx, &ex, cx, nx);
+	if (rc != OK)
+	{
+		free_matrix(n, nx);
+		return rc;
+	}
+	rc = find_beg_end(posy, &by, &ey, cy, ny);
+	if (rc != OK)
+	{
+		free_matrix(n, nx);
+		return rc;
+	}
+	
+	copy_tabl(all, bx, ex, by, ey, n);
+	
+	*new = n;
+	
+	return OK;
+}
+
+/*int make_new_mas(int n, double main_x, double **x, double **y, double *all_x, 
     double *all_y, int all_count)
 {
 	// найдем позицию
@@ -153,10 +218,10 @@ int make_new_mas(int n, double main_x, double **x, double **y, double *all_x,
 	*y = ny;
 	
 	return OK;
-}
+}*/
 
 // интерполяция
-int process(int n, double x, double *new_x, double *new_y, double *answ)
+/*int process(int n, double x, double *new_x, double *new_y, double *answ)
 {
 	double raz[n + 1];// массив для хранения разностей
     double a[n + 1];// массив для промежуточных вычислений
@@ -205,4 +270,4 @@ int process(int n, double x, double *new_x, double *new_y, double *answ)
 	//printf("answer: %lf \n", answer);
 	*answ = answer;
 	return OK;
-}
+}*/

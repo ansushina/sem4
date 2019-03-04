@@ -4,9 +4,9 @@
 
 int count_all(FILE *f)
 {
-	double x, y;
+	double x, y, z;
 	int i = 0;
-	while (fscanf(f, "%lf %lf %lf", &x, &y) == 3)
+	while (fscanf(f, "%lf %lf %lf", &x, &y, &z) == 3)
 	{
 		i++;
 		//printf("%lf %lf \n", x, y);
@@ -16,7 +16,7 @@ int count_all(FILE *f)
 	return i;
 }
 
-int read_tab(char *fname, double **all_x, double **all_y, double **all_z int *all_count)
+int read_tab(char *fname, double **all_x, double **all_y, double **all_z, int *all_count)
 {
 	FILE *f = fopen(fname, "r");
 	int rc = OK;
@@ -118,6 +118,6 @@ void print_tabl(double **all, int n)
 {
 	for (int i = 0; i < n; i++)
 	{
-		printf();
+		printf("%lf %lf %lf\n", all[0][i], all[1][i], all[2][i]);
 	}
 }
