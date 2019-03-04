@@ -4,8 +4,8 @@
 #include<stdio.h>
 #include<math.h>
 
-#define FROM -5
-#define TO 5
+#define FROM -5.
+#define TO 5.1
 #define STEP 0.4
 #define filename "t.txt"
 
@@ -20,14 +20,12 @@ void tabl1()
 	FILE *file = fopen(filename, "w");
 	if (file)
 	{
-		printf("Входная таблица:\n\n");
+		//printf("Входная таблица:\n\n");
 		for(double i = FROM; i <= TO; i += STEP)
 		{
 			for(double j = FROM; j <= TO; j += STEP)
 			{
 			    fprintf(file, "%10f %10f %10f\n", i, j, func(i,j));
-			    //if ((-FROM + TO)/STEP < 40)
-			      //  printf("%10f %10f %10f\n", i, j, func(i,j));
 			}
 		}
 		fclose(file);
@@ -49,43 +47,40 @@ int main(int argc, char *argv[])
 	double main_x, main_y;
 	
 	struct point **tabl;
-	printf("Программа выполняет интерполяцию функции поленоном Ньютона\n");
+	printf("Программа выполняет множественную интерполяцию функции поленоном Ньютона\n");
 	tabl1();
-	
+	printf("[%lf;%lf]\nstep: %lf\n\n", FROM , TO, STEP);
 	rc = read_all(filename, all, &all_count, &nx, &ny, &main_x, &main_y);
 	if (rc == OK)
 	{
-		//printf("Lets go!");
-		//double *x, *y;
 		int cx, cy;
-		
-                //print_tabl(all,all_count);
-		
-		//int make_tabl(struct point ***tabl, double **all, int count_all, int *cx, int *cy)
+
 		rc = make_tabl(&tabl, all, all_count, &cx, &cy);
 		if (rc == OK)
 		{
-                        struct point **new;
+            struct point **new;
 			rc = make_new_tabl(nx, ny, main_x, main_y, &new, tabl, cx, cy);
 			if (rc == OK)
 			{
-				printf("ok");
-                                double answer;
-                                rc = process(new, main_x, main_y, nx, ny, &answer);
-                                if (!rc)
-                                {
-                                    printf("\n %lf \n", answer);
-                                }
-                                else
-                                {
-                                    printf("error");
-                                }
+				//printf("ok");
+                double answer;
+                rc = process(new, main_x, main_y, nx, ny, &answer);
+                if (!rc)
+                {
+                    printf("\n Real : f(%lf, %lf) = %lf", main_x, main_y, func(main_x, main_y));
+                    printf("\n Answer: %lf \n", answer);
+                }
+                else
+                {
+                    printf("error");
+                }
+                free_matrix(new, nx+1);
 			}
 			else 
 			{
 				printf("MEMORY ERROR\n");
 			}
-                        free_matrix(tabl, cx);
+            free_matrix(tabl, cx);
 			
 		}
 		else if (rc == ERR_MEMORY)
