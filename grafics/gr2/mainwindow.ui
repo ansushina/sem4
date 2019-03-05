@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>750</height>
+    <width>1035</width>
+    <height>752</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -69,10 +69,10 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>790</x>
-      <y>30</y>
+      <x>800</x>
+      <y>20</y>
       <width>210</width>
-      <height>641</height>
+      <height>661</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -323,6 +323,13 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="nachalo">
+       <property name="text">
+        <string>Вывести/убрать исходное</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -331,8 +338,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1000</width>
-     <height>21</height>
+     <width>1035</width>
+     <height>18</height>
     </rect>
    </property>
   </widget>

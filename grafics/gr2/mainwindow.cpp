@@ -7,13 +7,14 @@
 #define B 350.
 #define R 150.
 //y = c - (x-d)(x-d)
-#define C 400.
-#define D 400.
+#define C 350.
+#define D 350.
 #define PI 3.14
 
 double MainWindow::f(double x)
 {
     //y = c - (x-d)(x-d)
+    //return c - 0.5*x*x + 2*x*d - d*d;
     return c - (x - d)*(x - d);
 }
 
@@ -56,7 +57,7 @@ void MainWindow::init()
     c = C;
     d = D;
     r = R;
-
+    flag = false;
     double step = 0.5;
     for (double i = a - r; i < a + r; i += step)
     {
@@ -98,17 +99,19 @@ void MainWindow::init()
     double i;
     for(i = from; i < to; i += step)
     {
-        //paint.drawLine(int(i), int(f(i)), int(i+step), int(f(i+step)));
         p a;
         a.x = i;
         a.y = f(i);
         points.push_back(a);
     }
-    //paint.drawLine(int(i), int(f(i)), int(to), int(f(to)));
     p a;
     a.x = to;
     a.y = f(to);
     points.push_back(a);
+    points1 = points;
+    okr1 = okr;
+    strih_11 = strih_1;
+    strih_21 = strih_2;
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)
@@ -116,14 +119,37 @@ void MainWindow::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
     QPainter paint(this);
 
+    if (flag)
+    {
+        paint.setPen(QPen(Qt::white,1,Qt::SolidLine));
+        for(size_t i = 0; i < okr1.size() - 1; i++)
+        {
+            paint.drawLine(int(okr1[i].x), int(okr1[i].y), int(okr1[i+1].x), int(okr1[i+1].y));
+        }
+        for(size_t i = 0; i < points1.size() - 1; i++)
+        {
+            paint.drawLine(int(points1[i].x), int(points1[i].y), int(points1[i+1].x), int(points1[i+1].y));
+        }
+        for (size_t i = 0; i < strih_11.size(); i++)
+        {
+            paint.drawLine(int(strih_11[i].x), int(strih_11[i].y), int(strih_21[i].x), int(strih_21[i].y));
+        }
+    }
+
     paint.setPen(QPen(Qt::black,1,Qt::SolidLine));
     draw_circle(paint);
     draw_grafic(paint);
+    paint.drawLine(10,20,10,30);
+    paint.drawLine(10,20,30,20);
+    paint.drawText(7,40,"y");
+    paint.drawText(35,25,"x");
 
     for (size_t i = 0; i < strih_1.size(); i++)
     {
         paint.drawLine(int(strih_1[i].x), int(strih_1[i].y), int(strih_2[i].x), int(strih_2[i].y));
     }
+
+
     paint.setPen(QPen(Qt::white,1,Qt::SolidLine));
     paint.setBrush(Qt::white);
     paint.drawRect(770,0,300,770);
@@ -325,5 +351,21 @@ void MainWindow::on_pushButton_clicked()
     strih_1.clear();
     strih_2.clear();
     init();
+    update();
+}
+
+
+
+void MainWindow::on_nachalo_clicked()
+{
+    std::cout << "yes" <<std::endl;
+    if (flag)
+    {
+        flag = false;
+    }
+    else
+    {
+        flag = true;
+    }
     update();
 }
