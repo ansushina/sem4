@@ -26,6 +26,8 @@ private slots:
 private:
     void cda(QPainter &paint);
     void br_1(QPainter &paint);
+    void br_2(QPainter &paint);
+    void br_3(QPainter &paint);
     Ui::MainWindow *ui;
     double x1,y1,x2,y2;
     int i;
