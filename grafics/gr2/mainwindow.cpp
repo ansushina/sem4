@@ -5,7 +5,7 @@
 
 #define A 350.
 #define B 350.
-#define R 150.
+#define R 100.
 //y = c - (x-d)(x-d)
 #define C 350.
 #define D 350.
