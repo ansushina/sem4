@@ -83,7 +83,7 @@ int read_input(int *nx, int *ny, double *x, double *y)
 	{
 		return ERR_IO;
 	}
-	printf("Введите Ny (Ny>=0):");
+	printf("Введите Ny (Ny>=0): ");
 	if (scanf("%d", ny) != 1 || *ny < 0)
 	{
 		return ERR_IO;

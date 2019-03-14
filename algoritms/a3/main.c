@@ -6,12 +6,13 @@
 
 #define FROM -5.
 #define TO 5.1
-#define STEP 0.4
+#define STEP 1.
 #define filename "t.txt"
 
 double func(double x, double y)
 {
 	//return cos(x) - x;
+	//return cos(x) + sin(y);
 	return x*x + y*y;
 }
 
