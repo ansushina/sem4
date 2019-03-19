@@ -61,30 +61,30 @@ void MainWindow::cda(QPen pen)
     double y = y1;
     for(int i = 0; i <= l; i++)
     {
-        scene->addEllipse(x, y, 0.5, 0.5, pen, QBrush(Qt::SolidPattern));
+        scene->addEllipse(round(x), round(y), 0.1, 0.1, pen, QBrush(Qt::SolidPattern));
         x += sx;
         y += sy;
     }
 }
 
 #define EPS 0.00000001
-int s(double x)
+int s(int x)
 {
     if (x > 0)
         return 1;
-    if (fabs(x) < EPS)
+    if (x == 0)
         return 0;
     return -1;
 }
 
 void MainWindow::br_1(QPen pen)
 {
-    double x = x1;
-    double y = y1;
-    double dx = x2-x1;
-    double dy = y2-y1;
-    double sx = s(dx);
-    double sy = s(dy);
+    int x = x1;
+    int y = y1;
+    int dx = x2-x1;
+    int dy = y2-y1;
+    int sx = s(dx);
+    int sy = s(dy);
     dx = fabs(dx);
     dy = fabs(dy);
     int obmen;
@@ -93,11 +93,11 @@ void MainWindow::br_1(QPen pen)
     else
     {
         obmen = 1;
-        double t = dx;
+        int t = dx;
         dx = dy;
         dy = t;
     }
-    double m = dy/dx;
+    double m = ((double)dy)/dx;
     double l = m - 0.5;
     for (int i = 0; i <= dx; i++)
     {
@@ -168,48 +168,48 @@ void MainWindow::br_2(QPen pen)
 
 void MainWindow::br_3(QPen pen)
 {
-    double I = 255;
-    double x = x1;
-    double y = y1;
-    double dx = x2-x1;
-    double dy = y2-y1;
-    double sx = s(dx);
-    double sy = s(dy);
-    dx = fabs(dx);
-    dy = fabs(dy);
+    int I = 255;
+    int x = x1;
+    int y = y1;
+    int dx = x2-x1;
+    int dy = y2-y1;
+    int sx = s(dx);
+    int sy = s(dy);
+    dx = abs(dx);
+    dy = abs(dy);
     int obmen;
     if (dx>dy)
         obmen = 0;
     else
     {
         obmen = 1;
-        double t = dx;
+        int t = dx;
         dx = dy;
         dy = t;
     }
-    double m = dy/dx;
+    double m = ((double)dy)/dx;
     m = m * I;
-    double l = I/2;
+    double l = I*0.5;
     double W = I - m;
     QColor col = pen.color();
    // col.setAlphaF(l);
     scene->addEllipse(x, y, 0.1, 0.1, pen, QBrush(Qt::SolidPattern));
 
-    for (int i = 0; i <= dx; i++)
+    for (int i = 0; i < dx; i++)
     {
         //paint.d
         if (l <= W)
         {
             if (obmen == 0)
-                x +=sx;
+                x += sx;
             else
-                y +=sy;
+                y += sy;
             l += m;
         }
-        if (l > W)
+        else if (l > W)
         {
-            x +=sx;
-            y +=sy;
+            x += sx;
+            y += sy;
             l -= W;
         }
         col.setAlphaF(1 - (l / I));
@@ -393,21 +393,66 @@ void MainWindow::on_clean_but_clicked()
 
 void MainWindow::on_wiz_button_clicked()
 {
-    on_draw_clicked();
+
     on_clean_but_clicked();
 
-    double mx1 = x1;
-    double mx2 = x2;
-    double my1 = y1;
-    double my2 = y2;
-    double xc = (x2+x1)/2;
-    double yc = (y2+y1)/2;
+    QString l_x1 = ui->x1->text();
+    QString l_x2 = ui->x2->text();
+    QString l_y1 = ui->y1->text();
+    QString l_y2 = ui->y2->text();
+    QStringList u_x1 = l_x1.split(" ", QString::SkipEmptyParts);
+    QStringList u_x2 = l_x2.split(" ", QString::SkipEmptyParts);
+    QStringList u_y1 = l_y1.split(" ", QString::SkipEmptyParts);
+    QStringList u_y2 = l_y2.split(" ", QString::SkipEmptyParts);
+
+    if (u_x1.count() != 1)
+    {
+        ui->x1->clear();
+        return;
+    }
+    if (u_x2.count() != 1)
+    {
+        ui->x2->clear();
+        return;
+    }
+    if (u_y1.count() != 1)
+    {
+        ui->y2->clear();
+        return;
+    }
+    if (u_y2.count() != 1)
+    {
+        ui->y2->clear();
+        return;
+    }
+
+    x1 = u_x1[0].toDouble();
+    y1 = u_y1[0].toDouble();
+    x2 = u_x2[0].toDouble();
+    y2 = u_y2[0].toDouble();
+
+    if (x1 == x2 && y1 == y2)
+    {
+        QMessageBox mBox;
+        mBox.setIcon(QMessageBox::Information);
+        mBox.setInformativeText("Вырожденный отрезок!");
+        mBox.exec();
+        return;
+    }
+
+    int mx1 = x1;
+    int mx2 = x2;
+    int my1 = y1;
+    int my2 = y2;
+    double xc = ((double)(x2+x1))/2;
+    double yc = ((double)(y2+y1))/2;
 
 
-    for (int alpha = 0; alpha <= 180; alpha +=10)
+    for (int alpha = 0; alpha < 180; alpha +=10)
     {
         double distance1 = sqrt(pow(fabs(x1 - x2), 2) + pow(fabs(y1 - y2),2));
         cout << distance1 << endl;
+        cout << x2<<" "<<y2<<endl;
         x1 = xc + (mx1 - xc) * cos(alpha * PI / 180) + (my1 - yc) * sin(alpha * PI / 180);
         y1 = yc - (mx1 - xc) * sin(alpha * PI / 180) + (my1 - yc) * cos(alpha * PI / 180);
         x2 = xc + (mx2 - xc) * cos(alpha * PI / 180) + (my2 - yc) * sin(alpha * PI / 180);
