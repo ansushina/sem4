@@ -11,7 +11,7 @@
 
 double func(double x)
 {
-	return cos(x) - x;
+	//return cos(x) - x;
 	return x*x;
 }
 
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 			{
 			    printf(" Корень функции = %lf", answer);
 				
-				printf("cos(%lf) = %lf\n x = %lf", answer, cos(answer), answer);
+				//printf("cos(%lf) = %lf\n x = %lf", answer, cos(answer), answer);
 			}
 			else 
 			{
