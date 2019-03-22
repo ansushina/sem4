@@ -30,11 +30,14 @@ void tabl()
         printf("Can't open file!\n");
     }
 }
+#define APP "notepad.exe"
+#define DOT "C:\\Graphviz2.38\\bin\\dot.exe"
+#define ME "C:\\Users\\user-lab01\\Downloads\\sem4\\algoritms\\a4\\"
 
 int main(int argc, char *argv[])
 {
     //cout <<"dasdsa"<<endl;
-
+    system("start " APP " " ME "\\1.txt");
     //tabl();
     QApplication a(argc, argv);
     MainWindow w;

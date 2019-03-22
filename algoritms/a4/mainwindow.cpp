@@ -349,7 +349,7 @@ double mastab(double x,double xmin, double k)
 
 #define APP "notepad.exe"
 #define DOT "C:\\Graphviz2.38\\bin\\dot.exe"
-#define ME "C:\\c_prog\\un1\\my-rep\\algoritms\\a4\\"
+#define ME "C:\\Users\\user-lab01\\Downloads\\sem4\\algoritms\\a4\\"
 void MainWindow::process(int n, double *x, double *y, double *w, int x_count)
 {
   // cout<<"f-----";
@@ -370,7 +370,7 @@ void MainWindow::process(int n, double *x, double *y, double *w, int x_count)
    if (rc)
    {
        free_matrix(matrix, n);
-      cout<<"somethig goes wrong!";
+      cout<<"somethig goes wrong!" << endl;
       return;
    }
       //cout<<"gauss";
@@ -414,7 +414,7 @@ void MainWindow::process(int n, double *x, double *y, double *w, int x_count)
        //scene->addEllipse(mastab(j,xmin,k), mastab(func(j, c, n),ymin,k), 1, 1, pen, QBrush(Qt::SolidPattern));
        scene->addLine(mastab(j,xmin,k), mastab(func(j, c, n),ymin,k),mastab(j+step,xmin,k), mastab(func(j+step, c, n),ymin,k),pen);
    }
-   system("start " APP " " ME "\\1.txt");
+   //system("start " APP " " ME "\\1.txt");
    update();
 }
 
@@ -430,10 +430,14 @@ void MainWindow::on_pushButton_clicked()
         return;
     }
     int n = u_n[0].toInt();
+    if (n < 0)
+    {
+        return;
+    }
     int points_count = 0;
     double *x, *y, *w;
     //cout<<"hiiii" << std::endl;
-    FILE *file = fopen("C:/c_prog/un1/my-rep/algoritms/a4/1.txt", "r");
+    FILE *file = fopen("C:/Users/user-lab01/Downloads/sem4/algoritms/a4/1.txt", "r");
         //cout<<"hiiii" << std::endl;
     if (file)
     {
