@@ -282,7 +282,7 @@ int read_file(FILE *f, int &n_points, double **x_mas, double **y_mas, double **w
     double *xm = new double[count];
     double *ym = new double[count];
     double *wm = new double[count];
-    //cout<<"memory";
+    cout<<"Таблица" << endl;
 
     for (int i = 0; i < count; i++)
     {
@@ -295,7 +295,7 @@ int read_file(FILE *f, int &n_points, double **x_mas, double **y_mas, double **w
         }
         cout << xm[i] <<" " << ym[i] << " " << wm[i] << endl;
     }
-   // cout<<" all right ";
+    cout<<" "<<endl;
     n_points = count;
     *x_mas = xm;
     *y_mas = ym;
@@ -347,6 +347,9 @@ double mastab(double x,double xmin, double k)
     return round(KXMIN + (x - xmin)*k);
 }
 
+#define APP "notepad.exe"
+#define DOT "C:\\Graphviz2.38\\bin\\dot.exe"
+#define ME "C:\\c_prog\\un1\\my-rep\\algoritms\\a4\\"
 void MainWindow::process(int n, double *x, double *y, double *w, int x_count)
 {
   // cout<<"f-----";
@@ -376,7 +379,7 @@ void MainWindow::process(int n, double *x, double *y, double *w, int x_count)
    for (int i = 0; i < n; i++)
    {
        c[i] = c_matrix[i][0];
-       cout<<c[i];
+       cout<<c[i]<<"  ";
    }
    cout << " " << endl;
 
@@ -398,17 +401,20 @@ void MainWindow::process(int n, double *x, double *y, double *w, int x_count)
    double ky = (650-KXMIN)/(ymax - ymin);
    double k = kx < ky ? kx:ky;
 
-   QPen pen = QPen(Qt::black,1,Qt::SolidLine);
+   QPen pen = QPen(Qt::red,4,Qt::SolidLine);
    //scene->addEllipse(100, 100, 1, 1, pen, QBrush(Qt::SolidPattern));
    for (int i = 0; i < x_count; i++)
    {
-       scene->addEllipse(mastab(x[i],xmin,k), mastab(y[i],ymin,k), 1, 1, pen, QBrush(Qt::SolidPattern));
+       scene->addEllipse(mastab(x[i],xmin,k), mastab(y[i],ymin,k), 2, 2, pen, QBrush(Qt::red,Qt::SolidPattern));
    }
-
-   for (double j = xmin; j < xmax; j+= 0.001)
+   pen = QPen(Qt::black,1,Qt::SolidLine);
+   double step = (xmax - xmin)/300;
+   for (double j = xmin; j < xmax+step; j+= step)
    {
-       scene->addEllipse(mastab(j,xmin,k), mastab(func(j, c, n),ymin,k), 1, 1, pen, QBrush(Qt::SolidPattern));
+       //scene->addEllipse(mastab(j,xmin,k), mastab(func(j, c, n),ymin,k), 1, 1, pen, QBrush(Qt::SolidPattern));
+       scene->addLine(mastab(j,xmin,k), mastab(func(j, c, n),ymin,k),mastab(j+step,xmin,k), mastab(func(j+step, c, n),ymin,k),pen);
    }
+   system("start " APP " " ME "\\1.txt");
    update();
 }
 
