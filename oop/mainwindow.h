@@ -6,6 +6,8 @@
 #include <QtCore>
 #include <QtGui>
 #include <QGraphicsScene>
+#include "io.h"
+#include "process.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +24,8 @@ public:
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
+    struct figure fig;
+    void draw_figure();
 };
 
 #endif // MAINWINDOW_H

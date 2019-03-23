@@ -16,16 +16,16 @@ void mastab(struct point &a, double xm, double ym, double zm, double k)
     a.z = zm + k*(a.z - zm);
 }
 
-void povorot(struct point &a, double xc, double yc, double alpha)
+/*void povorot(struct point &a, double xc, double yc, double alpha)
 {
     double new_x = xc + (a.x - xc) * cos(alpha * PI / 180) + (a.y - yc) * sin(alpha * PI / 180);
     a.y = yc - (a.x - xc) * sin(alpha * PI / 180) + (a.y - yc) * cos(alpha * PI / 180);
     a.x = new_x;
-}
+}*/
 
 void perenos_all(struct figure &fig, double dx, double dy, double dz)
 {
-    for (int i = 0; i < fig.n; i++)
+    for (size_t i = 0; i < fig.n; i++)
     {
         perenos(fig.mas[i],dx,dy,dz);
     }
@@ -33,7 +33,7 @@ void perenos_all(struct figure &fig, double dx, double dy, double dz)
 
 void mastab_all(struct figure &fig, double k)
 {
-    for (int i = 0; i < fig.n; i++)
+    for (size_t i = 0; i < fig.n; i++)
     {
         mastab(fig.mas[i],0,0,0,k);
     }
@@ -49,7 +49,7 @@ int do_process(int number, struct figure &fig)
     {
 
     }
-    else if (munber == MASTAB_NUMBER)
+    else if (number == MASTAB_NUMBER)
     {
 
     }

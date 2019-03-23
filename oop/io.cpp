@@ -9,20 +9,20 @@ void free_matrix(int **mat, int n)
     free(mat);
 }
 
-int **allocate_matrix(int n)
+int **allocate_matrix(size_t n)
 {
     if (!n)
-        return NULL;
-    int **new_matrix =(int *)calloc(n,sizeof(int *));
+        return nullptr;
+    int **new_matrix =(int **)calloc(n, sizeof(int *));
     if (!new_matrix)
-        return NULL;
-    for (int i = 0; i < n; i++)
+        return nullptr;
+    for (size_t i = 0; i < n; i++)
     {
-        new_matrix[i] = (int *)calloc(n,sizeof(int));
+        new_matrix[i] = (int *)calloc(n, sizeof(int));
         if (!new_matrix[i])
         {
             free_matrix(new_matrix, i);
-            return NULL;
+            return nullptr;
         }
     }
     return new_matrix;
@@ -31,11 +31,11 @@ int **allocate_matrix(int n)
 
 int read_from_file(FILE *f, struct figure &fig)
 {
-    if (!f || !fig)
+    if (!f)
         return 1;
     struct point p;
-    int n = 0;
-    while (fscanf("%d %lf %lf %lf",&p.n, &p.x, &p.y, &p.z) == 3)
+    size_t n = 0;
+    while (fscanf(f, "%d %lf %lf %lf",&p.n, &p.x, &p.y, &p.z) == 3)
     {
         n++;
     }
@@ -44,9 +44,9 @@ int read_from_file(FILE *f, struct figure &fig)
     struct point *buf = (struct point *)calloc(n, sizeof(struct point *));
     if (!buf)
         return 1;
-    for (int i = 0; i < n; i++)
+    for (size_t i = 0; i < n; i++)
     {
-        if (fscanf("%d %lf %lf %lf",&p.n, &p.x, &p.y, &p.z) != 3)
+        if (fscanf(f, "%d %lf %lf %lf",&p.n, &p.x, &p.y, &p.z) != 3)
         {
             free(buf);
             return 1;
@@ -64,7 +64,7 @@ int read_from_file(FILE *f, struct figure &fig)
         free(buf);
         return NULL;
     }
-    while (fscanf("%d->%d",&mi, &mj) == 2)
+    while (fscanf(f, "%d->%d",&mi, &mj) == 2)
     {
         mt[mi][mj] = 1;
         mt[mj][mi] = 1;

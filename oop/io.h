@@ -15,7 +15,7 @@ struct point
 struct figure
 {
     struct point *mas;
-    int n;
+    size_t n;
 
     int **matrix;
 };
@@ -23,6 +23,6 @@ struct figure
 
 void free_matrix(int **mat, int n);
 int **allocate_matrix(int n);
-int read_from_file(struct figure &fig);
+int read_from_file(FILE *f, struct figure &fig);
 
 #endif // IO_H
