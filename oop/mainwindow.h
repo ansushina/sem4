@@ -9,6 +9,26 @@
 #include "io.h"
 #include "process.h"
 
+union data
+{
+    char *filename;
+    struct pov
+    {
+        char* alphax;
+        char* alphay;
+        char* alphaz;
+    };
+    struct mast
+    {
+        char* k;
+    };
+    struct per
+    {
+        char *dx;
+        char *dy;
+    };
+};
+
 namespace Ui {
 class MainWindow;
 }
@@ -20,6 +40,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+private slots:
+    void on_pushButton_5_clicked();
 
 private:
     Ui::MainWindow *ui;

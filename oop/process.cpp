@@ -57,3 +57,13 @@ int do_process(int number, struct figure &fig)
         return 1;
     return 0;
 }
+\
+int download_model(char *filename, struct figure &fig)
+{
+    FILE *f = fopen(filename, "r");
+    if (!f)
+        return 1;
+    int rc = read_from_file(f,fig);
+    fclose(f);
+    return rc;
+}
