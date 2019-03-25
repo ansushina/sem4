@@ -8,31 +8,7 @@
 #include <QGraphicsScene>
 #define PI 3.14159265
 
-#include <Qpainter>
-
-class Point
-{
-public:
-    Point(){}
-    Point(int x, int y): x_(x),y_(y) {}
-protected:
-    QRectF boundingRect() const
-    {
-        return QRectF(QPoint(x_,y_), QPoint(x_, y_));
-    }
-
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-    {
-        painter->drawPoint(x_, y_);
-        Q_UNUSED(option);
-        Q_UNUSED(widget);
-    }
-private:
-    int x_;
-    int y_;
-};
-
-
+//#include <Qpainter>
 
 
 namespace Ui {
@@ -67,7 +43,7 @@ private:
         int i;
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
-    QVector<Point*> point;
+
     void cda(QPen pen);
     void br_1(QPen pen);
     void br_2(QPen pen);

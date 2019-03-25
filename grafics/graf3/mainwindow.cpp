@@ -2,8 +2,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <math.h>
-#include <qpainter.h>
-#include <QPainter>
+//#include <qpainter.h>
+//#include <QPainter>
 #include <QMessageBox>
 #include <iostream>
 #include <QColor>
@@ -394,7 +394,7 @@ void MainWindow::on_clean_but_clicked()
 void MainWindow::on_wiz_button_clicked()
 {
 
-    on_clean_but_clicked();
+   // on_clean_but_clicked();
 
     QString l_x1 = ui->x1->text();
     QString l_x2 = ui->x2->text();
