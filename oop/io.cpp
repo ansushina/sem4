@@ -96,7 +96,7 @@ int read_from_file(FILE *f, struct figure &fig)
     {
        return 3;
     }
-    fig.matrix = create_matrix(f,n);
+    fig.matrix = create_matrix(f,fig.n);
     if (!fig.matrix)
     {
         free(fig.mas);

@@ -8,6 +8,7 @@
 #include <QColor>
 #include <QColorDialog>
 #include "io.h"
+#include "process.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -47,7 +48,14 @@ void MainWindow::draw_figure()
 
 void MainWindow::on_pushButton_5_clicked()
 {
-    QString text = ui->lineEdit->text();
-    char *filename = text.toStdString();
+  /*  QString text = ui->filename->text();
+
+    char *filen = text.toStdString();
+    dataaction.filename = filen;
+    do_process(DOWNLOAD, dataaction, fig);*/
+}
+
+void MainWindow::on_filename_editingFinished()
+{
 
 }

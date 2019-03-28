@@ -1,5 +1,7 @@
 #include "process.h"
 #include "io.h"
+#include "mainwindow.h"
+#include <iostream>
 
 void perenos(struct point &a, double dx, double dy, double dz)
 {
@@ -39,8 +41,26 @@ void mastab_all(struct figure &fig, double k)
     }
 }
 
-int do_process(int number, struct figure &fig)
+int download_model(char *filename, struct figure &fig)
 {
+    FILE *f = fopen(filename, "r");
+    if (!f)
+        return 1;
+    int rc = read_from_file(f,fig);
+    fclose(f);
+    return rc;
+}
+
+int do_process(int number, union data d, struct figure &fig)
+{
+    if (number == DOWNLOAD)
+    {
+        int rc = download_model(d.filename, fig);
+        if (rc)
+        {
+            std::cout<<"file error"<<std::endl;
+        }
+    }
     if (number ==  PERENOS_NUMBER)
     {
 
@@ -58,12 +78,4 @@ int do_process(int number, struct figure &fig)
     return 0;
 }
 \
-int download_model(char *filename, struct figure &fig)
-{
-    FILE *f = fopen(filename, "r");
-    if (!f)
-        return 1;
-    int rc = read_from_file(f,fig);
-    fclose(f);
-    return rc;
-}
+

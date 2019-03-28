@@ -14,18 +14,18 @@ union data
     char *filename;
     struct pov
     {
-        char* alphax;
-        char* alphay;
-        char* alphaz;
+        double alphax;
+        double alphay;
+        double alphaz;
     };
     struct mast
     {
-        char* k;
+        double k;
     };
     struct per
     {
-        char *dx;
-        char *dy;
+        double dx;
+        double dy;
     };
 };
 
@@ -44,11 +44,14 @@ public:
 private slots:
     void on_pushButton_5_clicked();
 
+    void on_filename_editingFinished();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     struct figure fig;
     void draw_figure();
+    union data dataaction;
 };
 
 #endif // MAINWINDOW_H
