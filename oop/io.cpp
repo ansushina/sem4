@@ -78,7 +78,7 @@ int **create_matrix(FILE *f, size_t n)
         mt[mj-1][mi-1] = 1;
         std::cout << mi<<"->"<<mj<<std::endl;
     }
-
+    return mt;
 }
 
 int read_from_file(FILE *f, struct figure &fig)
@@ -87,15 +87,26 @@ int read_from_file(FILE *f, struct figure &fig)
     if (!f)
         return 1;
 
+    if (fig.mas)
+        free(fig.mas);
+    if (fig.matrix)
+        free_matrix(fig.matrix, fig.n);
+
+    fig.n = 0;
+    fig.matrix = NULL;
+    fig.mas = NULL;
+
     fig.n = count_points(f);
     if (fig.n <= 0)
         return 2;
+
 
     fig.mas = create_mas(f,fig.n);
     if (!fig.mas)
     {
        return 3;
     }
+
     fig.matrix = create_matrix(f,fig.n);
     if (!fig.matrix)
     {

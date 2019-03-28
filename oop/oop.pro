@@ -35,4 +35,4 @@ HEADERS += \
     process.h
 
 FORMS += \
-        mainwindow.ui
+    mainwindow.ui

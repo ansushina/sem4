@@ -9,24 +9,25 @@
 #include "io.h"
 #include "process.h"
 
-union data
+struct data
 {
-    char *filename;
-    struct pov
+    const char *filename;
+    struct
     {
         double alphax;
         double alphay;
         double alphaz;
-    };
-    struct mast
+    } pov;
+    struct
     {
         double k;
-    };
-    struct per
+    } mast ;
+    struct
     {
         double dx;
         double dy;
-    };
+        double dz;
+    } per;
 };
 
 namespace Ui {
@@ -46,12 +47,20 @@ private slots:
 
     void on_filename_editingFinished();
 
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_2_clicked();
+
+    void on_pushButton_clicked();
+
+    void on_pushButton_4_clicked();
+
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     struct figure fig;
     void draw_figure();
-    union data dataaction;
+    struct data dataaction;
 };
 
 #endif // MAINWINDOW_H
