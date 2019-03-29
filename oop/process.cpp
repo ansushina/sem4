@@ -64,7 +64,11 @@ void povorot(struct point &a, struct point c, double ax, double ay, double az)
 
 void povorot_all(struct figure &fig, double ax, double ay,double az)
 {
-    struct point c = {0,0,0};
+    struct point c;
+    c.n = 0;
+    c.x = 0;
+    c.y = 0;
+    c.z = 0;
     for (size_t i = 0; i < fig.n; i++)
     {
         povorot(fig.mas[i],c,ax,ay,az);
@@ -151,11 +155,12 @@ int do_process(int number, data d, struct figure &fig, QGraphicsScene *scene)
         scene->clear();
         draw_model(fig,scene);
     }
-    else if (number == DELETE)
+    else if (number == DELETE_NUMBER)
     {
         scene->clear();
         if (fig.mas)
-            free(fig.mas);
+           // free(fig.mas);
+            delete [] fig.mas;
         if (fig.matrix)
             free_matrix(fig.matrix, fig.n);
 
@@ -167,5 +172,5 @@ int do_process(int number, data d, struct figure &fig, QGraphicsScene *scene)
         return 1;
     return 0;
 }
-\
+
 

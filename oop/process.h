@@ -5,7 +5,9 @@
 #define MASTAB_NUMBER 2
 #define PERENOS_NUMBER 1
 #define DOWNLOAD 4
-#define DELETE 5
+#define DELETE_NUMBER 5
+
+
 #include <QGraphicsScene>
 
 int do_process(int number, struct data d, struct figure &fig, QGraphicsScene *scene);

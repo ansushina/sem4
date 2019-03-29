@@ -44,14 +44,15 @@ size_t count_points(FILE *f)
 struct point *create_mas(FILE *f, size_t n)
 {
     struct point p;
-    struct point *buf = (struct point *)malloc(n* sizeof(struct point *));
+    struct point *buf = new struct point[n];//(struct point *)malloc(n* sizeof(struct point *));
     if (!buf)
         return NULL;
     for (size_t i = 0; i < n; i++)
     {
         if (fscanf(f, "%d %lf %lf %lf",&p.n, &p.x, &p.y, &p.z) != 4)
         {
-            free(buf);
+            //free(buf);
+            delete [] buf;
             return NULL;
         }
 
@@ -88,7 +89,8 @@ int read_from_file(FILE *f, struct figure &fig)
         return 1;
 
     if (fig.mas)
-        free(fig.mas);
+        //free(fig.mas);
+        delete [] fig.mas;
     if (fig.matrix)
         free_matrix(fig.matrix, fig.n);
 
@@ -107,10 +109,16 @@ int read_from_file(FILE *f, struct figure &fig)
        return 3;
     }
 
+
+    for (size_t i = 0; i < fig.n; i++)
+    {
+        std::cout << fig.mas[i].x << fig.mas[i].y <<  fig.mas[i].z << fig.mas[i].n <<std::endl;
+    }
     fig.matrix = create_matrix(f,fig.n);
     if (!fig.matrix)
     {
-        free(fig.mas);
+        //free(fig.mas);
+        delete [] fig.mas;
         return 4;
     }
 

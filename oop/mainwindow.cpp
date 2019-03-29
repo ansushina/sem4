@@ -11,6 +11,7 @@
 #include "process.h"
 
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -26,7 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    free(fig.mas);
+    //free(fig.mas);
+    delete [] fig.mas;
     free_matrix(fig.matrix, fig.n);
     delete ui;
 }
@@ -94,5 +96,6 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    do_process(DELETE,dataaction,fig, scene);
+    do_process(DELETE_NUMBER,dataaction,fig, scene);
 }
+
