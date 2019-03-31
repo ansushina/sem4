@@ -27,30 +27,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    //free(fig.mas);
     delete [] fig.mas;
     free_matrix(fig.matrix, fig.n);
     delete ui;
-}
-
-void MainWindow::draw_figure()
-{
-    QPen pen = QPen(Qt::black);
-     std::cout << "in draw"<<std::endl;
-    for (size_t i = 0; i < fig.n; i++)
-    {
-        for (size_t j = 0; j < fig.n; j++)
-        {
-
-            std::cout <<i <<j <<std::endl;
-            if (fig.matrix[i][j] != 0)
-            {
-                std::cout <<i <<std::endl;
-                std::cout <<fig.mas[j].x<<" "<<fig.mas[j].y <<std::endl;
-                scene->addLine(fig.mas[i].x,fig.mas[i].y, fig.mas[j].x, fig.mas[j].y);
-            }
-        }
-    }
 }
 
 void MainWindow::on_pushButton_5_clicked()

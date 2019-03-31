@@ -3,8 +3,23 @@
 
 #include <iostream>
 
+void free_fig(struct figure &fig)
+{
+    if (fig.mas)
+       // free(fig.mas);
+        delete [] fig.mas;
+    if (fig.matrix)
+        free_matrix(fig.matrix, fig.n);
+
+    fig.n = 0;
+    fig.matrix = NULL;
+    fig.mas = NULL;
+}
+
 void free_matrix(int **mat, int n)
 {
+    if (!mat)
+        return;
     for (int i = 0; i < n; i++)
         free(mat[i]);
     free(mat);
@@ -45,15 +60,16 @@ size_t count_points(FILE *f)
 
 struct point *create_mas(FILE *f, size_t n)
 {
+    if (!f || !n)
+        return nullptr;
     struct point p;
-    struct point *buf = new struct point[n];//(struct point *)malloc(n* sizeof(struct point *));
+    struct point *buf = new struct point[n]; //(struct point *)malloc(n* sizeof(struct point *));
     if (!buf)
         return NULL;
     for (size_t i = 0; i < n; i++)
     {
         if (fscanf(f, "%d %lf %lf %lf",&p.n, &p.x, &p.y, &p.z) != 4)
         {
-            //free(buf);
             delete [] buf;
             return NULL;
         }
@@ -69,6 +85,9 @@ struct point *create_mas(FILE *f, size_t n)
 
 int **create_matrix(FILE *f, size_t n)
 {
+    if (!f || !n)
+        return nullptr;
+
     int mi,mj;
     int **mt = allocate_matrix(n);
     if (!mt)
@@ -86,7 +105,7 @@ int **create_matrix(FILE *f, size_t n)
 
 int read_from_file(FILE *f, struct figure &fig)
 {
-    std::cout << "in_read"<<std::endl;
+    std::cout << "readed file: "<<std::endl;
     if (!f)
         return 1;
 
@@ -96,29 +115,18 @@ int read_from_file(FILE *f, struct figure &fig)
     if (fig.n <= 0)
         return 2;
 
-
     fig.mas = create_mas(f,fig.n);
     if (!fig.mas)
     {
        return 3;
     }
 
-
-    for (size_t i = 0; i < fig.n; i++)
-    {
-        std::cout << fig.mas[i].x << fig.mas[i].y <<  fig.mas[i].z << fig.mas[i].n <<std::endl;
-    }
     fig.matrix = create_matrix(f,fig.n);
     if (!fig.matrix)
     {
-        //free(fig.mas);
         delete [] fig.mas;
         return 4;
     }
 
-    for (size_t i = 0; i < fig.n; i++)
-    {
-        std::cout << fig.mas[i].x << fig.mas[i].y <<  fig.mas[i].z << fig.mas[i].n <<std::endl;
-    }
     return 0;
 }

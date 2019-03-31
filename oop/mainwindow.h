@@ -59,7 +59,6 @@ private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
     struct figure fig;
-    void draw_figure();
     struct data dataaction;
 };
 

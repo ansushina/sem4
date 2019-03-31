@@ -2,7 +2,6 @@
 #include "io.h"
 #include "mainwindow.h"
 #include <iostream>
-#include <QGraphicsScene>
 #include <QMessageBox>
 #include <string.h>
 #include <math.h>
@@ -16,6 +15,8 @@ void perenos(struct point &a, double dx, double dy, double dz)
 
 void perenos_all(struct figure &fig, double dx, double dy, double dz)
 {
+    if (is_empty(fig))
+        return;
     for (size_t i = 0; i < fig.n; i++)
     {
         perenos(fig.mas[i],dx,dy,dz);
@@ -31,6 +32,8 @@ void mastab(struct point &a, struct point m, double k)
 
 void mastab_all(struct figure &fig, double k)
 {
+    if (is_empty(fig))
+        return;
     struct point m;
     m.n = 0;
     m.x = 0;
@@ -41,8 +44,6 @@ void mastab_all(struct figure &fig, double k)
         mastab(fig.mas[i],m,k);
     }
 }
-
-#define PI 3.14
 
 void povorot(struct point &a, struct point c, double ax, double ay, double az)
 {
@@ -68,6 +69,8 @@ void povorot(struct point &a, struct point c, double ax, double ay, double az)
 
 void povorot_all(struct figure &fig, double ax, double ay,double az)
 {
+    if (is_empty(fig))
+        return;
     struct point c;
     c.n = 0;
     c.x = 0;
@@ -81,6 +84,11 @@ void povorot_all(struct figure &fig, double ax, double ay,double az)
 
 int download_model( struct figure &fig, const char *filename)
 {
+    if (is_empty(fig))
+        return 1;
+    if (!filename)
+        return 1;
+
     char fname[100] = "../oop/";
     strncat(fname,filename,100);
 
@@ -94,11 +102,15 @@ int download_model( struct figure &fig, const char *filename)
 
 void draw_model(figure fig, QGraphicsScene *scene)
 {
+    if (is_empty(fig))
+        return;
+    if (!scene)
+        return;
     QPen pen = QPen(Qt::black);
-    std::cout << "in draw"<<std::endl;
+    std::cout << "drawing"<<std::endl;
     for (size_t i = 0; i < fig.n; i++)
     {
-        for (size_t j = 0; j < fig.n; j++)
+        for (size_t j = 0; j < i + 1; j++)
         {
 
             //std::cout <<i <<j <<std::endl;
@@ -107,7 +119,7 @@ void draw_model(figure fig, QGraphicsScene *scene)
                 double z1 = sqrt(2)/2 * fig.mas[i].z;
                 double z2 = sqrt(2)/2 * fig.mas[j].z;
                 //std::cout <<i <<std::endl;
-                std::cout <<fig.mas[j].x<<" "<<fig.mas[j].y <<std::endl;
+                std::cout <<fig.mas[i].n<<"->"<<fig.mas[j].n <<std::endl;
                 scene->addLine(fig.mas[i].x - z1,-fig.mas[i].y+z1, fig.mas[j].x - z2, -fig.mas[j].y + z2);
             }
         }
@@ -117,20 +129,6 @@ void draw_model(figure fig, QGraphicsScene *scene)
 int is_empty(struct figure &fig)
 {
     return !(fig.mas && fig.matrix && fig.n);
-}
-
-
-void free_fig(struct figure &fig)
-{
-    if (fig.mas)
-       // free(fig.mas);
-        delete [] fig.mas;
-    if (fig.matrix)
-        free_matrix(fig.matrix, fig.n);
-
-    fig.n = 0;
-    fig.matrix = NULL;
-    fig.mas = NULL;
 }
 
 int do_process(int number, data d, struct figure &fig, QGraphicsScene *scene)
