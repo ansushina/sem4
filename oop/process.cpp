@@ -14,14 +14,6 @@ void perenos(struct point &a, double dx, double dy, double dz)
     a.z += dz;
 }
 
-
-void mastab(struct point &a, double xm, double ym, double zm, double k)
-{
-    a.x = xm + k*(a.x - xm);
-    a.y = ym + k*(a.y - ym);
-    a.z = zm + k*(a.z - zm);
-}
-
 void perenos_all(struct figure &fig, double dx, double dy, double dz)
 {
     for (size_t i = 0; i < fig.n; i++)
@@ -30,11 +22,23 @@ void perenos_all(struct figure &fig, double dx, double dy, double dz)
     }
 }
 
+void mastab(struct point &a, struct point m, double k)
+{
+    a.x = m.x + k*(a.x - m.x);
+    a.y = m.y + k*(a.y - m.y);
+    a.z = m.z + k*(a.z - m.z);
+}
+
 void mastab_all(struct figure &fig, double k)
 {
+    struct point m;
+    m.n = 0;
+    m.x = 0;
+    m.y = 0;
+    m.z = 0;
     for (size_t i = 0; i < fig.n; i++)
     {
-        mastab(fig.mas[i],0,0,0,k);
+        mastab(fig.mas[i],m,k);
     }
 }
 
@@ -75,7 +79,7 @@ void povorot_all(struct figure &fig, double ax, double ay,double az)
     }
 }
 
-int download_model(const char *filename, struct figure &fig)
+int download_model( struct figure &fig, const char *filename)
 {
     char fname[100] = "../oop/";
     strncat(fname,filename,100);
@@ -97,14 +101,14 @@ void draw_model(figure fig, QGraphicsScene *scene)
         for (size_t j = 0; j < fig.n; j++)
         {
 
-            std::cout <<i <<j <<std::endl;
+            //std::cout <<i <<j <<std::endl;
             if (fig.matrix[i][j] != 0)
             {
                 double z1 = sqrt(2)/2 * fig.mas[i].z;
                 double z2 = sqrt(2)/2 * fig.mas[j].z;
-                std::cout <<i <<std::endl;
+                //std::cout <<i <<std::endl;
                 std::cout <<fig.mas[j].x<<" "<<fig.mas[j].y <<std::endl;
-                scene->addLine(fig.mas[i].x - z1,fig.mas[i].y+z1, fig.mas[j].x - z2, fig.mas[j].y + z2);
+                scene->addLine(fig.mas[i].x - z1,-fig.mas[i].y+z1, fig.mas[j].x - z2, -fig.mas[j].y + z2);
             }
         }
     }
@@ -116,11 +120,24 @@ int is_empty(struct figure &fig)
 }
 
 
+void free_fig(struct figure &fig)
+{
+    if (fig.mas)
+       // free(fig.mas);
+        delete [] fig.mas;
+    if (fig.matrix)
+        free_matrix(fig.matrix, fig.n);
+
+    fig.n = 0;
+    fig.matrix = NULL;
+    fig.mas = NULL;
+}
+
 int do_process(int number, data d, struct figure &fig, QGraphicsScene *scene)
 {
     if (number == DOWNLOAD)
     {
-        int rc = download_model(d.filename, fig);
+        int rc = download_model(fig, d.filename);
         if (rc)
         {
             std::cout<<"file error"<<std::endl;
@@ -128,6 +145,7 @@ int do_process(int number, data d, struct figure &fig, QGraphicsScene *scene)
             mbox.setText("При открытии файла произошла ошибка. Попробуйте еще раз.");
             mbox.exec();
         }
+        scene->clear();
         draw_model(fig,scene);
     }
     else if (is_empty(fig))
@@ -158,15 +176,7 @@ int do_process(int number, data d, struct figure &fig, QGraphicsScene *scene)
     else if (number == DELETE_NUMBER)
     {
         scene->clear();
-        if (fig.mas)
-           // free(fig.mas);
-            delete [] fig.mas;
-        if (fig.matrix)
-            free_matrix(fig.matrix, fig.n);
-
-        fig.n = 0;
-        fig.matrix = NULL;
-        fig.mas = NULL;
+        free_fig(fig);
     }
     else
         return 1;

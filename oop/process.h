@@ -12,4 +12,6 @@
 
 int do_process(int number, struct data d, struct figure &fig, QGraphicsScene *scene);
 
+void free_fig(struct figure &fig);
+
 #endif // PROCESS_H

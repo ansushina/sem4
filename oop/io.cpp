@@ -1,4 +1,5 @@
 #include "io.h"
+#include "process.h"
 
 #include <iostream>
 
@@ -27,6 +28,7 @@ int **allocate_matrix(size_t n)
     }
     return new_matrix;
 }
+
 size_t count_points(FILE *f)
 {
     if (!f)
@@ -88,15 +90,7 @@ int read_from_file(FILE *f, struct figure &fig)
     if (!f)
         return 1;
 
-    if (fig.mas)
-        //free(fig.mas);
-        delete [] fig.mas;
-    if (fig.matrix)
-        free_matrix(fig.matrix, fig.n);
-
-    fig.n = 0;
-    fig.matrix = NULL;
-    fig.mas = NULL;
+    free_fig(fig);
 
     fig.n = count_points(f);
     if (fig.n <= 0)
