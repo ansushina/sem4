@@ -29,7 +29,7 @@
      <rect>
       <x>740</x>
       <y>20</y>
-      <width>261</width>
+      <width>266</width>
       <height>371</height>
      </rect>
     </property>
@@ -37,7 +37,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Введите параметры окружности </string>
        </property>
       </widget>
      </item>
@@ -46,7 +46,7 @@
        <item>
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>TextLabel</string>
+          <string>Xc: </string>
          </property>
         </widget>
        </item>
@@ -56,7 +56,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>TextLabel</string>
+          <string>Yc: </string>
          </property>
         </widget>
        </item>
@@ -70,7 +70,7 @@
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>TextLabel</string>
+          <string>R: </string>
          </property>
         </widget>
        </item>
@@ -89,35 +89,35 @@
      <item>
       <widget class="QRadioButton" name="radioButton">
        <property name="text">
-        <string>RadioButton</string>
+        <string>каноническое уравнение</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QRadioButton" name="radioButton_2">
        <property name="text">
-        <string>RadioButton</string>
+        <string>параметрическое уравнение</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QRadioButton" name="radioButton_3">
        <property name="text">
-        <string>RadioButton</string>
+        <string>алгоритм Брезенхема</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QRadioButton" name="radioButton_4">
        <property name="text">
-        <string>RadioButton</string>
+        <string>алгоритм средней точки</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QRadioButton" name="radioButton_7">
        <property name="text">
-        <string>RadioButton</string>
+        <string>Библиотечная функция </string>
        </property>
       </widget>
      </item>
@@ -145,7 +145,7 @@
      <item>
       <widget class="QPushButton" name="pushButton">
        <property name="text">
-        <string>PushButton</string>
+        <string>Выбрать цвет</string>
        </property>
       </widget>
      </item>
@@ -174,7 +174,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>Очистить</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_4">
@@ -187,7 +187,7 @@
      </rect>
     </property>
     <property name="text">
-     <string/>
+     <string>Концентрические окружности</string>
     </property>
    </widget>
   </widget>
@@ -197,7 +197,7 @@
      <x>0</x>
      <y>0</y>
      <width>1050</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
