@@ -8,27 +8,7 @@
 #include <QGraphicsScene>
 #include "io.h"
 #include "process.h"
-
-struct data
-{
-    const char *filename;
-    struct
-    {
-        double alphax;
-        double alphay;
-        double alphaz;
-    } pov;
-    struct
-    {
-        double k;
-    } mast ;
-    struct
-    {
-        double dx;
-        double dy;
-        double dz;
-    } per;
-};
+#include "structs.h"
 
 namespace Ui {
 class MainWindow;

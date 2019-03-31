@@ -27,12 +27,15 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     io.cpp \
-    process.cpp
+    process.cpp \
+    functions.cpp
 
 HEADERS += \
         mainwindow.h \
     io.h \
-    process.h
+    process.h \
+    functions.h \
+    structs.h
 
 FORMS += \
     mainwindow.ui

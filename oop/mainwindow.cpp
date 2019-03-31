@@ -56,9 +56,9 @@ void MainWindow::on_pushButton_2_clicked()
     double dx = ui->doubleSpinBox_2->value();
     double dy = ui->doubleSpinBox_5->value();
     double dz = ui->doubleSpinBox_7->value();
-    dataaction.per.dx = dx;
-    dataaction.per.dy = dy;
-    dataaction.per.dz = dz;
+    dataaction.per.delta[0] = dx;
+    dataaction.per.delta[1] = dy;
+    dataaction.per.delta[2] = dz;
     do_process(PERENOS_NUMBER,dataaction,fig,scene);
 }
 
@@ -67,9 +67,9 @@ void MainWindow::on_pushButton_clicked()
     double ax = ui->doubleSpinBox->value();
     double ay = ui->doubleSpinBox_3->value();
     double az = ui->doubleSpinBox_4->value();
-    dataaction.pov.alphax = ax;
-    dataaction.pov.alphay = ay;
-    dataaction.pov.alphaz = az;
+    dataaction.pov.alpha[0] = ax;
+    dataaction.pov.alpha[1] = ay;
+    dataaction.pov.alpha[2] = az;
     do_process(POVOROT_NUMBER,dataaction,fig,scene);
 }
 

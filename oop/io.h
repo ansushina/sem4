@@ -4,21 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-struct point
-{
-    double x;
-    double y;
-    double z;
-    int n;
-};
-
-struct figure
-{
-    struct point *mas;
-    size_t n;
-
-    int **matrix;
-};
+#include "structs.h"
 
 void free_fig(struct figure &fig);
 void free_matrix(int **mat, int n);
