@@ -8,26 +8,8 @@ struct point &get_point(struct figure &fig, int i)
     return fig.mas[i];
 }
 
-double &get_point_x(struct point &a)
-{
-    return a.x;
-}
-double &get_point_y(struct point &a)
-{
-    return a.y;
-}
-double &get_point_z(struct point &a)
-{
-    return a.z;
-}
-int &get_point_n(struct point &a)
-{
-    return a.n;
-}
-size_t &get_fig_n(struct figure &fig)
-{
-    return fig.n;
-}
+
+
 
 double get_alpha(struct data &d, int i)
 {
@@ -50,10 +32,7 @@ const char *get_filename(struct data &d)
 }
 
 
-int get_matrix_el(struct figure &fig, int i, int j)
-{
-    return fig.matrix[i][j];
-}
+
 void perenos(struct point &a, double dx, double dy, double dz)
 {
     get_point_x(a) += dx;

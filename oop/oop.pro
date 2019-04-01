@@ -28,14 +28,26 @@ SOURCES += \
         mainwindow.cpp \
     io.cpp \
     process.cpp \
-    functions.cpp
+    functions.cpp \
+    controller.cpp \
+    rc.cpp \
+    myscene.cpp \
+    point.cpp \
+    matrix.cpp \
+    figure.cpp
 
 HEADERS += \
         mainwindow.h \
     io.h \
     process.h \
     functions.h \
-    structs.h
+    structs.h \
+    controller.h \
+    rc.h \
+    myscene.h \
+    point.h \
+    matrix.h \
+    figure.h
 
 FORMS += \
     mainwindow.ui

@@ -18,20 +18,4 @@ struct data
     } per;
 };
 
-struct point
-{
-    double x;
-    double y;
-    double z;
-    int n;
-};
-
-struct figure
-{
-    struct point *mas;
-    size_t n;
-
-    int **matrix;
-};
-
 #endif // STRUCTS_H
