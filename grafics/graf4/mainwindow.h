@@ -15,6 +15,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    void traditional_okr(QPen pen);
+    void method();
+
+
 
 private slots:
     void on_main_button_clicked();

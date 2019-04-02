@@ -94,24 +94,11 @@
      <string>Нарисовать </string>
     </property>
    </widget>
-   <widget class="QPushButton" name="clear_button">
-    <property name="geometry">
-     <rect>
-      <x>870</x>
-      <y>420</y>
-      <width>241</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Очистить</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>870</x>
-      <y>146</y>
+      <x>860</x>
+      <y>130</y>
       <width>264</width>
       <height>19</height>
      </rect>
@@ -123,8 +110,8 @@
    <widget class="QRadioButton" name="radioButton_5">
     <property name="geometry">
      <rect>
-      <x>870</x>
-      <y>287</y>
+      <x>860</x>
+      <y>271</y>
       <width>264</width>
       <height>23</height>
      </rect>
@@ -139,8 +126,8 @@
    <widget class="QRadioButton" name="radioButton_3">
     <property name="geometry">
      <rect>
-      <x>870</x>
-      <y>229</y>
+      <x>860</x>
+      <y>213</y>
       <width>264</width>
       <height>23</height>
      </rect>
@@ -155,8 +142,8 @@
    <widget class="QRadioButton" name="radioButton_4">
     <property name="geometry">
      <rect>
-      <x>870</x>
-      <y>258</y>
+      <x>860</x>
+      <y>242</y>
       <width>264</width>
       <height>23</height>
      </rect>
@@ -171,8 +158,8 @@
    <widget class="QRadioButton" name="radioButton">
     <property name="geometry">
      <rect>
-      <x>870</x>
-      <y>171</y>
+      <x>860</x>
+      <y>155</y>
       <width>264</width>
       <height>23</height>
      </rect>
@@ -187,8 +174,8 @@
    <widget class="QRadioButton" name="radioButton_2">
     <property name="geometry">
      <rect>
-      <x>870</x>
-      <y>200</y>
+      <x>860</x>
+      <y>184</y>
       <width>264</width>
       <height>23</height>
      </rect>
@@ -299,101 +286,163 @@
      <string notr="true">buttonGroup</string>
     </attribute>
    </widget>
-   <widget class="QFrame" name="frame">
-    <property name="geometry">
-     <rect>
-      <x>750</x>
-      <y>390</y>
-      <width>31</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-   </widget>
-   <widget class="QFrame" name="frame_2">
-    <property name="geometry">
-     <rect>
-      <x>1000</x>
-      <y>390</y>
-      <width>31</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="color_button">
-    <property name="geometry">
-     <rect>
-      <x>780</x>
-      <y>390</y>
-      <width>201</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Выбрать цвет</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="color_fon_button">
-    <property name="geometry">
-     <rect>
-      <x>1030</x>
-      <y>390</y>
-      <width>201</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Выбрать цвет фона</string>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>730</x>
-      <y>460</y>
+      <x>720</x>
+      <y>520</y>
       <width>261</width>
-      <height>291</height>
+      <height>231</height>
      </rect>
     </property>
     <property name="title">
      <string>Концентрические окружности</string>
     </property>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>200</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Нарисовать</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>211</width>
+       <height>181</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Xc</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="lineEdit"/>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="lineEdit_2"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_12">
+        <property name="text">
+         <string>Yc</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="lineEdit_3"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string>Rнач</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="lineEdit_4"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>deltaR</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="lineEdit_5"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>N</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>990</x>
-      <y>460</y>
+      <x>980</x>
+      <y>520</y>
       <width>261</width>
-      <height>291</height>
+      <height>231</height>
      </rect>
     </property>
     <property name="title">
      <string>Концентрические эллипсы</string>
     </property>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>200</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Нарисовать</string>
+     </property>
+    </widget>
+    <widget class="QWidget" name="formLayoutWidget_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>211</width>
+       <height>181</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout_2">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_16">
+        <property name="text">
+         <string>Yc</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="lineEdit_6"/>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="lineEdit_7"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_17">
+        <property name="text">
+         <string>Xc</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
    <widget class="QRadioButton" name="radioButton_norm">
     <property name="geometry">
      <rect>
-      <x>820</x>
-      <y>330</y>
+      <x>890</x>
+      <y>320</y>
       <width>112</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>RadioButton</string>
+     <string>Выбранный цвет</string>
     </property>
     <attribute name="buttonGroup">
      <string notr="true">buttonGroup_3</string>
@@ -402,18 +451,78 @@
    <widget class="QRadioButton" name="radioButton_fon">
     <property name="geometry">
      <rect>
-      <x>1080</x>
-      <y>330</y>
+      <x>1000</x>
+      <y>320</y>
       <width>112</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
-     <string>RadioButton</string>
+     <string>Цвет фона</string>
     </property>
     <attribute name="buttonGroup">
      <string notr="true">buttonGroup_3</string>
     </attribute>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>880</x>
+      <y>410</y>
+      <width>231</width>
+      <height>80</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="2">
+      <widget class="QPushButton" name="color_button">
+       <property name="text">
+        <string>Выбрать цвет</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_18">
+       <property name="text">
+        <string>Выбранный цвет</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QFrame" name="frame">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_19">
+       <property name="text">
+        <string>Цвет фона</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QFrame" name="frame_3">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Raised</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QPushButton" name="color_fon_button_2">
+       <property name="text">
+        <string>Выбрать цвет фона</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -422,7 +531,7 @@
      <x>0</x>
      <y>0</y>
      <width>1250</width>
-     <height>22</height>
+     <height>18</height>
     </rect>
    </property>
   </widget>

@@ -1,11 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    scene = new QGraphicsScene(this);
+    ui->graphicsView->setScene(scene);
 }
 
 MainWindow::~MainWindow()
@@ -13,15 +16,70 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
+#include <math.h>
 void MainWindow::traditional_okr(QPen pen)
 {
 
+    int x = 0;
+    int y = r;
+    int di = (x+1)*(x+1) + (y-1)*(y-1)-r*r;
+    while (x < xc+r)
+    {
+
+        scene->addEllipse(x+xc,y+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
+        if (di < 0)
+        {
+            //vnutri
+            //диагональный или горизонтальный
+            int d1 = abs((x+1)*(x+1) + y*y + r*r)-abs((x+1)*(x+1) + (y-1)*(y-1)-r*r);
+            if (d1 < 0)
+            {
+                // горизонт
+                x++;
+                di = di+2*x +1;
+            }
+            else
+            {
+                //диагональ
+                x++;
+                y--;
+                di += 2*(x-y+1);
+            }
+        }
+        else if (di == 0)
+        {
+            //na
+            //выбираем диагональный
+            x++;
+            y--;
+            di += 2*(x-y+1);
+        }
+        else
+        {
+            //snaruzi
+            //диагональный или вертикальный
+            int d2 = abs((x+1)*(x+1) + (y-1)*(y-1)-r*r)-abs(x*x + (y-1)*(y-1) - r*r);
+            if (d2 < 0)
+            {
+                // диагональный
+                x++;
+                y--;
+                di += 2*(x-y+1);
+
+            }
+            else
+            {
+                // вертикальный
+                y--;
+                di = di - 2*y+1;
+            }
+        }
+    }
 }
 
 void MainWindow::method()
 {
-    if (ui->radioButton_1->isChecked())
+    if (ui->radioButton->isChecked())
     {
         if (ui->radioButton_norm->isChecked())
         {
@@ -132,6 +190,7 @@ void MainWindow::on_main_button_clicked()
     //метод
     // считать данные
 
+
     if (ui->radioButton_8->isChecked())
     {
         //okr
@@ -164,7 +223,9 @@ void MainWindow::on_main_button_clicked()
         r = u_r[0].toDouble();
 
         num = 1;
-        method();
+       // method();
+        QPen pen = QPen(Qt::black);
+        traditional_okr(QPen(Qt::black,1,Qt::SolidLine));
 
     }
     else if (ui->radioButton_9->isChecked())
