@@ -1,149 +1,79 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QMessageBox>
-#include "math.h"
+#include <math.h>
+#include <iostream>
+#include <QColorDialog>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    scene = new QGraphicsScene(this);
-    ui->graphicsView->setScene(scene);
+   // scene = new QGraphicsScene(this);
+    //ui->graphicsView->setScene(scene);
+    ui->draw_label->setStyleSheet("QLabel { background-color : white; }");
+
+
+    scene = new QPixmap(851, 691);
+    scene->fill(QColor("transparent"));
+    painter = new QPainter(scene);
+   // painter->drawLine(100,100,500,500);
+    //update();
+    QPalette Pal(palette());
+    Pal.setColor(QPalette::Background, Qt::black);
+    ui->frame->setAutoFillBackground(true);
+    ui->frame->setPalette(Pal);
+    QPalette Pal2(palette());
+    Pal2.setColor(QPalette::Background, Qt::white);
+    ui->frame_3->setAutoFillBackground(true);
+    ui->frame_3->setPalette(Pal);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete painter;
+    delete scene;
 }
 
 #include <math.h>
-/*
- * MainWindow::traditional_okr(QPen pen)
-  «(»
-  {
->     //x=0;
->     //y=r;
->     //x=r
->     //y=0
->     //y=sqrt(r*r-x*x)
-  «r*r-x*x»
-      //lg=abs((xi+1)^2 + yi^2 - r*r)
-  «(»
-      //ld = (xi+1)+(yi-1)-r
-  «(»
-      //lb = xi*xi + (yi-1) -r
-  «(»
-      //пять вариантов
-      //пять: Нет такого файла или каталога
-      // d - разность квадратов расстояний от центра окружности
 
-      //до диагонального пиксела и до идеальной окружности
-      //до: Нет такого файла или каталога
-      // di = (xi+1)^2 + (yi-1)^2 -r*r
-  «(»
-      // di < 0 -> внутри, выбираем горизонтальный или диагональный
-      0: Нет такого файла или каталога
-      // вычислим Лг и Лд - Д1 = Лг-Лд
-    //Д1 мельше 0 - диагональный
-    // иначе горизонтальный
-    // ди Ю 0 - снаружи
-   // посчитаем Д2 = ЛД-ЛВ
-   //если меньше нуля - диагональный
-   //иначе -вертикальный
-    // ди = 0 - лежит на окружности д1 и д2
-4$     int x = 0;
- int y = r;
-
-   int d = 2*(1-r);
-     int d1, d2;
-
-    while (x < r)
->     {
->         //d = (x+1)*(x+1) + (y-1)*(y-1) - r*r;
-       if (d < 0)
->         {
->             //1 или 2 случай
->             d1 = abs((x+1)*(x+1) + y*y - r*r) - abs((x+1)*(x+1) + (y-1)*(y-1)-r*r);
-          if (d1 <= 0)
->             {
->                 //горизонтальный
->                 x++;
->                 d = d+2*x +1;
->             }
->             else
-            {
->                 //диагональный
->                 x++;
->                 y--;
->                 d=d +2*x -2*y+2;
->             }
-
-
-Try: sudo apt install <deb name>
-
-y--:
-
-          }
-  «}»
-          else (d > 0)
-  «else»
-          {
->             d2 = 2 * (d-x) - 1;
-  «(»
-              if (d2 <= 0)
->             {
->                 //диагональный
->                 x++;
->                 y--;
->                 d=d +2*x -2*y+2;
->             }
->             else
-  «else»
-              {
->                 // вертикальный
->                 y--;
->                 d = 2*y+1
->             }
-
-y--:
-d:
-
-          }
-  «}»
-          else
-  «else»
-          {
->             // диагольный?
->         }
-
-
-      }
-  «}»
-
-*/
 void MainWindow::traditional_okr(QPen pen)
 {
 
     //double dx = r;
-  / // double dy = r;
+   // double dy = r;
   //  double l = r;
    //
    // double sx = dx/l;
    // double sy = dy/l;
+    painter->setPen(pen);
     double x = 0;
     double y = r;
 
-    while (x < r && y > 0)
+    while (x <= r)
     {
-        scene->addEllipse(round(x)+xc,round(y)+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
-        x++;
+
         y = sqrt(r*r-x*x);
+        //scene->addEllipse(round(x)+xc,round(y)+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
+        painter->drawPoint(int(round(x)+xc), int(round(y)+yc));
+        painter->drawPoint(int(-round(x)+xc), int(round(y)+yc));
+        painter->drawPoint(int(round(x)+xc), int(-round(y)+yc));
+        painter->drawPoint(int(-round(x)+xc), int(-round(y)+yc));
+        x++;
+
     }
-    while (y > 0)
+    y=r;
+    while (y >= 0)
     {
-        scene->addEllipse(round(x)+xc,round(y)+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
         y--;
         x = sqrt(r*r-y*y);
+        //scene->addEllipse(round(x)+xc,round(y)+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
+        painter->drawPoint(int(round(x)+xc), int(round(y)+yc));
+        painter->drawPoint(int(-round(x)+xc), int(round(y)+yc));
+        painter->drawPoint(int(round(x)+xc), int(-round(y)+yc));
+        painter->drawPoint(int(-round(x)+xc), int(-round(y)+yc));
+
     }
 }
 
@@ -151,28 +81,42 @@ void MainWindow::parametr_okr(QPen pen)
 {
     // x = r*cos(t);
     // y = r*sin(t);
+    painter->setPen(pen);
+
     double x = 0;
     double y = r;
-    for (int t = 0; t < 3.14/2; t += 1/r)
+    int i = 0;
+    for (double t = 0; t <= 3.1415926535/2; t += 1/r)
     {
-        scene->addEllipse(round(x)+xc,round(y)+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
+        i++;
+        std::cout<<i<<" "<< t <<" "<< x << " " << y <<std::endl;
+        //scene->addEllipse(round(x)+xc,round(y)+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
+        painter->drawPoint(int(round(x)+xc), int(round(y)+yc));
+        painter->drawPoint(int(-round(x)+xc), int(round(y)+yc));
+        painter->drawPoint(int(round(x)+xc), int(-round(y)+yc));
+        painter->drawPoint(int(-round(x)+xc), int(-round(y)+yc));
         x = r*cos(t);
         y = r*sin(t);
     }
 }
 
 
-void MainWindow::brezenhem(QPen pen)
+void MainWindow::brezenhem_okr(QPen pen)
 {
 
+    painter->setPen(pen);
     int x = 0;
-    int y = r;
-    int di = 2*(1-r);
+    int y =int(r);
+    int di = int(2*(1-r));
 
-    while (x < r && y > 0)
+    while (x <= r && y >= 0)
     {
 
-        scene->addEllipse(x+xc,y+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
+        //scene->addEllipse(x+xc,y+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
+        painter->drawPoint(int(round(x)+xc), int(round(y)+yc));
+        painter->drawPoint(int(-round(x)+xc), int(round(y)+yc));
+        painter->drawPoint(int(round(x)+xc), int(-round(y)+yc));
+        painter->drawPoint(int(-round(x)+xc), int(-round(y)+yc));
         if (di < 0)
         {
             //vnutri
@@ -223,17 +167,43 @@ void MainWindow::brezenhem(QPen pen)
     }
 }
 
+void MainWindow::traditional_el(QPen pen)
+{
+
+}
+
+void MainWindow::parametr_el(QPen pen)
+{
+    painter->setPen(pen);
+
+    double x = 0;
+    double y = b;
+    int i = 0;
+    for (double t = 0; t <= 3.1415926535/2; t += 1/r)
+    {
+        i++;
+        std::cout<<i<<" "<< t <<" "<< x << " " << y <<std::endl;
+        //scene->addEllipse(round(x)+xc,round(y)+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
+        painter->drawPoint(int(round(x)+xc), int(round(y)+yc));
+        painter->drawPoint(int(-round(x)+xc), int(round(y)+yc));
+        painter->drawPoint(int(round(x)+xc), int(-round(y)+yc));
+        painter->drawPoint(int(-round(x)+xc), int(-round(y)+yc));
+        x = a*cos(t);
+        y = b*sin(t);
+    }
+}
+
 void MainWindow::method()
 {
     if (ui->radioButton->isChecked())
     {
         if (ui->radioButton_norm->isChecked())
         {
-             //cda(QPen(color,1,Qt::SolidLine));
+             traditional_okr(QPen(color,1,Qt::SolidLine));
         }
         else if (ui->radioButton_fon->isChecked())
         {
-             //cda(QPen(Qt::white,1,Qt::SolidLine));
+             traditional_okr(QPen(Qt::white,1,Qt::SolidLine));
         }
         else
         {
@@ -248,11 +218,11 @@ void MainWindow::method()
     {
         if (ui->radioButton_norm->isChecked())
         {
-             brezenhem(QPen(color,1,Qt::SolidLine));
+             brezenhem_okr(QPen(color,1,Qt::SolidLine));
         }
         else if (ui->radioButton_fon->isChecked())
         {
-            brezenhem(QPen(Qt::white,1,Qt::SolidLine));
+            brezenhem_okr(QPen(Qt::white,1,Qt::SolidLine));
 
         }
         else
@@ -268,11 +238,11 @@ void MainWindow::method()
     {
         if (ui->radioButton_norm->isChecked())
         {
-            //br_2(QPen(color,1,Qt::SolidLine));
+             parametr_okr(QPen(color,1,Qt::SolidLine));
         }
         else if (ui->radioButton_fon->isChecked())
         {
-             //br_2(QPen(Qt::white,1,Qt::SolidLine));
+             parametr_okr(QPen(Qt::white,1,Qt::SolidLine));
         }
         else
         {
@@ -369,9 +339,10 @@ void MainWindow::on_main_button_clicked()
         r = u_r[0].toDouble();
 
         num = 1;
-       // method();
+        method();
         QPen pen = QPen(Qt::black);
-        traditional_okr(QPen(Qt::black,1,Qt::SolidLine));
+        //traditional_okr(QPen(Qt::black,1,Qt::SolidLine));
+        ui->draw_label->setPixmap(*scene);
 
     }
     else if (ui->radioButton_9->isChecked())
@@ -382,4 +353,14 @@ void MainWindow::on_main_button_clicked()
     {
         //error
     }
+}
+
+void MainWindow::on_color_button_clicked()
+{
+    color = QColorDialog::getColor();
+    QPalette Pal(palette());
+    Pal.setColor(QPalette::Background, color);
+    ui->frame->setAutoFillBackground(true);
+    ui->frame->setPalette(Pal);
+    ui->frame->show();
 }
