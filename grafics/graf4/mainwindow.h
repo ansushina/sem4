@@ -30,6 +30,7 @@ public:
     void sr_point_el(QPen pen);
     void standart_el(QPen pen);
     void method();
+    void method_el();
 
 
 
