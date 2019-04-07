@@ -8,7 +8,10 @@
 #include <QGraphicsScene>
 #include "io.h"
 #include "process.h"
-#include "structs.h"
+#include "points.h"
+#include "myscene.h"
+#include "figure.h"
+#include "action.h"
 
 namespace Ui {
 class MainWindow;
@@ -37,7 +40,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QGraphicsScene *scene;
+    myscene_t scene;
     struct figure fig;
     struct data dataaction;
 };

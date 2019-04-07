@@ -2,100 +2,93 @@
 #include "io.h"
 #include "mainwindow.h"
 #include "functions.h"
+#include "action.h"
+#include "controller.h"
 
-struct point &get_point(struct figure &fig, int i)
+rc_type download_model(figure_t &fig, action_t act)
 {
-    return fig.mas[i];
+    const char *filename = get_filename(act);
+    char fname[100] = "../oop/";
+    strncat(fname, filename,100);
+    stream_t stream;
+    rc_type rc = open_file_read(stream, fname);
+    if (rc)
+        return rc;
+    rc = read_from_file(stream,fig);
+    close_file(stream);
+    return rc;
 }
-
-
-
-
-double get_alpha(struct data &d, int i)
-{
-    return d.pov.alpha[i];
-}
-
-double get_delta(struct data &d, int i)
-{
-    return d.per.delta[i];
-}
-
-double get_k(struct data &d)
-{
-    return d.mast.k;
-}
-
-const char *get_filename(struct data &d)
-{
-    return d.filename;
-}
-
-
 
 void perenos(struct point &a, double dx, double dy, double dz)
 {
-    get_point_x(a) += dx;
-    get_point_y(a) += dy;
-    get_point_z(a) += dz;
+    double x = get_point_x(a) + dx;
+    double y = get_point_y(a) + dy;
+    double z = get_point_z(a) + dz;
+    set_point_x(a,x);
+    set_point_y(a,y);
+    set_point_z(a,z);
 }
 
-void perenos_all(struct figure &fig, double dx, double dy, double dz)
+rc_type perenos_fig(figure_t &fig, action_t act)
 {
     if (is_empty(fig))
-        return;
+        return ERR_EMPTY;
+    double dx = get_deltax(act);
+    double dy = get_deltay(act);
+    double dz = get_deltaz(act);
     for (size_t i = 0; i < get_fig_n(fig); i++)
     {
         perenos(get_point(fig,i),dx,dy,dz);
     }
-}
-
-void mastab(struct point &a, struct point m, double k)
-{
-    get_point_x(a) = get_point_x(m) + k*(get_point_x(a) - get_point_x(m));
-    get_point_y(a) = get_point_y(m) + k*(get_point_y(a) - get_point_y(m));
-    get_point_z(a) = get_point_z(m) + k*(get_point_z(a) - get_point_z(m));
-}
-
-void mastab_all(struct figure &fig, double k)
-{
-    if (is_empty(fig))
-        return;
-    struct point m;
-    get_point_n(m) = 0;
-    get_point_x(m) = 0;
-    get_point_y(m) = 0;
-    get_point_z(m) = 0;
-    for (size_t i = 0; i < get_fig_n(fig); i++)
-    {
-        mastab(get_point(fig,i),m,k);
-    }
+    return OK;
 }
 
 void pov_ax(struct point &a, struct point c, double ax)
 {
-    double new_z = get_point_z(c) + (get_point_z(a) - get_point_z(c)) * cos(ax * PI / 180) +
-            (get_point_y(a) - get_point_y(c)) * sin(ax * PI / 180);
-    get_point_y(a) = get_point_y(c) - (get_point_z(a) - get_point_z(c)) * sin(ax * PI / 180) +
-            (get_point_y(a) - get_point_y(c)) * cos(ax * PI / 180);
-    get_point_z(a) = new_z;
+    //double xc = get_point_x(c);
+    double yc = get_point_y(c);
+    double zc = get_point_z(c);
+    //double xa = get_point_x(a);
+    double ya = get_point_y(a);
+    double za = get_point_z(a);
+    double z = zc + (za- zc) * cos(ax * PI / 180) +
+            (ya - yc) * sin(ax * PI / 180);
+    double y = yc - (za - zc) * sin(ax * PI / 180) +
+            (ya - yc) * cos(ax * PI / 180);
+    set_point_z(a,z);
+    set_point_y(a,y);
 }
 
 void pov_ay(struct point &a, struct point c, double ay)
 {
-    double new_x = get_point_x(c) + (get_point_x(a) - get_point_x(c)) * cos(ay * PI / 180) +
-            (get_point_z(a) - get_point_z(c)) * sin(ay * PI / 180);
-    get_point_z(a) = get_point_z(c) - (get_point_x(a) - get_point_x(c)) * sin(ay * PI / 180) +
-            (get_point_z(a) - get_point_z(c)) * cos(ay * PI / 180);
-    get_point_x(a) = new_x;
+
+    double xc = get_point_x(c);
+   // double yc = get_point_y(c);
+    double zc = get_point_z(c);
+    double xa = get_point_x(a);
+    //double ya = get_point_y(a);
+    double za = get_point_z(a);
+    double x = xc + (xa- xc) * cos(ay * PI / 180) +
+            (za - zc) * sin(ay * PI / 180);
+    double z = zc - (xa - xc) * sin(ay * PI / 180) +
+            (za - zc) * cos(ay * PI / 180);
+    set_point_x(a,x);
+    set_point_z(a,z);
 }
 void pov_az(struct point &a, struct point c, double az)
 {
-    double new_x = get_point_x(c) + (get_point_x(a) - get_point_x(c)) * cos(az * PI / 180) +
-            (get_point_y(a) - get_point_y(c)) * sin(az * PI / 180);
-    get_point_y(a) = get_point_y(c) - (get_point_x(a) - get_point_x(c)) * sin(az * PI / 180) +
-            (get_point_y(a) - get_point_y(c)) * cos(az * PI / 180);
-    get_point_x(a) = new_x;
+    double xc = get_point_x(c);
+    double yc = get_point_y(c);
+    //double zc = get_point_z(c);
+    double xa = get_point_x(a);
+    double ya = get_point_y(a);
+   // double za = get_point_z(a);
+    double x = xc + (xa- xc) * cos(az * PI / 180) +
+            (ya - yc) * sin(az * PI / 180);
+    double y = yc - (xa - xc) * sin(az * PI / 180) +
+            (ya - yc) * cos(az * PI / 180);
+    set_point_x(a,x);
+    set_point_y(a,y);
 }
 void povorot(struct point &a, struct point c, double ax, double ay, double az)
 {
@@ -113,17 +106,55 @@ void povorot(struct point &a, struct point c, double ax, double ay, double az)
     }
 }
 
-void povorot_all(struct figure &fig, double ax, double ay,double az)
+rc_type povorot_fig(figure_t &fig, action_t act)
 {
     if (is_empty(fig))
-        return;
+        return ERR_EMPTY;
+    double ax = get_alphax(act);
+    double ay = get_alphay(act);
+    double az = get_alphaz(act);
+
     struct point c;
-    get_point_n(c) = 0;
-    get_point_x(c) = 0;
-    get_point_y(c) = 0;
-    get_point_z(c) = 0;
+    zero_point(c);
     for (size_t i = 0; i < get_fig_n(fig); i++)
     {
         povorot(get_point(fig,i),c,ax,ay,az);
     }
+    return OK;
+}
+
+void mastab(struct point &a, struct point m, double k)
+{
+    double x = get_point_x(m) + k*(get_point_x(a) - get_point_x(m));
+    double y = get_point_y(m) + k*(get_point_y(a) - get_point_y(m));
+    double z = get_point_z(m) + k*(get_point_z(a) - get_point_z(m));
+    set_point_x(a,x);
+    set_point_y(a,y);
+    set_point_z(a,z);
+}
+
+rc_type mastab_fig(figure_t &fig, action_t act)
+{
+    if (is_empty(fig))
+        return ERR_EMPTY;
+    double k = get_k(act);
+    struct point m;
+    zero_point(m);
+    for (size_t i = 0; i < get_fig_n(fig); i++)
+    {
+        mastab(get_point(fig,i),m,k);
+    }
+    return OK;
+
+}
+rc_type clear_fig(figure_t &fig)
+{
+    free_fig(fig);
+    return OK;
+}
+rc_type draw_fig(figure_t &fig, myscene_t scene)
+{
+    clear_scene(scene);
+    draw_model(fig,scene);
+    return OK;
 }

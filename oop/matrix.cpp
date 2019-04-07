@@ -1,6 +1,5 @@
-#include "matrix.h"
-
-
+#include"matrix.h"
+#include"figure.h"
 void free_matrix(matrix_t mat, size_t n)
 {
     if (!mat)
@@ -29,7 +28,4 @@ matrix_t allocate_matrix(size_t n)
     return new_matrix;
 }
 
-int get_matrix_el(matrix_t mt, size_t i, size_t j)
-{
-    return matrix[i][j];
-}
+

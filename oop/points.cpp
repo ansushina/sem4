@@ -1,4 +1,4 @@
-#include "point.h"
+#include"points.h"
 
 
 double get_point_x(struct point a)
@@ -45,3 +45,5 @@ void zero_point(point_t &a)
     a.y = 0;
     a.z = 0;
 }
+
+

@@ -4,13 +4,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "structs.h"
+#include "points.h"
+#include "rc.h"
+
+typedef FILE * stream_t;
+
+rc_type open_file_read(stream_t &stream, const char *filename);
+void close_file(stream_t stream);
 
 void free_fig(struct figure &fig);
 
-size_t count_points(FILE *f);
-struct point *create_mas(FILE *f, size_t n);
-int **create_matrix(FILE *f, size_t n);
-int read_from_file(FILE *f, struct figure &fig);
+int read_from_file(stream_t f, struct figure &fig);
 
 #endif // IO_H

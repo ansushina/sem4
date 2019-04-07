@@ -1,21 +1,34 @@
 #include "controller.h"
+#include "rc.h"
+#include "functions.h"
+#include <iostream>
 
-typedef struct action action_t;
+void draw_model(figure_t fig, myscene_t scene)
+{
+    if (is_empty(fig))
+        return;
 
-typedef int num_t;
+    std::cout << "drawing"<<std::endl;
 
+    for (size_t i = 0; i < get_fig_n(fig); i++)
+    {
+        draw_point_scene(scene,get_point(fig,i));
+    }
+    for (size_t i = 0; i < get_fig_n(fig); i++)
+    {
+        for (size_t j = 0; j < i + 1; j++)
+        {
+            if (get_matrix_el(fig,i,j) != 0)
+            {
+                //std::cout <<i <<std::endl;
+               // std::cout <<get_point(fig,i).n<<"->"<<get_point(fig,j).n <<std::endl;
+                draw_line_scene(scene,get_point(fig,i),get_point(fig,j));
+            }
+        }
+    }
+}
 
-
-rc_type download_model(figure_t &fig, action_t act);
-rc_type perenos_fig(figure_t &fig, action_t act);
-rc_type povorot_fig(figure_t &fig, action_t act);
-rc_type mastab_fig(figure_t &fig, action_t act);
-rc_type clear_fig(figure_t &fig, action_t act);
-rc_type draw_fig(figure_t &fig, action_t act);
-
-
-
-void controller(myscene_t scene, num_t act_number, action_t act)
+void controller(myscene_t scene, int act_number, action_t act)
 {
     static figure_t fig = init_fig();
     rc_type rc = OK;
@@ -37,11 +50,11 @@ void controller(myscene_t scene, num_t act_number, action_t act)
     }
     else if (act_number == DELETE_NUMBER)
     {
-        rc = clear_fig(scene, fig);
+        rc = clear_fig(fig);
     }
     else if (act_number == DRAW_NUMBER)
     {
-        rc = draw_fig(scene, fig)
+        rc = draw_fig(fig, scene);
     }
     if (rc)
     {
