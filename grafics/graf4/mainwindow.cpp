@@ -9,16 +9,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-   // scene = new QGraphicsScene(this);
-    //ui->graphicsView->setScene(scene);
     ui->draw_label->setStyleSheet("QLabel { background-color : white; }");
 
 
     scene = new QPixmap(851, 691);
     scene->fill(QColor("transparent"));
     painter = new QPainter(scene);
-   // painter->drawLine(100,100,500,500);
-    //update();
     QPalette Pal(palette());
     Pal.setColor(QPalette::Background, Qt::black);
     ui->frame->setAutoFillBackground(true);
@@ -38,50 +34,39 @@ MainWindow::~MainWindow()
 
 #include <math.h>
 
-void MainWindow::traditional_okr(QPen pen)
+void traditional_okr(double xc, double yc, double r,QPainter &painter,QPen pen)
 {
-
-    //double dx = r;
-   // double dy = r;
-  //  double l = r;
-   //
-   // double sx = dx/l;
-   // double sy = dy/l;
-    painter->setPen(pen);
+    std::cout<<"ptraditional"<<xc<<yc<<r<< std::endl;
+    painter.setPen(pen);
     double x = 0;
     double y = r;
 
     while (x <= r)
     {
-
         y = sqrt(r*r-x*x);
-        //scene->addEllipse(round(x)+xc,round(y)+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
-        painter->drawPoint(int(round(x)+xc), int(round(y)+yc));
-        painter->drawPoint(int(-round(x)+xc), int(round(y)+yc));
-        painter->drawPoint(int(round(x)+xc), int(-round(y)+yc));
-        painter->drawPoint(int(-round(x)+xc), int(-round(y)+yc));
+        painter.drawPoint(int(round(x)+xc), int(round(y)+yc));
+        painter.drawPoint(int(-round(x)+xc), int(round(y)+yc));
+        painter.drawPoint(int(round(x)+xc), int(-round(y)+yc));
+        painter.drawPoint(int(-round(x)+xc), int(-round(y)+yc));
         x++;
 
     }
-    y=r;
+    y = r;
     while (y >= 0)
     {
         y--;
         x = sqrt(r*r-y*y);
-        //scene->addEllipse(round(x)+xc,round(y)+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
-        painter->drawPoint(int(round(x)+xc), int(round(y)+yc));
-        painter->drawPoint(int(-round(x)+xc), int(round(y)+yc));
-        painter->drawPoint(int(round(x)+xc), int(-round(y)+yc));
-        painter->drawPoint(int(-round(x)+xc), int(-round(y)+yc));
+        painter.drawPoint(int(round(x)+xc), int(round(y)+yc));
+        painter.drawPoint(int(-round(x)+xc), int(round(y)+yc));
+        painter.drawPoint(int(round(x)+xc), int(-round(y)+yc));
+        painter.drawPoint(int(-round(x)+xc), int(-round(y)+yc));
 
     }
 }
 
-void MainWindow::parametr_okr(QPen pen)
+void parametr_okr(double xc, double yc, double r,QPainter &painter,QPen pen)
 {
-    // x = r*cos(t);
-    // y = r*sin(t);
-    painter->setPen(pen);
+    painter.setPen(pen);
 
     double x = 0;
     double y = r;
@@ -90,32 +75,29 @@ void MainWindow::parametr_okr(QPen pen)
     {
         i++;
         std::cout<<i<<" "<< t <<" "<< x << " " << y <<std::endl;
-        //scene->addEllipse(round(x)+xc,round(y)+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
-        painter->drawPoint(int(round(x)+xc), int(round(y)+yc));
-        painter->drawPoint(int(-round(x)+xc), int(round(y)+yc));
-        painter->drawPoint(int(round(x)+xc), int(-round(y)+yc));
-        painter->drawPoint(int(-round(x)+xc), int(-round(y)+yc));
+        painter.drawPoint(int(round(x)+xc), int(round(y)+yc));
+        painter.drawPoint(int(-round(x)+xc), int(round(y)+yc));
+        painter.drawPoint(int(round(x)+xc), int(-round(y)+yc));
+        painter.drawPoint(int(-round(x)+xc), int(-round(y)+yc));
         x = r*cos(t);
         y = r*sin(t);
     }
 }
 
-void MainWindow::brezenhem_okr(QPen pen)
+void brezenhem_okr(double xc, double yc, double r,QPainter &painter,QPen pen)
 {
 
-    painter->setPen(pen);
+    painter.setPen(pen);
     int x = 0;
     int y =int(r);
     int di = int(2*(1-r));
 
     while (x <= r && y >= 0)
     {
-
-        //scene->addEllipse(x+xc,y+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
-        painter->drawPoint(x+xc, y+yc);
-        painter->drawPoint(-x+xc, y+yc);
-        painter->drawPoint(x+xc, -y+yc);
-        painter->drawPoint(-x+xc, -y+yc);
+        painter.drawPoint(x+xc, y+yc);
+        painter.drawPoint(-x+xc, y+yc);
+        painter.drawPoint(x+xc, -y+yc);
+        painter.drawPoint(-x+xc, -y+yc);
         if (di < 0)
         {
             //vnutri
@@ -166,43 +148,39 @@ void MainWindow::brezenhem_okr(QPen pen)
     }
 }
 
-void MainWindow::traditional_el(QPen pen)
+void traditional_el(double xc, double yc, double a, double b,QPainter &painter,QPen pen)
 {
 
-    painter->setPen(pen);
+    painter.setPen(pen);
     double x = 0;
     double y = 0;
 
     while (x <=a)
     {
-
         y = round(b*sqrt(1-x*x/a/a));
-        //scene->addEllipse(round(x)+xc,round(y)+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
-        painter->drawPoint(int(round(x)+xc), int(round(y)+yc));
-        painter->drawPoint(int(-round(x)+xc), int(round(y)+yc));
-        painter->drawPoint(int(round(x)+xc), int(-round(y)+yc));
-        painter->drawPoint(int(-round(x)+xc), int(-round(y)+yc));
+        painter.drawPoint(int(round(x)+xc), int(round(y)+yc));
+        painter.drawPoint(int(-round(x)+xc), int(round(y)+yc));
+        painter.drawPoint(int(round(x)+xc), int(-round(y)+yc));
+        painter.drawPoint(int(-round(x)+xc), int(-round(y)+yc));
         x++;
 
     }
     y=0;
     while (y <= b)
     {
-
-        x = round(a*sqrt(-y*y/b/b));
-        //scene->addEllipse(round(x)+xc,round(y)+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
-        painter->drawPoint(int(round(x)+xc), int(round(y)+yc));
-        painter->drawPoint(int(-round(x)+xc), int(round(y)+yc));
-        painter->drawPoint(int(round(x)+xc), int(-round(y)+yc));
-        painter->drawPoint(int(-round(x)+xc), int(-round(y)+yc));
+        x = round(a*sqrt(1-y*y/b/b));
+        painter.drawPoint(int(round(x)+xc), int(round(y)+yc));
+        painter.drawPoint(int(-round(x)+xc), int(round(y)+yc));
+        painter.drawPoint(int(round(x)+xc), int(-round(y)+yc));
+        painter.drawPoint(int(-round(x)+xc), int(-round(y)+yc));
         y++;
 
     }
 }
 
-void MainWindow::parametr_el(QPen pen)
+void parametr_el(double xc, double yc, double a, double b,QPainter &painter,QPen pen)
 {
-    painter->setPen(pen);
+    painter.setPen(pen);
 
     double x = 0;
     double y = b;
@@ -211,41 +189,31 @@ void MainWindow::parametr_el(QPen pen)
     for (double t = 0; t <= 3.1415926535/2; t += 1/max)
     {
         i++;
-        std::cout<<i<<" "<< t <<" "<< x << " " << y <<std::endl;
-        //scene->addEllipse(round(x)+xc,round(y)+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
-        /*painter->drawPoint(int(round(x)+xc), int(round(y)+yc));
-        painter->drawPoint(int(-round(x)+xc), int(round(y)+yc));
-        painter->drawPoint(int(round(x)+xc), int(-round(y)+yc));
-        painter->drawPoint(int(-round(x)+xc), int(-round(y)+yc));*/
-
-        painter->drawPoint(x+xc, y+yc);
-        painter->drawPoint(-x+xc, y+yc);
-        painter->drawPoint(x+xc, -y+yc);
-        painter->drawPoint(-x+xc, -y+yc);
+        painter.drawPoint(x+xc, y+yc);
+        painter.drawPoint(-x+xc, y+yc);
+        painter.drawPoint(x+xc, -y+yc);
+        painter.drawPoint(-x+xc, -y+yc);
         x = round(a*cos(t));
         y = round(b*sin(t));
     }
 }
 
-void MainWindow::brezenhem_el(QPen pen)
+void brezenhem_el(double xc, double yc, double a, double b,QPainter &painter,QPen pen)
 {
-
-    painter->setPen(pen);
+    painter.setPen(pen);
     int x = 0;
-    int y =int(b);
+    int y = int(b);
     int end_y = 0;
     int a2 = a*a;
     int b2 = b*b;
-    int di = int(a2 + b2 - 2 * a2 * y);
+    int di = a2 + b2 - 2 * a2 * y;
 
     while (y >= end_y)
     {
-
-        //scene->addEllipse(x+xc,y+yc,0.1,0.1,pen,QBrush(Qt::SolidPattern));
-        painter->drawPoint(x+xc, y+yc);
-        painter->drawPoint(-x+xc, y+yc);
-        painter->drawPoint(x+xc, -y+yc);
-        painter->drawPoint(-x+xc, -y+yc);
+        painter.drawPoint(x+xc, y+yc);
+        painter.drawPoint(-x+xc, y+yc);
+        painter.drawPoint(x+xc, -y+yc);
+        painter.drawPoint(-x+xc, -y+yc);
         if (di < 0)
         {
             //vnutri
@@ -296,21 +264,21 @@ void MainWindow::brezenhem_el(QPen pen)
     }
 }
 
-void MainWindow::standart_okr(QPen pen)
+void standart_okr(double xc, double yc, double r,QPainter &painter,QPen pen)
 {
-     painter->setPen(pen);
-     painter->drawEllipse(xc-r,yc-r,2*r,2*r);
+     painter.setPen(pen);
+     painter.drawEllipse(xc-r,yc-r,2*r,2*r);
 }
 
-void MainWindow::standart_el(QPen pen)
+void standart_el(double xc, double yc, double a, double b,QPainter &painter,QPen pen)
 {
-     painter->setPen(pen);
-     painter->drawEllipse(xc-a,yc-b,2*a,2*b);
+     painter.setPen(pen);
+     painter.drawEllipse(xc-a,yc-b,2*a,2*b);
 }
 
-void MainWindow::sr_point_okr(QPen pen)
+void sr_point_okr(double xc, double yc, double r,QPainter &painter,QPen pen)
 {
-    painter->setPen(pen);
+    painter.setPen(pen);
     int r2 = r*r;
     int x = 0;
     int y = r;
@@ -320,13 +288,13 @@ void MainWindow::sr_point_okr(QPen pen)
     int df = 0;
     int delta = -2*r2 * y;
 
+    // идем по окружности до центра чатверти
     while(x <= rd2)
     {
-        painter->drawPoint(x+xc, y+yc);
-        painter->drawPoint(-x+xc, y+yc);
-        painter->drawPoint(x+xc, -y+yc);
-        painter->drawPoint(-x+xc, -y+yc);
-
+        painter.drawPoint(x+xc, y+yc);
+        painter.drawPoint(-x+xc, y+yc);
+        painter.drawPoint(x+xc, -y+yc);
+        painter.drawPoint(-x+xc, -y+yc);
         x++;
         if (f >= 0)
         {
@@ -342,10 +310,10 @@ void MainWindow::sr_point_okr(QPen pen)
     df = -2*r2*y;
     while(y>= 0)
     {
-        painter->drawPoint(x+xc, y+yc);
-        painter->drawPoint(-x+xc, y+yc);
-        painter->drawPoint(x+xc, -y+yc);
-        painter->drawPoint(-x+xc, -y+yc);
+        painter.drawPoint(x+xc, y+yc);
+        painter.drawPoint(-x+xc, y+yc);
+        painter.drawPoint(x+xc, -y+yc);
+        painter.drawPoint(-x+xc, -y+yc);
         y--;
         if (f < 0)
         {
@@ -358,14 +326,15 @@ void MainWindow::sr_point_okr(QPen pen)
     }
 }
 
-void MainWindow::sr_point_el(QPen pen)
+/*void MainWindow::sr_point_el(QPen pen)
 {
-    painter->setPen(pen);
+    painter.setPen(pen);
     int a2 = a*a;
     int b2 = b*b;
     int x = 0;
     int y = b;
     int rd2 = a2/sqrt(a2+b2);
+    //fpr = b*b(x+1)^2 + a*a(y*y -0.5) - a*a*b*b
 
     int f = (b2 - a2 * y + 0.25 * a2 + 0.5);
     int df = 0;
@@ -373,10 +342,10 @@ void MainWindow::sr_point_el(QPen pen)
 
     while(x <= rd2)
     {
-        painter->drawPoint(x+xc, y+yc);
-        painter->drawPoint(-x+xc, y+yc);
-        painter->drawPoint(x+xc, -y+yc);
-        painter->drawPoint(-x+xc, -y+yc);
+        painter.drawPoint(x+xc, y+yc);
+        painter.drawPoint(-x+xc, y+yc);
+        painter.drawPoint(x+xc, -y+yc);
+        painter.drawPoint(-x+xc, -y+yc);
 
         x++;
         if (f >= 0)
@@ -394,10 +363,62 @@ void MainWindow::sr_point_el(QPen pen)
 
     while(y>= 0)
     {
-        painter->drawPoint(x+xc, y+yc);
-        painter->drawPoint(-x+xc, y+yc);
-        painter->drawPoint(x+xc, -y+yc);
-        painter->drawPoint(-x+xc, -y+yc);
+        painter.drawPoint(x+xc, y+yc);
+        painter.drawPoint(-x+xc, y+yc);
+        painter.drawPoint(x+xc, -y+yc);
+        painter.drawPoint(-x+xc, -y+yc);
+        y--;
+        if (f < 0)
+        {
+            x++;
+            delta += 2*b2;
+            f += delta;
+        }
+        df += 2*a2;
+        f += df +a2;
+    }
+}*/
+void sr_point_el(double xc, double yc, double a, double b,QPainter &painter,QPen pen)
+{
+    painter.setPen(pen);
+    int a2 = a*a;
+    int b2 = b*b;
+    int x = 0;
+    int y = b;
+    int rd2 = a2/sqrt(a2+b2);
+    //fpr = b*b(x+1)^2 + a*a(y*y -0.5) - a*a*b*b
+
+    int f = (b2 - a2 * y + 0.25 * a2 + 0.5);
+    int df = 0;
+    int delta = -2*a2 * y;
+
+    while(x <= rd2)
+    {
+        painter.drawPoint(x+xc, y+yc);
+        painter.drawPoint(-x+xc, y+yc);
+        painter.drawPoint(x+xc, -y+yc);
+        painter.drawPoint(-x+xc, -y+yc);
+
+        x++;
+        if (f >= 0)
+        {
+            y--;
+            delta += 2*a2;
+            f += delta;
+        }
+        df +=2*b2;
+        f += df +b2;
+    }
+    delta = 2*b2*x;
+    f+= -b2 * (x + 0.75) - a2 * (y - 0.75);
+    df = -2*a2*y;
+
+    while(y >= 0)
+    {
+        painter.drawPoint(x+xc, y+yc);
+        painter.drawPoint(-x+xc, y+yc);
+        painter.drawPoint(x+xc, -y+yc);
+        painter.drawPoint(-x+xc, -y+yc);
         y--;
         if (f < 0)
         {
@@ -409,7 +430,6 @@ void MainWindow::sr_point_el(QPen pen)
         f += df +a2;
     }
 }
-
 void MainWindow::method()
 {
     if (!ui->radioButton_norm->isChecked() && !ui->radioButton_fon->isChecked())
@@ -423,22 +443,22 @@ void MainWindow::method()
     {
         if (ui->radioButton_norm->isChecked())
         {
-             traditional_okr(QPen(color,1,Qt::SolidLine));
+             traditional_okr(xc,yc,r,*painter,QPen(color,1,Qt::SolidLine));
         }
         else if (ui->radioButton_fon->isChecked())
         {
-             traditional_okr(QPen(Qt::white,1,Qt::SolidLine));
+             traditional_okr(xc,yc,r,*painter,QPen(Qt::white,1,Qt::SolidLine));
         }
     }
     else if (ui->radioButton_3->isChecked())
     {
         if (ui->radioButton_norm->isChecked())
         {
-             brezenhem_okr(QPen(color,1,Qt::SolidLine));
+             brezenhem_okr(xc,yc,r,*painter,QPen(color,1,Qt::SolidLine));
         }
         else if (ui->radioButton_fon->isChecked())
         {
-            brezenhem_okr(QPen(Qt::white,1,Qt::SolidLine));
+            brezenhem_okr(xc,yc,r,*painter,QPen(Qt::white,1,Qt::SolidLine));
 
         }
     }
@@ -446,37 +466,33 @@ void MainWindow::method()
     {
         if (ui->radioButton_norm->isChecked())
         {
-             parametr_okr(QPen(color,1,Qt::SolidLine));
+             parametr_okr(xc,yc,r,*painter,QPen(color,1,Qt::SolidLine));
         }
         else if (ui->radioButton_fon->isChecked())
         {
-             parametr_okr(QPen(Qt::white,1,Qt::SolidLine));
+             parametr_okr(xc,yc,r,*painter,QPen(Qt::white,1,Qt::SolidLine));
         }
     }
     else if (ui->radioButton_4->isChecked())
     {
         if (ui->radioButton_norm->isChecked())
         {
-            sr_point_okr(QPen(color,1,Qt::SolidLine));
-            //br_3(QPen(color,1,Qt::SolidLine));
+            sr_point_okr(xc,yc,r,*painter,QPen(color,1,Qt::SolidLine));
         }
         else if (ui->radioButton_fon->isChecked())
         {
-            sr_point_okr(QPen(Qt::white,1,Qt::SolidLine));
-             //br_3(QPen(Qt::white,1,Qt::SolidLine));
+            sr_point_okr(xc,yc,r,*painter,QPen(Qt::white,1,Qt::SolidLine));
         }
     }
     else if (ui->radioButton_5->isChecked())
     {
         if (ui->radioButton_norm->isChecked())
         {
-            standart_okr(QPen(color,1,Qt::SolidLine));
-           // scene->addLine(x1, y1, x2, y2, QPen(color,1,Qt::SolidLine));
+            standart_okr(xc,yc,r,*painter,QPen(color,1,Qt::SolidLine));
         }
         else if (ui->radioButton_fon->isChecked())
         {
-            standart_okr(QPen(Qt::white,1,Qt::SolidLine));
-           // scene->addLine(x1, y1, x2, y2, QPen(Qt::white,1,Qt::SolidLine));
+            standart_okr(xc,yc,r,*painter,QPen(Qt::white,1,Qt::SolidLine));
         }
     }
     else
@@ -494,22 +510,22 @@ void MainWindow::method_el()
     {
         if (ui->radioButton_norm->isChecked())
         {
-             traditional_el(QPen(color,1,Qt::SolidLine));
+             traditional_el(xc,yc,a,b,*painter,QPen(color,1,Qt::SolidLine));
         }
         else if (ui->radioButton_fon->isChecked())
         {
-             traditional_el(QPen(Qt::white,1,Qt::SolidLine));
+             traditional_el(xc,yc,a,b,*painter,QPen(Qt::white,1,Qt::SolidLine));
         }
     }
     else if (ui->radioButton_3->isChecked())
     {
         if (ui->radioButton_norm->isChecked())
         {
-             brezenhem_el(QPen(color,1,Qt::SolidLine));
+             brezenhem_el(xc,yc,a,b,*painter,QPen(color,1,Qt::SolidLine));
         }
         else if (ui->radioButton_fon->isChecked())
         {
-            brezenhem_el(QPen(Qt::white,1,Qt::SolidLine));
+            brezenhem_el(xc,yc,a,b,*painter,QPen(Qt::white,1,Qt::SolidLine));
 
         }
     }
@@ -517,36 +533,33 @@ void MainWindow::method_el()
     {
         if (ui->radioButton_norm->isChecked())
         {
-             parametr_el(QPen(color,1,Qt::SolidLine));
+             parametr_el(xc,yc,a,b,*painter,QPen(color,1,Qt::SolidLine));
         }
         else if (ui->radioButton_fon->isChecked())
         {
-             parametr_el(QPen(Qt::white,1,Qt::SolidLine));
+             parametr_el(xc,yc,a,b,*painter,QPen(Qt::white,1,Qt::SolidLine));
         }
     }
     else if (ui->radioButton_4->isChecked())
     {
         if (ui->radioButton_norm->isChecked())
         {
-            sr_point_okr(QPen(color,1,Qt::SolidLine));
-            //br_3(QPen(color,1,Qt::SolidLine));
+            sr_point_el(xc,yc,a,b,*painter,QPen(color,1,Qt::SolidLine));
         }
         else if (ui->radioButton_fon->isChecked())
         {
-            sr_point_okr(QPen(Qt::white,1,Qt::SolidLine));
-             //br_3(QPen(Qt::white,1,Qt::SolidLine));
+            sr_point_el(xc,yc,a,b,*painter,QPen(Qt::white,1,Qt::SolidLine));
         }
     }
     else if (ui->radioButton_5->isChecked())
     {
         if (ui->radioButton_norm->isChecked())
         {
-            standart_el(QPen(color,1,Qt::SolidLine));
+            standart_el(xc,yc,a,b,*painter,QPen(color,1,Qt::SolidLine));
         }
         else if (ui->radioButton_fon->isChecked())
         {
-            standart_el(QPen(Qt::white,1,Qt::SolidLine));
-           // scene->addLine(x1, y1, x2, y2, QPen(Qt::white,1,Qt::SolidLine));
+            standart_el(xc,yc,a,b,*painter,QPen(Qt::white,1,Qt::SolidLine));
         }
     }
     else
@@ -663,4 +676,179 @@ void MainWindow::on_color_button_clicked()
     ui->frame->setAutoFillBackground(true);
     ui->frame->setPalette(Pal);
     ui->frame->show();
+}
+
+void MainWindow::on_color_fon_button_2_clicked()
+{
+    bg_color = QColorDialog::getColor();
+
+    QPalette Pal(palette());
+    Pal.setColor(QPalette::Background, bg_color);
+    ui->frame_3->setAutoFillBackground(true);
+    ui->frame_3->setPalette(Pal);
+    ui->frame_3->show();
+    ui->draw_label->setAutoFillBackground(true);
+    ui->draw_label->setPalette(Pal);
+    ui->draw_label->show();
+}
+
+void draw_okr_spectr(double xc, double yc, double r, double dr, int n, QPainter &painter,
+                     QPen pen, void (*func)(double, double, double, QPainter &, QPen))
+{
+    double delta = 0;
+    for (int i = 0; i < n; i++)
+    {
+            func(xc, yc, r + delta , painter, pen);
+            delta += dr;
+    }
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    QString l_x = ui->xc_s->text();
+    QString l_y = ui->yc_s->text();
+    QString l_r = ui->rn_s->text();
+    QString l_n = ui->n_s->text();
+    QString l_dr = ui->dr_s->text();
+    bool ok1 = true, ok2 = true, ok3 = true, ok4 = true, ok5 = true;
+
+    xc = l_x.toDouble(&ok1);
+    yc = l_y.toDouble(&ok2);
+    r = l_r.toDouble(&ok3);
+    double dr = l_dr.toDouble(&ok4);
+    int n = l_n.toInt(&ok5);
+    if (!ok1 || !ok2 || !ok3 || !ok4 || !ok5)
+    {
+        QMessageBox mBox;
+        mBox.setIcon(QMessageBox::Information);
+        mBox.setInformativeText("Input error!");
+        mBox.exec();
+        ui->xc_s->clear();
+        ui->yc_s->clear();
+        ui->rn_s->clear();
+        ui->n_s->clear();
+        ui->dr_s->clear();
+        return;
+    }
+    QColor color1 = color;
+    if (ui->radioButton_fon->isChecked())
+         color1 = Qt::white;
+    if (ui->radioButton->isChecked())
+    {
+        draw_okr_spectr(xc, yc, r, dr, n, *painter, QPen(color1,1,Qt::SolidLine), traditional_okr);
+    }
+    else if (ui->radioButton_3->isChecked())
+    {
+        draw_okr_spectr(xc, yc, r, dr, n, *painter, QPen(color1,1,Qt::SolidLine), brezenhem_okr);
+    }
+    else if (ui->radioButton_2->isChecked())
+    {
+
+             //parametr_el(QPen(color,1,Qt::SolidLine));
+        draw_okr_spectr(xc, yc, r, dr, n, *painter, QPen(color1,1,Qt::SolidLine), parametr_okr);
+    }
+    else if (ui->radioButton_4->isChecked())
+    {
+
+            //sr_point_el(QPen(color,1,Qt::SolidLine));
+        draw_okr_spectr(xc, yc, r, dr, n, *painter, QPen(color1,1,Qt::SolidLine), sr_point_okr);
+
+    }
+    else if (ui->radioButton_5->isChecked())
+    {
+            //standart_el(QPen(color,1,Qt::SolidLine));
+        draw_okr_spectr(xc, yc, r, dr, n, *painter, QPen(color1,1,Qt::SolidLine), standart_okr);
+    }
+    else
+    {
+        QMessageBox mBox;
+        mBox.setIcon(QMessageBox::Information);
+        mBox.setInformativeText("Choose method");
+        mBox.exec();
+    }
+    ui->draw_label->setPixmap(*scene);
+}
+
+
+void draw_el_spectr(double xc, double yc, double a, double b, double dr, int n, QPainter &painter,
+                     QPen pen, void (*func)(double, double, double,double, QPainter &, QPen))
+{
+    double delta = 0;
+    //qDebug() << N << " is N";
+    double koef = b / a;
+    for (int i = 0; i < n; i++)
+    {
+
+        func(xc, yc, a + delta, b + delta * koef, painter, pen);
+        delta += dr;
+}
+
+}
+void MainWindow::on_pushButton_2_clicked()
+{
+    QString l_x = ui->xe_s->text();
+    QString l_y = ui->ye_s->text();
+    QString l_a = ui->a_s->text();
+    QString l_b = ui->b_s->text();
+    QString l_n = ui->ne_s->text();
+    QString l_dr = ui->step_s->text();
+    bool ok1 = true, ok2 = true, ok3 = true, ok4 = true, ok5 = true, ok6 = true;
+
+    xc = l_x.toDouble(&ok1);
+    yc = l_y.toDouble(&ok2);
+    a = l_a.toDouble(&ok3);
+    b = l_b.toDouble(&ok6);
+    double dr = l_dr.toDouble(&ok4);
+    int n = l_n.toInt(&ok5);
+    if (!ok1 || !ok2 || !ok3 || !ok4 || !ok5)
+    {
+        QMessageBox mBox;
+        mBox.setIcon(QMessageBox::Information);
+        mBox.setInformativeText("Input error!");
+        mBox.exec();
+        ui->xe_s->clear();
+        ui->ye_s->clear();
+        ui->a_s->clear();
+        ui->b_s->clear();
+        ui->ne_s->clear();
+        ui->step_s->clear();
+        return;
+    }
+    QColor color1 = color;
+    if (ui->radioButton_fon->isChecked())
+         color1 = Qt::white;
+    if (ui->radioButton->isChecked())
+    {
+        draw_el_spectr(xc, yc,  a, b, dr, n, *painter, QPen(color1,1,Qt::SolidLine), traditional_el);
+    }
+    else if (ui->radioButton_3->isChecked())
+    {
+        draw_el_spectr(xc, yc,  a, b,dr, n, *painter, QPen(color1,1,Qt::SolidLine), brezenhem_el);
+    }
+    else if (ui->radioButton_2->isChecked())
+    {
+
+             //parametr_el(QPen(color,1,Qt::SolidLine));
+        draw_el_spectr(xc, yc, a, b, dr, n, *painter, QPen(color1,1,Qt::SolidLine), parametr_el);
+    }
+    else if (ui->radioButton_4->isChecked())
+    {
+
+            //sr_point_el(QPen(color,1,Qt::SolidLine));
+        draw_el_spectr(xc, yc,  a, b, dr, n, *painter, QPen(color1,1,Qt::SolidLine), sr_point_el);
+
+    }
+    else if (ui->radioButton_5->isChecked())
+    {
+            //standart_el(QPen(color,1,Qt::SolidLine));
+        draw_el_spectr(xc, yc, a, b, dr, n, *painter, QPen(color1,1,Qt::SolidLine), standart_el);
+    }
+    else
+    {
+        QMessageBox mBox;
+        mBox.setIcon(QMessageBox::Information);
+        mBox.setInformativeText("Choose method");
+        mBox.exec();
+    }
+    ui->draw_label->setPixmap(*scene);
 }
