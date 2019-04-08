@@ -12,7 +12,6 @@
 #include"action.h"
 #include"figure.h"
 
-void draw_model(figure_t fig, myscene_t scene);
 
 void controller(myscene_t scene, int act_number, action_t act);
 

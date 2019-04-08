@@ -46,4 +46,21 @@ void zero_point(point_t &a)
     a.z = 0;
 }
 
+void set_point(point_t &a, double x, double y, double z, int n)
+{
+
+    a.n = n;
+    a.x = x;
+    a.y = y;
+    a.z = z;
+}
+
+void copy_point(point &a, point &b)
+{
+    a.n = b.n;
+    a.x = b.x;
+    a.y = b.y;
+    a.z = b.z;
+}
+
 

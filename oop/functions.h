@@ -18,4 +18,5 @@ void perenos(struct point &a, double dx, double dy, double dz);
 void mastab(struct point &a, struct point m, double k);
 void povorot(struct point &a, struct point c, double ax, double ay, double az);
 
+void draw_model(figure_t fig, myscene_t scene);
 #endif // FUNCTIONS_H

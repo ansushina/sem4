@@ -22,13 +22,32 @@ void close_file(stream_t stream)
     fclose(stream);
 }
 
+rc_type read_line_point(stream_t f, point_t &p)
+{
+   int n;
+   double x,y,z;
+   if (fscanf(f, "%d %lf %lf %lf",&n, &x, &y, &z) == 4)
+   {
+       set_point(p,x,y,z,n);
+       return OK;
+   }
+   return ERR_INPUT;
+}
+
+rc_type read_line_mt_el(stream_t f, int &mi, int &mj)
+{
+   if (fscanf(f, "%d->%d",&mi, &mj) == 2)
+       return OK;
+   return ERR_INPUT;
+}
+
 size_t count_points(stream_t f)
 {
     if (!f)
         return 0;
     struct point p;
     size_t n = 0;
-    while (fscanf(f, "%d %lf %lf %lf",&p.n, &p.x, &p.y, &p.z) == 4)
+    while (read_line_point(f,p) == OK)
     {
         n++;
     }
@@ -46,17 +65,14 @@ struct point *create_mas(stream_t f, size_t n)
     {
         for (size_t i = 0; i < n; i++)
         {
-            if (fscanf(f, "%d %lf %lf %lf",&p.n, &p.x, &p.y, &p.z) != 4)
+            if (read_line_point(f,p) != OK)
             {
                 delete [] buf;
                 break;
             }
 
-            buf[i].x = p.x;
-            buf[i].y = p.y;
-            buf[i].z = p.z;
-            buf[i].n = p.n;
-            std::cout << buf[i].x << buf[i].y <<  buf[i].z << buf[i].n <<std::endl;
+            copy_point(buf[i],p);
+            //std::cout << buf[i].x << buf[i].y <<  buf[i].z << buf[i].n <<std::endl;
         }
     }
     return buf;
@@ -71,7 +87,7 @@ int **create_matrix(stream_t f, size_t n)
     int **mt = allocate_matrix(n);
     if (mt)
     {
-        while (fscanf(f, "%d->%d",&mi, &mj) == 2)
+        while (read_line_mt_el(f,mi,mj) == OK)
         {
             mt[mi-1][mj-1] = 1;
             mt[mj-1][mi-1] = 1;
@@ -83,35 +99,41 @@ int **create_matrix(stream_t f, size_t n)
 
 int read_from_file(stream_t f, struct figure &fig)
 {
-    std::cout << "readed file: "<<std::endl;
+//    std::cout << "readed file: "<<std::endl;
     if (!f)
         return ERR_EMPTY;
 
     free_fig(fig);
 
     rc_type rc = OK;
-    fig.n = count_points(f);
-    if (fig.n > 0)
-    {
-        fig.mas = create_mas(f,fig.n);
-        if (fig.mas)
-        {
-            fig.matrix = create_matrix(f,fig.n);
-            if (!fig.matrix)
-            {
-                delete [] fig.mas;
-                rc = ERR_MEMORY;
-            }
-        }
-        else
-        {
+    size_t n = count_points(f);
+
+    if (n <= 0) return ERR_INPUT;
+
+
+
+
+     set_fig_n(fig, n);
+     point_t *mas = create_mas(f,fig.n);
+     if (mas)
+     {
+         set_fig_mas(fig,mas);
+         matrix_t matrix = create_matrix(f,fig.n);
+         if (matrix)
+         {
+             set_fig_matrix(fig,matrix);
+         }
+         else
+         {
+            delete [] fig.mas;
             rc = ERR_MEMORY;
-        }
-    }
-    else
-    {
-        rc = ERR_INPUT;
-    }
+         }
+     }
+     else
+     {
+        rc = ERR_MEMORY;
+     }
+
 
     return rc;
 }

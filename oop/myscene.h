@@ -17,4 +17,6 @@ void draw_point_scene(myscene_t scene, point_t p1);
 void clear_scene(myscene_t scene);
 
 
+
+
 #endif // MESCENE_H

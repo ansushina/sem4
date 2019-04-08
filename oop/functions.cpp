@@ -8,8 +8,8 @@
 rc_type download_model(figure_t &fig, action_t act)
 {
     const char *filename = get_filename(act);
-    char fname[100] = "../oop/";
-    strncat(fname, filename,100);
+//    char fname[100] = "../oop/";
+//    strncat(fname, filename,100);
     stream_t stream;
     rc_type rc = open_file_read(stream, fname);
     if (rc)
@@ -157,4 +157,29 @@ rc_type draw_fig(figure_t &fig, myscene_t scene)
     clear_scene(scene);
     draw_model(fig,scene);
     return OK;
+}
+
+void draw_model(figure_t fig, myscene_t scene)
+{
+    if (is_empty(fig))
+        return;
+
+    //std::cout << "drawing"<<std::endl;
+
+    for (size_t i = 0; i < get_fig_n(fig); i++)
+    {
+        draw_point_scene(scene,get_point(fig,i));
+    }
+    for (size_t i = 0; i < get_fig_n(fig); i++)
+    {
+        for (size_t j = 0; j < i + 1; j++)
+        {
+            if (get_matrix_el(fig,i,j) != 0)
+            {
+                //std::cout <<i <<std::endl;
+               // std::cout <<get_point(fig,i).n<<"->"<<get_point(fig,j).n <<std::endl;
+                draw_line_scene(scene,get_point(fig,i),get_point(fig,j));
+            }
+        }
+    }
 }
