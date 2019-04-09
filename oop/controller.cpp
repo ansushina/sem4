@@ -12,17 +12,17 @@ rc_type controller(myscene_t scene, int act_number, action_t act)
     {
         rc = download_model(fig, act);
     }
-    else if (act_number ==  PERENOS_NUMBER)
+    else if (act_number ==  MOVE_NUMBER)
     {
-        rc = perenos_fig(fig,act);
+        rc = move_fig(fig,act);
     }
-    else if (act_number == POVOROT_NUMBER)
+    else if (act_number == ROTATION_NUMBER)
     {
-        rc = povorot_fig(fig,act);
+        rc = rotation_fig(fig,act);
     }
-    else if (act_number == MASTAB_NUMBER)
+    else if (act_number == SCALE_NUMBER)
     {
-        rc = mastab_fig(fig,act);
+        rc = scale_fig(fig,act);
     }
     else if (act_number == DELETE_NUMBER)
     {

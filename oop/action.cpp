@@ -3,37 +3,37 @@
 
 struct point &get_point(struct figure &fig, int i)
 {
-    return fig.mas[i];
+    return fig.arr[i];
 }
 
 double get_alphax(struct data &d)
 {
-    return d.pov.ax;
+    return d.rotation.ax;
 }
 double get_alphay(struct data &d)
 {
-    return d.pov.ay;
+    return d.rotation.ay;
 }
 double get_alphaz(struct data &d)
 {
-    return d.pov.az;
+    return d.rotation.az;
 }
 
 double get_deltax(struct data &d)
 {
-    return d.per.dx;
+    return d.move.dx;
 }
 double get_deltay(struct data &d)
 {
-    return d.per.dy;
+    return d.move.dy;
 }
 double get_deltaz(struct data &d)
 {
-    return d.per.dy;
+    return d.move.dy;
 }
 double get_k(struct data &d)
 {
-    return d.mast.k;
+    return d.scale.k;
 }
 
 const char *get_filename(struct data &d)

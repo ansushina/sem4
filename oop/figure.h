@@ -8,7 +8,7 @@ typedef struct figure figure_t;
 
 struct figure
 {
-    struct point *mas;
+    struct point *arr;
     size_t n;
     int **matrix;
 };
@@ -19,7 +19,7 @@ void free_fig(struct figure &fig);
 figure_t init_fig();
 int get_matrix_el(figure_t fig, size_t i, size_t j);
 void set_fig_n(figure_t &fig, size_t n);
-void set_fig_mas(figure_t &fig, point_t *mas);
+void set_fig_arr(figure_t &fig, point_t *arr);
 
 void set_fig_matrix(figure_t &fig, matrix_t mt);
 

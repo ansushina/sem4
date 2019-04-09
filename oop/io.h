@@ -13,7 +13,6 @@ rc_type open_file_read(stream_t &stream, const char *filename);
 void close_file(stream_t stream);
 
 void free_fig(struct figure &fig);
-
-int read_from_file(stream_t f, struct figure &fig);
+int read_from_file(struct figure &fig, stream_t f);
 
 #endif // IO_H

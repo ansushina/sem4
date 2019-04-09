@@ -1,25 +1,24 @@
-#include "process.h"
+
 #include "io.h"
 #include "mainwindow.h"
 #include "functions.h"
 #include "action.h"
 #include "controller.h"
+#include <iostream>
 
 rc_type download_model(figure_t &fig, action_t act)
 {
     const char *filename = get_filename(act);
-//    char fname[100] = "../oop/";
-//    strncat(fname, filename,100);
     stream_t stream;
-    rc_type rc = open_file_read(stream, fname);
+    rc_type rc = open_file_read(stream, filename);
     if (rc)
         return rc;
-    rc = read_from_file(stream,fig);
+    rc = read_from_file(fig,stream);
     close_file(stream);
     return rc;
 }
 
-void perenos(struct point &a, double dx, double dy, double dz)
+void move(struct point &a, double dx, double dy, double dz)
 {
     double x = get_point_x(a) + dx;
     double y = get_point_y(a) + dy;
@@ -29,7 +28,7 @@ void perenos(struct point &a, double dx, double dy, double dz)
     set_point_z(a,z);
 }
 
-rc_type perenos_fig(figure_t &fig, action_t act)
+rc_type move_fig(figure_t &fig, action_t act)
 {
     if (is_empty(fig))
         return ERR_EMPTY;
@@ -38,17 +37,15 @@ rc_type perenos_fig(figure_t &fig, action_t act)
     double dz = get_deltaz(act);
     for (size_t i = 0; i < get_fig_n(fig); i++)
     {
-        perenos(get_point(fig,i),dx,dy,dz);
+        move(get_point(fig,i),dx,dy,dz);
     }
     return OK;
 }
 
-void pov_ax(struct point &a, struct point c, double ax)
+void rotation_ax(struct point &a, struct point c, double ax)
 {
-    //double xc = get_point_x(c);
     double yc = get_point_y(c);
     double zc = get_point_z(c);
-    //double xa = get_point_x(a);
     double ya = get_point_y(a);
     double za = get_point_z(a);
     double z = zc + (za- zc) * cos(ax * PI / 180) +
@@ -59,14 +56,12 @@ void pov_ax(struct point &a, struct point c, double ax)
     set_point_y(a,y);
 }
 
-void pov_ay(struct point &a, struct point c, double ay)
+void rotation_ay(struct point &a, struct point c, double ay)
 {
 
     double xc = get_point_x(c);
-   // double yc = get_point_y(c);
     double zc = get_point_z(c);
     double xa = get_point_x(a);
-    //double ya = get_point_y(a);
     double za = get_point_z(a);
     double x = xc + (xa- xc) * cos(ay * PI / 180) +
             (za - zc) * sin(ay * PI / 180);
@@ -75,14 +70,12 @@ void pov_ay(struct point &a, struct point c, double ay)
     set_point_x(a,x);
     set_point_z(a,z);
 }
-void pov_az(struct point &a, struct point c, double az)
+void rotation_az(struct point &a, struct point c, double az)
 {
     double xc = get_point_x(c);
     double yc = get_point_y(c);
-    //double zc = get_point_z(c);
     double xa = get_point_x(a);
     double ya = get_point_y(a);
-   // double za = get_point_z(a);
     double x = xc + (xa- xc) * cos(az * PI / 180) +
             (ya - yc) * sin(az * PI / 180);
     double y = yc - (xa - xc) * sin(az * PI / 180) +
@@ -90,23 +83,23 @@ void pov_az(struct point &a, struct point c, double az)
     set_point_x(a,x);
     set_point_y(a,y);
 }
-void povorot(struct point &a, struct point c, double ax, double ay, double az)
+void rotation(struct point &a, struct point c, double ax, double ay, double az)
 {
     if (az != 0)
     {
-         pov_az(a,c,az);
+         rotation_az(a,c,az);
     }
     if (ax != 0)
     {
-         pov_ax(a,c,ax);
+         rotation_ax(a,c,ax);
     }
     if (ay != 0)
     {
-         pov_ay(a,c,ay);
+         rotation_ay(a,c,ay);
     }
 }
 
-rc_type povorot_fig(figure_t &fig, action_t act)
+rc_type rotation_fig(figure_t &fig, action_t act)
 {
     if (is_empty(fig))
         return ERR_EMPTY;
@@ -118,12 +111,12 @@ rc_type povorot_fig(figure_t &fig, action_t act)
     zero_point(c);
     for (size_t i = 0; i < get_fig_n(fig); i++)
     {
-        povorot(get_point(fig,i),c,ax,ay,az);
+        rotation(get_point(fig,i),c,ax,ay,az);
     }
     return OK;
 }
 
-void mastab(struct point &a, struct point m, double k)
+void scale(struct point &a, struct point m, double k)
 {
     double x = get_point_x(m) + k*(get_point_x(a) - get_point_x(m));
     double y = get_point_y(m) + k*(get_point_y(a) - get_point_y(m));
@@ -133,7 +126,7 @@ void mastab(struct point &a, struct point m, double k)
     set_point_z(a,z);
 }
 
-rc_type mastab_fig(figure_t &fig, action_t act)
+rc_type scale_fig(figure_t &fig, action_t act)
 {
     if (is_empty(fig))
         return ERR_EMPTY;
@@ -142,7 +135,7 @@ rc_type mastab_fig(figure_t &fig, action_t act)
     zero_point(m);
     for (size_t i = 0; i < get_fig_n(fig); i++)
     {
-        mastab(get_point(fig,i),m,k);
+        scale(get_point(fig,i),m,k);
     }
     return OK;
 
@@ -164,8 +157,6 @@ void draw_model(figure_t fig, myscene_t scene)
     if (is_empty(fig))
         return;
 
-    //std::cout << "drawing"<<std::endl;
-
     for (size_t i = 0; i < get_fig_n(fig); i++)
     {
         draw_point_scene(scene,get_point(fig,i));
@@ -176,8 +167,6 @@ void draw_model(figure_t fig, myscene_t scene)
         {
             if (get_matrix_el(fig,i,j) != 0)
             {
-                //std::cout <<i <<std::endl;
-               // std::cout <<get_point(fig,i).n<<"->"<<get_point(fig,j).n <<std::endl;
                 draw_line_scene(scene,get_point(fig,i),get_point(fig,j));
             }
         }

@@ -7,7 +7,6 @@
 #include <QtGui>
 #include <QGraphicsScene>
 #include "io.h"
-#include "process.h"
 #include "points.h"
 #include "myscene.h"
 #include "figure.h"

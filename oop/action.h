@@ -14,18 +14,18 @@ struct data
         double ax;
         double ay;
         double az;
-    } pov;
+    } rotation;
     struct
     {
         double k;
-    } mast ;
+    } scale ;
     struct
     {
 
         double dx;
         double dz;
         double dy;
-    } per;
+    } move;
 };
 
 struct point &get_point(struct figure &fig, int i);

@@ -1,11 +1,9 @@
 #include "io.h"
-#include "process.h"
 #include "matrix.h"
 #include "points.h"
 #include "figure.h"
 
 #include <iostream>
-
 
 rc_type open_file_read(stream_t &stream, const char *filename)
 {
@@ -20,6 +18,11 @@ rc_type open_file_read(stream_t &stream, const char *filename)
 void close_file(stream_t stream)
 {
     fclose(stream);
+}
+
+void rewind_file(stream_t stream)
+{
+    rewind(stream);
 }
 
 rc_type read_line_point(stream_t f, point_t &p)
@@ -51,89 +54,88 @@ size_t count_points(stream_t f)
     {
         n++;
     }
-    rewind(f);
+    rewind_file(f);
     return n;
 }
 
-struct point *create_mas(stream_t f, size_t n)
+point_t *allocate_arr(size_t n)
 {
-    if (!f || !n)
-        return nullptr;
-    struct point p;
-    struct point *buf = new struct point[n]; //(struct point *)malloc(n* sizeof(struct point *));
-    if (buf)
-    {
-        for (size_t i = 0; i < n; i++)
-        {
-            if (read_line_point(f,p) != OK)
-            {
-                delete [] buf;
-                break;
-            }
-
-            copy_point(buf[i],p);
-            //std::cout << buf[i].x << buf[i].y <<  buf[i].z << buf[i].n <<std::endl;
-        }
-    }
+    struct point *buf = new struct point[n];
     return buf;
 }
 
-int **create_matrix(stream_t f, size_t n)
+rc_type create_arr(point_t *arr, size_t n, stream_t f)
 {
-    if (!f || !n)
-        return nullptr;
+    if (!f || !n || !arr)
+        return ERR_INPUT;
+    struct point p;
 
-    int mi,mj;
-    int **mt = allocate_matrix(n);
-    if (mt)
+    rc_type rc = OK;
+    for (size_t i = 0; i < n && !rc; i++)
     {
-        while (read_line_mt_el(f,mi,mj) == OK)
+        if (read_line_point(f,p) != OK)
         {
-            mt[mi-1][mj-1] = 1;
-            mt[mj-1][mi-1] = 1;
-            std::cout << mi<<"->"<<mj<<std::endl;
+            rc = ERR_INPUT;
+        }
+        else
+        {
+             copy_point(arr[i],p);
         }
     }
-    return mt;
+    return rc;
 }
 
-int read_from_file(stream_t f, struct figure &fig)
+rc_type create_matrix(matrix_t mt, size_t n, stream_t f)
 {
-//    std::cout << "readed file: "<<std::endl;
+    if (!f || !n || !mt)
+        return ERR_INPUT;
+
+    int mi,mj;
+    while (read_line_mt_el(f,mi,mj) == OK)
+    {
+        mt[mi-1][mj-1] = 1;
+        mt[mj-1][mi-1] = 1;
+        //std::cout << mi<<"->"<<mj<<std::endl;
+    }
+    return OK;
+}
+
+int read_from_file(struct figure &fig, stream_t f)
+{
     if (!f)
         return ERR_EMPTY;
 
-    free_fig(fig);
-
     rc_type rc = OK;
-    size_t n = count_points(f);
 
+    size_t n = count_points(f);
     if (n <= 0) return ERR_INPUT;
 
+    point_t *arr = allocate_arr(n);
+    matrix_t matrix = allocate_matrix(n);
+    if (!arr || !matrix)
+    {
+        delete [] arr;
+        free_matrix(matrix,n);
+        return ERR_MEMORY;
+    }
 
+    rc = create_arr(arr, n, f);
+    if (rc == OK)
+    {
+        rc = create_matrix(matrix,n,f);
+    }
 
-
-     set_fig_n(fig, n);
-     point_t *mas = create_mas(f,fig.n);
-     if (mas)
-     {
-         set_fig_mas(fig,mas);
-         matrix_t matrix = create_matrix(f,fig.n);
-         if (matrix)
-         {
-             set_fig_matrix(fig,matrix);
-         }
-         else
-         {
-            delete [] fig.mas;
-            rc = ERR_MEMORY;
-         }
-     }
-     else
-     {
-        rc = ERR_MEMORY;
-     }
-
-
+    if (rc == OK)
+    {
+         free_fig(fig);
+         set_fig_n(fig, n);
+         set_fig_arr(fig,arr);
+         set_fig_matrix(fig,matrix);
+    }
+    else
+    {
+        delete [] arr;
+        free_matrix(matrix,n);
+    }
     return rc;
 }
