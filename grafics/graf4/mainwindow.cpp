@@ -21,8 +21,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->frame->setPalette(Pal);
     QPalette Pal2(palette());
     Pal2.setColor(QPalette::Background, Qt::white);
-    ui->frame_3->setAutoFillBackground(true);
-    ui->frame_3->setPalette(Pal2);
 }
 
 MainWindow::~MainWindow()
@@ -38,16 +36,21 @@ void traditional_okr(double xc, double yc, double r,QPainter &painter,QPen pen)
 {
     std::cout<<"ptraditional"<<xc<<yc<<r<< std::endl;
     painter.setPen(pen);
-    double x = 0;
-    double y = r;
+    int x = 0;
+    int y = r;
 
     while (x <= r)
     {
-        y = sqrt(r*r-x*x);
-        painter.drawPoint(int(round(x)+xc), int(round(y)+yc));
+        y = round(sqrt(r*r-x*x));
+        painter.drawPoint(x+xc, y+yc);
+        painter.drawPoint(-x+xc, y+yc);
+        painter.drawPoint(x+xc, -y+yc);
+        painter.drawPoint(-x+xc, -y+yc);
+        /*painter.drawPoint(int(round(x)+xc), int(round(y)+yc));
         painter.drawPoint(int(-round(x)+xc), int(round(y)+yc));
         painter.drawPoint(int(round(x)+xc), int(-round(y)+yc));
-        painter.drawPoint(int(-round(x)+xc), int(-round(y)+yc));
+        painter.drawPoint(int(-round(x)+xc), int(-round(y)+yc));*/
+
         x++;
 
     }
@@ -55,11 +58,15 @@ void traditional_okr(double xc, double yc, double r,QPainter &painter,QPen pen)
     while (y >= 0)
     {
         y--;
-        x = sqrt(r*r-y*y);
-        painter.drawPoint(int(round(x)+xc), int(round(y)+yc));
+        x = round(sqrt(r*r-y*y));
+        painter.drawPoint(x+xc, y+yc);
+        painter.drawPoint(-x+xc, y+yc);
+        painter.drawPoint(x+xc, -y+yc);
+        painter.drawPoint(-x+xc, -y+yc);
+        /*painter.drawPoint(int(round(x)+xc), int(round(y)+yc));
         painter.drawPoint(int(-round(x)+xc), int(round(y)+yc));
         painter.drawPoint(int(round(x)+xc), int(-round(y)+yc));
-        painter.drawPoint(int(-round(x)+xc), int(-round(y)+yc));
+        painter.drawPoint(int(-round(x)+xc), int(-round(y)+yc));*/
 
     }
 }
@@ -68,19 +75,23 @@ void parametr_okr(double xc, double yc, double r,QPainter &painter,QPen pen)
 {
     painter.setPen(pen);
 
-    double x = 0;
-    double y = r;
-    int i = 0;
-    for (double t = 0; t <= 3.1415926535/2; t += 1/r)
+    int x = 0;
+    int y = r;
+    for (double t = 0; t <=3.15/2 /*3.1415926535/2*/; t += 1/r)
     {
-        i++;
-        std::cout<<i<<" "<< t <<" "<< x << " " << y <<std::endl;
-        painter.drawPoint(int(round(x)+xc), int(round(y)+yc));
+        //std::cout<<i<<" "<< t <<" "<< x << " " << y <<std::endl;
+        painter.drawPoint(x+xc, y+yc);
+        painter.drawPoint(-x+xc, y+yc);
+        painter.drawPoint(x+xc, -y+yc);
+        painter.drawPoint(-x+xc, -y+yc);
+        x = round(r*cos(t));
+        y = round(r*sin(t));
+
+        /*painter.drawPoint(int(round(x)+xc), int(round(y)+yc));
         painter.drawPoint(int(-round(x)+xc), int(round(y)+yc));
         painter.drawPoint(int(round(x)+xc), int(-round(y)+yc));
-        painter.drawPoint(int(-round(x)+xc), int(-round(y)+yc));
-        x = r*cos(t);
-        y = r*sin(t);
+        painter.drawPoint(int(-round(x)+xc), int(-round(y)+yc));*/
+
     }
 }
 
@@ -151,6 +162,10 @@ void brezenhem_okr(double xc, double yc, double r,QPainter &painter,QPen pen)
 void traditional_el(double xc, double yc, double a, double b,QPainter &painter,QPen pen)
 {
 
+    xc = round(xc);
+    yc = round(yc);
+    a = round(a);
+    b = round(b);
     painter.setPen(pen);
     double x = 0;
     double y = 0;
@@ -180,6 +195,10 @@ void traditional_el(double xc, double yc, double a, double b,QPainter &painter,Q
 
 void parametr_el(double xc, double yc, double a, double b,QPainter &painter,QPen pen)
 {
+    xc = round(xc);
+    yc = round(yc);
+    a = round(a);
+    b = round(b);
     painter.setPen(pen);
 
     double x = 0;
@@ -200,6 +219,10 @@ void parametr_el(double xc, double yc, double a, double b,QPainter &painter,QPen
 
 void brezenhem_el(double xc, double yc, double a, double b,QPainter &painter,QPen pen)
 {
+    xc = round(xc);
+    yc = round(yc);
+    a = round(a);
+    b = round(b);
     painter.setPen(pen);
     int x = 0;
     int y = int(b);
@@ -245,8 +268,8 @@ void brezenhem_el(double xc, double yc, double a, double b,QPainter &painter,QPe
         {
             //snaruzi
             //диагональный или вертикальный
-            int d2 = 2*di-2*x-1;
-            if (d2 < 0)
+            int d2 = 2*di-2*b2*x-1;
+            if (d2 <= 0)
             {
                 // диагональный
                 x++;
@@ -262,6 +285,7 @@ void brezenhem_el(double xc, double yc, double a, double b,QPainter &painter,QPe
             }
         }
     }
+
 }
 
 void standart_okr(double xc, double yc, double r,QPainter &painter,QPen pen)
@@ -272,6 +296,10 @@ void standart_okr(double xc, double yc, double r,QPainter &painter,QPen pen)
 
 void standart_el(double xc, double yc, double a, double b,QPainter &painter,QPen pen)
 {
+    xc = round(xc);
+    yc = round(yc);
+    a = round(a);
+    b = round(b);
      painter.setPen(pen);
      painter.drawEllipse(xc-a,yc-b,2*a,2*b);
 }
@@ -326,58 +354,6 @@ void sr_point_okr(double xc, double yc, double r,QPainter &painter,QPen pen)
     }
 }
 
-/*void MainWindow::sr_point_el(QPen pen)
-{
-    painter.setPen(pen);
-    int a2 = a*a;
-    int b2 = b*b;
-    int x = 0;
-    int y = b;
-    int rd2 = a2/sqrt(a2+b2);
-    //fpr = b*b(x+1)^2 + a*a(y*y -0.5) - a*a*b*b
-
-    int f = (b2 - a2 * y + 0.25 * a2 + 0.5);
-    int df = 0;
-    int delta = -2*a2 * y;
-
-    while(x <= rd2)
-    {
-        painter.drawPoint(x+xc, y+yc);
-        painter.drawPoint(-x+xc, y+yc);
-        painter.drawPoint(x+xc, -y+yc);
-        painter.drawPoint(-x+xc, -y+yc);
-
-        x++;
-        if (f >= 0)
-        {
-            y--;
-            delta += 2*a2;
-            f += delta;
-        }
-        df +=2*b2;
-        f += df +b2;
-    }
-    delta = 2*b2*x;
-    f+= -b2 * (x + 0.75) - a2 * (y - 0.75);
-    df = -2*a2*y;
-
-    while(y>= 0)
-    {
-        painter.drawPoint(x+xc, y+yc);
-        painter.drawPoint(-x+xc, y+yc);
-        painter.drawPoint(x+xc, -y+yc);
-        painter.drawPoint(-x+xc, -y+yc);
-        y--;
-        if (f < 0)
-        {
-            x++;
-            delta += 2*b2;
-            f += delta;
-        }
-        df += 2*a2;
-        f += df +a2;
-    }
-}*/
 void sr_point_el(double xc, double yc, double a, double b,QPainter &painter,QPen pen)
 {
     painter.setPen(pen);
@@ -573,10 +549,6 @@ void MainWindow::method_el()
 
 void MainWindow::on_main_button_clicked()
 {
-    //окружность или ээлипс
-    //метод
-    // считать данные
-
 
     if (ui->radioButton_8->isChecked())
     {
@@ -664,7 +636,10 @@ void MainWindow::on_main_button_clicked()
     }
     else
     {
-        //error
+        QMessageBox mBox;
+        mBox.setIcon(QMessageBox::Information);
+        mBox.setInformativeText("Выберите объект рисования!");
+        mBox.exec();
     }
 }
 
@@ -684,9 +659,6 @@ void MainWindow::on_color_fon_button_2_clicked()
 
     QPalette Pal(palette());
     Pal.setColor(QPalette::Background, bg_color);
-    ui->frame_3->setAutoFillBackground(true);
-    ui->frame_3->setPalette(Pal);
-    ui->frame_3->show();
     ui->draw_label->setAutoFillBackground(true);
     ui->draw_label->setPalette(Pal);
     ui->draw_label->show();
@@ -778,10 +750,9 @@ void draw_el_spectr(double xc, double yc, double a, double b, double dr, int n, 
     double koef = b / a;
     for (int i = 0; i < n; i++)
     {
-
         func(xc, yc, a + delta, b + delta * koef, painter, pen);
         delta += dr;
-}
+     }
 
 }
 void MainWindow::on_pushButton_2_clicked()
@@ -850,5 +821,15 @@ void MainWindow::on_pushButton_2_clicked()
         mBox.setInformativeText("Choose method");
         mBox.exec();
     }
+    ui->draw_label->setPixmap(*scene);
+}
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    delete painter;
+    delete scene;
+    scene = new QPixmap(851, 691);
+    scene->fill(QColor("transparent"));
+    painter = new QPainter(scene);
     ui->draw_label->setPixmap(*scene);
 }
