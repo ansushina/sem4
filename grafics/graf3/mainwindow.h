@@ -8,7 +8,7 @@
 #include <QGraphicsScene>
 #define PI 3.14159265
 
-#include <Qpainter>
+//#include <Qpainter>
 
 class Point
 {
