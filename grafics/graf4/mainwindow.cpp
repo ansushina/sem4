@@ -550,8 +550,8 @@ void MainWindow::method_el()
 void MainWindow::on_main_button_clicked()
 {
 
-    if (ui->radioButton_8->isChecked())
-    {
+   // if (ui->radioButton_8->isChecked())
+   // {
         //okr
         QString l_x = ui->x_okr->text();
         QString l_y = ui->y_okr->text();
@@ -587,60 +587,9 @@ void MainWindow::on_main_button_clicked()
         //traditional_okr(QPen(Qt::black,1,Qt::SolidLine));
         ui->draw_label->setPixmap(*scene);
 
-    }
-    else if (ui->radioButton_9->isChecked())
-    {
-        //ellipse
-        QString l_x = ui->x_el->text();
-        QString l_y = ui->y_el->text();
-        QString l_a = ui->a_el->text();
-        QString l_b = ui->b_el->text();
-        QStringList u_x = l_x.split(" ", QString::SkipEmptyParts);
-        QStringList u_y = l_y.split(" ", QString::SkipEmptyParts);
-        QStringList u_a = l_a.split(" ", QString::SkipEmptyParts);
-        QStringList u_b = l_b.split(" ", QString::SkipEmptyParts);
 
+  //  else if (ui->radioButton_9->isChecked())
 
-        if (u_x.count() != 1)
-        {
-            ui->x_el->clear();
-            return;
-        }
-        if (u_a.count() != 1)
-        {
-            ui->a_el->clear();
-            return;
-        }
-        if (u_b.count() != 1)
-        {
-            ui->a_el->clear();
-            return;
-        }
-        if (u_y.count() != 1)
-        {
-            ui->y_el->clear();
-            return;
-        }
-
-        xc = u_x[0].toDouble();
-        yc = u_y[0].toDouble();
-        a = u_a[0].toDouble();
-        b = u_b[0].toDouble();
-
-        num = 1;
-        method_el();
-        QPen pen = QPen(Qt::black);
-        //traditional_okr(QPen(Qt::black,1,Qt::SolidLine));
-        ui->draw_label->setPixmap(*scene);
-
-    }
-    else
-    {
-        QMessageBox mBox;
-        mBox.setIcon(QMessageBox::Information);
-        mBox.setInformativeText("Выберите объект рисования!");
-        mBox.exec();
-    }
 }
 
 void MainWindow::on_color_button_clicked()
@@ -832,4 +781,51 @@ void MainWindow::on_pushButton_3_clicked()
     scene->fill(QColor("transparent"));
     painter = new QPainter(scene);
     ui->draw_label->setPixmap(*scene);
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    //ellipse
+    QString l_x = ui->x_el->text();
+    QString l_y = ui->y_el->text();
+    QString l_a = ui->a_el->text();
+    QString l_b = ui->b_el->text();
+    QStringList u_x = l_x.split(" ", QString::SkipEmptyParts);
+    QStringList u_y = l_y.split(" ", QString::SkipEmptyParts);
+    QStringList u_a = l_a.split(" ", QString::SkipEmptyParts);
+    QStringList u_b = l_b.split(" ", QString::SkipEmptyParts);
+
+
+    if (u_x.count() != 1)
+    {
+        ui->x_el->clear();
+        return;
+    }
+    if (u_a.count() != 1)
+    {
+        ui->a_el->clear();
+        return;
+    }
+    if (u_b.count() != 1)
+    {
+        ui->a_el->clear();
+        return;
+    }
+    if (u_y.count() != 1)
+    {
+        ui->y_el->clear();
+        return;
+    }
+
+    xc = u_x[0].toDouble();
+    yc = u_y[0].toDouble();
+    a = u_a[0].toDouble();
+    b = u_b[0].toDouble();
+
+    num = 1;
+    method_el();
+    QPen pen = QPen(Qt::black);
+    //traditional_okr(QPen(Qt::black,1,Qt::SolidLine));
+    ui->draw_label->setPixmap(*scene);
+
 }
