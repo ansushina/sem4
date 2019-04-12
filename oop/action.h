@@ -5,16 +5,17 @@
 
 typedef struct data action_t;
 
+struct alpha_t
+{
+    double ax;
+    double ay;
+    double az;
+};
+
 struct data
 {
     const char *filename;
-    struct
-    {
-
-        double ax;
-        double ay;
-        double az;
-    } rotation;
+    alpha_t rotation;
     struct
     {
         double k;
@@ -29,12 +30,13 @@ struct data
 };
 
 struct point &get_point(struct figure &fig, int i);
-double get_alphax(struct data &d);
-double get_alphay(struct data &d);
-double get_alphaz(struct data &d);
+double get_alphax(alpha_t &d);
+double get_alphay(alpha_t &d);
+double get_alphaz(alpha_t &d);
 double get_deltax(struct data &d);
 double get_deltay(struct data &d);
 double get_deltaz(struct data &d);
+alpha_t get_alpha(action_t &d);
 double get_k(struct data &d);
 const char *get_filename(struct data &d);
 

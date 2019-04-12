@@ -1,0 +1,14 @@
+INPUT(
+./debug/main.o
+./debug/mainwindow.o
+./debug/io.o
+./debug/functions.o
+./debug/controller.o
+./debug/rc.o
+./debug/myscene.o
+./debug/figure.o
+./debug/matrix.o
+./debug/points.o
+./debug/action.o
+./debug/moc_mainwindow.o
+);

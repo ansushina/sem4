@@ -46,3 +46,10 @@ void set_fig_n(figure_t &fig, size_t n)
 {
     fig.n = n;
 }
+
+void copy_fig(figure_t &fig, figure_t &work)
+{
+    fig.n = work.n;
+    fig.arr = work.arr;
+    fig.matrix = work.matrix;
+}

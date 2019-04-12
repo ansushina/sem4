@@ -6,17 +6,22 @@ struct point &get_point(struct figure &fig, int i)
     return fig.arr[i];
 }
 
-double get_alphax(struct data &d)
+double get_alphax(alpha_t &d)
 {
-    return d.rotation.ax;
+    return d.ax;
 }
-double get_alphay(struct data &d)
+double get_alphay(alpha_t &d)
 {
-    return d.rotation.ay;
+    return d.ay;
 }
-double get_alphaz(struct data &d)
+double get_alphaz(alpha_t &d)
 {
-    return d.rotation.az;
+    return d.az;
+}
+
+alpha_t get_alpha(action_t &d)
+{
+    return d.rotation;
 }
 
 double get_deltax(struct data &d)
