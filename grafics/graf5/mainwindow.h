@@ -43,6 +43,12 @@ private slots:
 
     void on_clear_button_clicked();
 
+    void on_pushButton_2_clicked();
+
+    void on_new_point_button_clicked();
+
+    void on_main_button_clicked();
+
 private:
     Ui::MainWindow *ui;
     QPainter *painter;
@@ -57,6 +63,7 @@ private:
 
     int x0, y0;
     bool is_first = true;
+    bool is_ready = false;
 
 
 
