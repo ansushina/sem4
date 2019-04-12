@@ -9,7 +9,7 @@
 #include <QColorDialog>
 #include "io.h"
 #include "controller.h"
-
+#include "rc.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -38,8 +38,10 @@ void MainWindow::on_pushButton_5_clicked()
 
     std::string str = text.toStdString();
     dataaction.filename = str.c_str();
-    controller(scene,DOWNLOAD, dataaction);
-    controller(scene, DRAW_NUMBER, dataaction);
+    rc_type rc = controller(scene,DOWNLOAD, dataaction);
+    if (rc) print_warning(rc);
+    rc = controller(scene, DRAW_NUMBER, dataaction);
+    if (rc) print_warning(rc);
 }
 
 void MainWindow::on_filename_editingFinished(){}
@@ -48,8 +50,10 @@ void MainWindow::on_pushButton_3_clicked()
 {
     double km = ui->doubleSpinBox_6->value();
     dataaction.scale.k = km;
-    controller(scene, SCALE_NUMBER, dataaction);
-    controller(scene, DRAW_NUMBER, dataaction);
+    rc_type rc = controller(scene, SCALE_NUMBER, dataaction);
+    if (rc) print_warning(rc);
+    rc = controller(scene, DRAW_NUMBER, dataaction);
+    if (rc) print_warning(rc);
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -61,8 +65,10 @@ void MainWindow::on_pushButton_2_clicked()
     dataaction.move.dy = dy;
     dataaction.move.dz = dz;
 
-    controller(scene, MOVE_NUMBER, dataaction);
-    controller(scene, DRAW_NUMBER, dataaction);
+    rc_type rc = controller(scene, MOVE_NUMBER, dataaction);
+    if (rc) print_warning(rc);
+    rc = controller(scene, DRAW_NUMBER, dataaction);
+    if (rc) print_warning(rc);
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -74,13 +80,17 @@ void MainWindow::on_pushButton_clicked()
     dataaction.rotation.ay = ay;
     dataaction.rotation.az = az;
 
-    controller(scene, ROTATION_NUMBER, dataaction);
-    controller(scene, DRAW_NUMBER, dataaction);
+    rc_type rc =controller(scene, ROTATION_NUMBER, dataaction);
+    if (rc) print_warning(rc);
+    rc = controller(scene, DRAW_NUMBER, dataaction);
+    if (rc) print_warning(rc);
 }
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    controller(scene, DELETE_NUMBER, dataaction);
-    controller(scene, DRAW_NUMBER, dataaction);
+    rc_type rc =controller(scene, DELETE_NUMBER, dataaction);
+    if (rc) print_warning(rc);
+    rc = controller(scene, DRAW_NUMBER, dataaction);
+    if (rc) print_warning(rc);
 }
 

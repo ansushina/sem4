@@ -1,31 +1,39 @@
 #include"matrix.h"
 #include"figure.h"
+#include"rc.h"
 void free_matrix(matrix_t mat, size_t n)
 {
     if (!mat)
         return;
-    for (int i = 0; i < n; i++)
+    for (size_t i = 0; i < n; i++)
         free(mat[i]);
     free(mat);
 }
 
-matrix_t allocate_matrix(size_t n)
+rc_type allocate_matrix(matrix_t &matrix, size_t n)
 {
     if (!n)
-        return nullptr;
+        return ERR_MEMORY;
     int **new_matrix =(int **)calloc(n, sizeof(int *));
     if (!new_matrix)
-        return nullptr;
-    for (size_t i = 0; i < n; i++)
+        return ERR_MEMORY;
+    rc_type rc = OK;
+    size_t i;
+    for (i = 0; i < n && !rc; i++)
     {
         new_matrix[i] = (int *)calloc(n, sizeof(int));
         if (!new_matrix[i])
         {
-            free_matrix(new_matrix, i);
-            return nullptr;
+            rc = ERR_MEMORY;
         }
     }
-    return new_matrix;
+    if (rc)
+    {
+        free_matrix(new_matrix, i);
+        return rc;
+    }
+    matrix = new_matrix;
+    return OK;
 }
 
 

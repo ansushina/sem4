@@ -13,7 +13,6 @@ rc_type draw_line_scene(myscene_t scene, point_t p1, point_t p2)
 void draw_point_scene(myscene_t scene, point_t p1)
 {
     double z1 = sqrt(2)/2 * get_point_z(p1);
-    //double z2 = sqrt(2)/2 * get_point_z(p2);
     scene.scene->addEllipse(get_point_x(p1) - z1, - get_point_y(p1)+z1,1,1);
 }
 

@@ -3,11 +3,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include"rc.h"
 
 typedef int ** matrix_t;
 
 void free_matrix(matrix_t mat, size_t n);
-matrix_t allocate_matrix(size_t n);
+rc_type allocate_matrix(matrix_t &matrix, size_t n);
 
 
 #endif // MATRIX_H

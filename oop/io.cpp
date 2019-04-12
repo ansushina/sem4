@@ -58,10 +58,13 @@ size_t count_points(stream_t f)
     return n;
 }
 
-point_t *allocate_arr(size_t n)
+rc_type allocate_arr(point_t *&arr, size_t n)
 {
-    struct point *buf = new struct point[n];
-    return buf;
+    point_t *buf = new struct point[n];
+    if (!buf)
+        return ERR_MEMORY;
+    arr = buf;
+    return OK;
 }
 
 rc_type create_arr(point_t *arr, size_t n, stream_t f)
@@ -95,7 +98,6 @@ rc_type create_matrix(matrix_t mt, size_t n, stream_t f)
     {
         mt[mi-1][mj-1] = 1;
         mt[mj-1][mi-1] = 1;
-        //std::cout << mi<<"->"<<mj<<std::endl;
     }
     return OK;
 }
@@ -110,21 +112,19 @@ int read_from_file(struct figure &fig, stream_t f)
     size_t n = count_points(f);
     if (n <= 0) return ERR_INPUT;
 
-    point_t *arr = allocate_arr(n);
-    matrix_t matrix = allocate_matrix(n);
-    if (!arr || !matrix)
+    point_t *arr = NULL;
+    rc = allocate_arr(arr, n);
+    if (rc) return rc;
+    matrix_t matrix = NULL;
+    rc = allocate_matrix(matrix,n);
+    if (rc == OK)
     {
-        delete [] arr;
-        free_matrix(matrix,n);
-        return ERR_MEMORY;
+        rc = create_arr(arr, n, f);
     }
-
-    rc = create_arr(arr, n, f);
     if (rc == OK)
     {
         rc = create_matrix(matrix,n,f);
     }
-
     if (rc == OK)
     {
          free_fig(fig);
