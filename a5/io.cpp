@@ -14,10 +14,10 @@ int input_all(double &t0, double &tw, int &m, double &pn, double &tn)
     cout << "Input m: " << endl;
     if (scanf("%d", &m) != 1)
         return 1;
-    cout << "Input Pнач: " << endl;
+    cout << "Input Pn: " << endl;
     if (scanf("%lf", &pn) != 1)
         return 1;
-    cout << "Input Tнач: " << endl;
+    cout << "Input Tn: " << endl;
     if (scanf("%lf", &tn) != 1)
         return 1;
     return 0;

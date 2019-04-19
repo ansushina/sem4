@@ -8,7 +8,7 @@
 #define ERR 4
 #define ERR_MEMORY 5
 
-void copy_mas(double *x, double *y, double *ax, double *ay, int beg, int end)
+void copy_mas(double *x, double *y, const double *ax, const double *ay, int beg, int end)
 {
     int j = 0;
     for (int i = beg; i <= end; i++)
@@ -19,7 +19,7 @@ void copy_mas(double *x, double *y, double *ax, double *ay, int beg, int end)
     }
 }
 // поиск позиции
-int find_pos(double main_x,double *all_x, int all_count)
+int find_pos(double main_x,const double *all_x, int all_count)
 {
     int pos;
     int i;
@@ -76,8 +76,8 @@ int find_beg_end(int pos, int *b, int *e, int all_count, int n)
     return OK;
 }
 
-int make_new_mas(int n, double main_x, double **x, double **y, double *all_x,
-    double *all_y, int all_count)
+int make_new_mas(int n, double main_x, double **x, double **y,const  double *all_x,
+    const double *all_y, int all_count)
 {
     // найдем позицию
     int pos = find_pos(main_x, all_x, all_count);
@@ -113,7 +113,7 @@ int make_new_mas(int n, double main_x, double **x, double **y, double *all_x,
 }
 
 // интерполяция
-int process(int n, double x, double *new_x, double *new_y, double *answ)
+int interpolation(int n, double x, double *new_x, double *new_y, double *answ)
 {
     double raz[n + 1];// массив для хранения разностей
     double a[n + 1];// массив для промежуточных вычислений
