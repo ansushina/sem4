@@ -31,8 +31,8 @@ double get_q(int i, double t)
     double answ;
     int n = 2;
     double *x, *y;
-    int rc = make_new_mas(n,t,&x,&y, QT, Q[i], 13);
-    rc = interpolation(n, t, x,y, &answ);
+    make_new_mas(n,t,&x,&y, QT, Q[i], 13);
+    interpolation(n, t, x,y, &answ);
     free(x);
     free(y);
     return answ;
@@ -58,13 +58,12 @@ const double Z[5] = {0,1,2,3,4};
 double find_deltae(int i, double t, double g)
 {
     double g2 = g/2;
-    return 8.61*pow(10, -5) * t * log((1+Z[i+1]*Z[i+1]*g2)(1+g2)/(1+Z[i]*Z[i]*g2));
+    return 8.61*pow(10, -5) * t * log((1+Z[i+1]*Z[i+1]*g2)*(1+g2)/(1+Z[i]*Z[i]*g2));
 }
 
 double find_k(int i, double t, double g)
 {
-    return 4,83*pow(10,-3) * get_q(i+1,t)/get_q(i,t) * pow(t, 3/2) * exp(
-                (E[i] - find_deltae(i,t,g))*11603/t);
+    return 4.83*pow(10,-3) * get_q(i+1,t)/get_q(i,t) * pow(t, 3/2) * exp((E[i] - find_deltae(i,t,g))*11603/t);
 }
 void find_all_k(double K[5], double t, double g)
 {
@@ -76,7 +75,7 @@ void find_all_k(double K[5], double t, double g)
 
 double find_alpha(double t, double g)
 {
-    return 0,285 *pow(10,-11) * pow(g*t,3);
+    return 0.285 *pow(10,-11) * pow(g*t,3);
 }
 
 double gamma(double g, double v, double x[5], double t)
@@ -86,7 +85,7 @@ double gamma(double g, double v, double x[5], double t)
     {
         s+=exp(x[i])*Z[i]*Z[i]/(1+Z[i]*Z[i] *g/2);
     }
-    s *= 5,87 * pow(10,10)/t/t/t;
+    s *= 5.87 * pow(10,10)/t/t/t;
     return g*g - s;
 }
 
@@ -96,11 +95,11 @@ double find_gamma(double v, double x[5], double t)
     double g2 = 3;
     double g = (g2-g1)/2;
 
-    while((g2-g1)/g < EPS)
+    while((g2-g1) > EPS)
     {
         g = (g2-g1)/2;
-        double f1 = gamma(p,t0,tw,m,pn,tn);
-        double f2 = gamma(p2,t0,tw,m,pn,tn);
+        double f1 = gamma(g,v,x,t);
+        double f2 = gamma(g2,v,x,t);
         //printf("f(%lf) = %lf\n", p, f1);
         if (f1 * f2 < 0)
         {
@@ -112,6 +111,7 @@ double find_gamma(double v, double x[5], double t)
         }
 
     }
+    return g;
 
 }
 
@@ -119,7 +119,7 @@ double n_2(double p, double t)
 {
     double x[5] = {2,-1,10,-25,-35};
     double v = -1;
-    double deltav, deltax[5];
+    double deltav;
 
     double m1[7] = {1,-1,1};
     double m2[7] = {1, 0,-1,1};
@@ -136,7 +136,7 @@ double n_2(double p, double t)
 
     double alpha = 0;
     double gamma = 0;
-    double deltaE, K[4], Q;
+    double K[4];
     find_all_k(K,t,gamma);
     while (fabs(deltav/v) < 0.0001)
     {
@@ -155,7 +155,9 @@ double n_2(double p, double t)
         matrix[5][6] = -(7242*p/t + alpha - exp(v) - exp(x[0]) - exp(x[1]) - exp(x[2]) - exp(x[3])-exp(x[4]));
         double **b = NULL;
         int rc =  do_gauss(matrix,6,7,&b);
+        if (rc) break;
         v = v + b[0][0];
+        deltav = b[0][0];
         for (int i = 1; i < 5; i++)
         {
             x[i-1] = x[i-1] + b[i][0];
@@ -177,6 +179,7 @@ double n_2(double p, double t)
     {
         nt += n[i];
     }
+    return nt;
 }
 
 double Simpson_method(double *nt)
@@ -203,7 +206,7 @@ double find_f(double p, double t0, double tw, int m, double pn, double tn)
     {
         z = i * h;
         t = T(z, t0, tw, m);
-        nt[i] = n_1(p,t);
+        nt[i] = n_2(p,t);
     }
     for (int i = 0; i < N+1; i++)
     {
@@ -237,7 +240,7 @@ int process(double t0, double tw, int m, double pn, double tn)
         }
     }
     cout <<"Answer is " << p << endl;
-
+    return 0;
 }
 
 int main()
