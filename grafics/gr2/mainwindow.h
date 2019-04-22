@@ -53,15 +53,25 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pushButton_2_clicked();
+
+    void on_nachalo_clicked();
+
 private:
     double f(double x);
     double a,b,r,c,d;
     Ui::MainWindow *ui;
+    bool flag;
 
     std::vector<p> points;
     std::vector<p> okr;
     std::vector<p> strih_1;
     std::vector<p> strih_2;
+
+    std::vector<p> points1;
+    std::vector<p> okr1;
+    std::vector<p> strih_11;
+    std::vector<p> strih_21;
 
     std::vector<p> points_prev;
     std::vector<p> okr_prev;
