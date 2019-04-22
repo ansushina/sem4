@@ -49,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->frame_background->setPalette(Pal);
 
     ui->mouse_input->setChecked(true);
+    ui->fast_button->setChecked(true);
 }
 
 MainWindow::~MainWindow()
@@ -110,7 +111,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
     //if (image.pixelColor(QPoint(l1.x, l1.y)) != color_border)
 
-    painter->drawEllipse(l.x2,l.y2,1,1);
+    //painter->drawEllipse(l.x2,l.y2,1,1);
     painter->drawLine(l.x1, l.y1, l.x2, l.y2);
 
     x_prev = x - OFFSET_X;
@@ -148,6 +149,11 @@ void MainWindow::on_background_button_clicked()
     ui->frame_background->setPalette(Pal);
     ui->frame_background->show();
     scene->fill(QColor(color_background));
+    painter->setPen(color_border);
+    for (size_t i = 0; i < line.size(); i++)
+    {
+        painter->drawLine(line[i].x1, line[i].y1, line[i].x2, line[i].y2);
+    }
     ui->draw_label->setPixmap(*scene);
 }
 
@@ -169,6 +175,10 @@ void MainWindow::on_clear_button_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     if (is_first)
+        return;
+    if (line.size() < 2)
+        return;
+    if (line.back().x1 == x0 && line.back().y1 == y0)
         return;
     line_t l;
     l.x1 = x_prev;
@@ -231,7 +241,7 @@ void MainWindow::on_new_point_button_clicked()
 
     line.push_back(l);
 
-    painter->drawEllipse(l.x2,l.y2,1,1);
+    //painter->drawEllipse(l.x2,l.y2,1,1);
     painter->drawLine(l.x1, l.y1, l.x2, l.y2);
     ui->draw_label->setPixmap(*scene);
 
@@ -242,27 +252,87 @@ void MainWindow::on_new_point_button_clicked()
 void MainWindow::on_main_button_clicked()
 {
     if (!is_first)
+    {
+        QMessageBox mBox;
+        mBox.setIcon(QMessageBox::Information);
+        mBox.setInformativeText("Фигура не замкнута. Пожалуйста, замкните фигуру.");
+        mBox.exec();
+
         return;
+    }
 
     if (line.size() <= 2)
-        return;
-
-    QImage image = scene->toImage();
-
-    int x_max;
-    int x_min;
-    int y_max;
-    int y_min;
-
-    for (int i = 0; i < line.size; i++)
     {
-        if (line[i].x1 < x_min)
-            x_min = line[i].x1;
+        QMessageBox mBox;
+        mBox.setIcon(QMessageBox::Information);
+        mBox.setInformativeText("Недостаточно ребер.");
+        mBox.exec();
+        return;
+    }
+
+    int x_max = line[0].x1;
+
+
+    for (size_t i = 0; i < line.size(); i++)
+    {
         if (line[i].x1 > x_max)
             x_max = line[i].x1;
-        if (line[i].y1 < y_min)
-            y_min = line[i].y1;
-        if (line[i].y1 < y_max)
-            y_max = line[i].y1
     }
+
+    for (size_t i = 0; i < line.size(); i++)
+    {
+        QImage image = scene->toImage();
+
+        int x1 = line[i].x1;
+        int x2 = line[i].x2;
+        int y1 = line[i].y1;
+        int y2 = line[i].y2;
+
+
+        if (y1 > y2)
+        {
+            int tmp = y2;
+            y2 = y1;
+            y1 = tmp;
+            tmp = x2;
+            x2 = x1;
+            x1 = tmp;
+        }
+        else if (y1 == y2)
+            continue;
+
+        double dx = (x2 - x1)/(double)(y2-y1);
+
+        double xstart = x1;
+        for (int y = y1; y < y2; y++)
+        {
+            for (int x = round(xstart); x < x_max; x++)
+            {
+
+                QColor color = image.pixelColor(x,y);
+                if (color == color_background)
+                {
+                    painter->setPen(color_shading);
+                }
+                else if (color == color_shading)
+                {
+                    painter->setPen(color_background);
+                }
+                else
+                {
+                    painter->setPen(color_border);
+                }
+                painter->drawPoint(x,y);
+            }
+            xstart += dx;
+
+            if (ui->slow_Button->isChecked())
+                repaint();
+
+            ui->draw_label->setPixmap(*scene);
+        }
+
+
+    }
+
 }
