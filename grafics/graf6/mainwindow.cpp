@@ -108,6 +108,38 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
     ui->draw_label->setPixmap(*scene);
 }
 
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    if (ui->mouse_random_input->isChecked())
+    {
+        int x = event->x();
+        int y = event->y();
+        if (x < 10 || y < 20 || x > 700 || y > 700)
+            return;
+
+        painter->setPen(color_border);
+
+        if (is_first)
+        {
+            x0 = x - OFFSET_X;
+            y0 = y - OFFSET_Y;
+            x_prev = x - OFFSET_X;
+            y_prev = y - OFFSET_Y;
+            is_first = false;
+            painter->drawEllipse(x-OFFSET_X,y-OFFSET_Y,1,1);
+            ui->draw_label->setPixmap(*scene);
+            return;
+        }
+
+        painter->drawLine(x_prev,y_prev, x - OFFSET_X, y - OFFSET_Y);
+
+        x_prev = x - OFFSET_X;
+        y_prev = y - OFFSET_Y;
+
+        ui->draw_label->setPixmap(*scene);
+    }
+}
+
 void MainWindow::on_pushButton_clicked()
 {
     color_border = QColorDialog::getColor(Qt::black, this);

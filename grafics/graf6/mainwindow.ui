@@ -166,9 +166,16 @@
         </spacer>
        </item>
        <item>
+        <widget class="QRadioButton" name="mouse_random_input">
+         <property name="text">
+          <string>Ввод произвольной фигуры мышкой</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QRadioButton" name="mouse_input">
          <property name="text">
-          <string>Мышиный ввод</string>
+          <string>Ввод многоугольника мышкой</string>
          </property>
         </widget>
        </item>
