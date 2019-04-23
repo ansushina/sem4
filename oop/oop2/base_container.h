@@ -7,13 +7,13 @@ class base_container
 {
 public:
     explicit base_container();
-    explicit base_container(size_t);
+    explicit base_container(size_t len);
     virtual ~base_container();
 
     bool is_empty() const;
     size_t size() const;
 protected:
-    size_t count_elements;
+    size_t len;
 };
 
 }

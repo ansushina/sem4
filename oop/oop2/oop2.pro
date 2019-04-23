@@ -9,4 +9,8 @@ SOURCES += main.cpp \
 
 HEADERS += \
     list.h \
-    base_container.h
+    base_container.h \
+    base_iterator.h \
+    base_iterator_implement.h \
+    list_iterator.h \
+    list_iterator_implement.h
