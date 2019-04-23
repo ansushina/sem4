@@ -272,7 +272,6 @@ void MainWindow::on_main_button_clicked()
 
     int x_max = line[0].x1;
 
-
     for (size_t i = 0; i < line.size(); i++)
     {
         if (line[i].x1 > x_max)
@@ -288,7 +287,6 @@ void MainWindow::on_main_button_clicked()
         int y1 = line[i].y1;
         int y2 = line[i].y2;
 
-
         if (y1 > y2)
         {
             int tmp = y2;
@@ -302,11 +300,10 @@ void MainWindow::on_main_button_clicked()
             continue;
 
         double dx = (x2 - x1)/(double)(y2-y1);
-
         double xstart = x1;
         for (int y = y1; y < y2; y++)
         {
-            for (int x = round(xstart); x < x_max; x++)
+            for (int x = round(xstart); x <= x_max; x++)
             {
 
                 QColor color = image.pixelColor(x,y);
@@ -331,8 +328,5 @@ void MainWindow::on_main_button_clicked()
 
             ui->draw_label->setPixmap(*scene);
         }
-
-
     }
-
 }
