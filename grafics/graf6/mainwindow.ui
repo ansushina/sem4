@@ -166,10 +166,23 @@
         </spacer>
        </item>
        <item>
+        <widget class="QRadioButton" name="input_zatravka">
+         <property name="text">
+          <string>Ввод затравки</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
+        </widget>
+       </item>
+       <item>
         <widget class="QRadioButton" name="mouse_random_input">
          <property name="text">
           <string>Ввод произвольной фигуры мышкой</string>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
         </widget>
        </item>
        <item>
@@ -177,6 +190,9 @@
          <property name="text">
           <string>Ввод многоугольника мышкой</string>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
         </widget>
        </item>
        <item>
@@ -184,6 +200,9 @@
          <property name="text">
           <string>Клавиатурный ввод</string>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
         </widget>
        </item>
       </layout>
@@ -304,6 +323,9 @@
          <property name="text">
           <string>без задержки</string>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup_2</string>
+         </attribute>
         </widget>
        </item>
        <item>
@@ -311,6 +333,9 @@
          <property name="text">
           <string>с задержкой</string>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup_2</string>
+         </attribute>
         </widget>
        </item>
       </layout>
@@ -367,4 +392,8 @@
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
+ </buttongroups>
 </ui>

@@ -8,6 +8,7 @@
 #include <iostream>
 //#include <windows.h>
 #include <math.h>
+#include <stack>
 
 #define OFFSET_X 10
 #define OFFSET_Y 20
@@ -21,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->draw_label->setMouseTracking(true);
     this->setMouseTracking(true);
 
-    scene = new QPixmap(851, 691);
+    scene = new QPixmap(851, 701);
     scene->fill(QColor("transparent"));
     scene->fill(QColor(Qt::white));
 
@@ -61,6 +62,22 @@ MainWindow::~MainWindow()
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
+    if (ui->input_zatravka->isChecked())
+    {
+        int x = event->x();
+        int y = event->y();
+
+        if (x < 10 || y < 20 || x > 700 || y > 700)
+            return;
+        xz = x - OFFSET_X;
+        yz = y - OFFSET_Y;
+        zatravka_flag = true;
+        painter->setPen(color_shading);
+        painter->drawPoint(xz,yz);
+        ui->draw_label->setPixmap(*scene);
+        return;
+
+    }
     if (!ui->mouse_input->isChecked())
     {
         return;
@@ -188,6 +205,7 @@ void MainWindow::on_clear_button_clicked()
     ui->draw_label->setPixmap(*scene);
     x_prev = -1;
     y_prev = -1;
+    zatravka_flag = false;
     is_first = true;
 }
 
@@ -195,6 +213,7 @@ void MainWindow::on_pushButton_2_clicked()
 {
     if (is_first)
         return;
+    painter->setPen(color_border);
     painter->drawLine(x_prev, y_prev, x0, y0);
     x_prev = -1;
     y_prev = -1;
@@ -247,84 +266,124 @@ void MainWindow::on_new_point_button_clicked()
     y_prev = y;
 }
 
+
+void MainWindow::find_next(std::stack<point_t> &stack, int &x_left, int &x_right, const int &y)
+{
+    bool f = false;
+    int x = x_left;
+    int xn;
+    while (x < x_right)
+    {
+        f = false;
+        QColor color = img.pixelColor(x,y);
+        while (color != color_border && color != color_shading && x < x_right)
+        {
+            f = true;
+            x++;
+            color = img.pixelColor(x,y);
+        }
+        if (f == true)
+        {
+            point_t p;
+            p.x = x;
+            p.y = y;
+            if (x == x_right && img.pixelColor(x,y) != color_border && img.pixelColor(x,y) != color_shading)
+            {
+                stack.push(p);
+            }
+            else
+            {
+                p.x--;
+                stack.push(p);
+            }
+        }
+
+        xn = x;
+        color = img.pixelColor(x,y);
+        while ((color == color_border || color == color_shading) && x < x_right)
+        {
+            x++;
+            color = img.pixelColor(x,y);
+        }
+        if (x == xn)
+            x++;
+
+    }
+
+}
+
 void MainWindow::on_main_button_clicked()
 {
+    if (!zatravka_flag)
+    {
+        QMessageBox mBox;
+        mBox.setIcon(QMessageBox::Information);
+        mBox.setInformativeText("Не введен начальный пиксель. Введите начальный пиксель, чтобы продолжить.");
+        mBox.exec();
+        return;
+
+    }
     if (!is_first)
     {
         QMessageBox mBox;
         mBox.setIcon(QMessageBox::Information);
         mBox.setInformativeText("Фигура не замкнута. Пожалуйста, замкните фигуру.");
         mBox.exec();
-
         return;
     }
 
-    /*if (line.size() <= 2)
-    {
-        QMessageBox mBox;
-        mBox.setIcon(QMessageBox::Information);
-        mBox.setInformativeText("Недостаточно ребер.");
-        mBox.exec();
-        return;
-    }*/
+    img = scene->toImage();
+    painter->setPen(color_shading);
 
-/*    int x_max = line[0].x1;
+    int x_left, x_right;
 
-    for (size_t i = 0; i < line.size(); i++)
+    std::stack<point_t> mystack;
+    point_t z;
+    z.x = xz;
+    z.y = yz;
+    mystack.push(z);
+
+    while (!mystack.empty())
     {
-        if (line[i].x1 > x_max)
-            x_max = line[i].x1;
+        point_t p = mystack.top();
+        mystack.pop();
+        painter->drawPoint(p.x,p.y);
+        //ui->draw_label->setPixmap(*scene);
+        img = scene->toImage();
+        int x = p.x + 1;
+        int y = p.y;
+        while(img.pixelColor(x,y) != color_border && x < 700)
+        {
+            painter->drawPoint(x,y);
+            x++;
+        }
+        x_right = x-1;
+        x = p.x-1;
+        while(img.pixelColor(x,y) != color_border && x > 0)
+        {
+            painter->drawPoint(x,y);
+            x--;
+        }
+        x_left = x+1;
+        x = p.x;
+
+        if (p.y < 700)
+        {
+            y = p.y+1;
+            find_next(mystack, x_left, x_right, y);
+        }
+        if (p.y > 0)
+        {
+            y = p.y - 1;
+            find_next(mystack, x_left, x_right, y);
+        }
+
+        if (ui->slow_Button->isChecked())
+        {
+            //Sleep(20);
+            repaint();
+
+        }
+        ui->draw_label->setPixmap(*scene);
     }
-
-    for (size_t i = 0; i < line.size(); i++)
-    {
-        QImage image = scene->toImage();
-
-        int x1 = line[i].x1;
-        int x2 = line[i].x2;
-        int y1 = line[i].y1;
-        int y2 = line[i].y2;
-
-        if (y1 > y2)
-        {
-            int tmp = y2;
-            y2 = y1;
-            y1 = tmp;
-            tmp = x2;
-            x2 = x1;
-            x1 = tmp;
-        }
-        else if (y1 == y2)
-            continue;
-
-        double dx = (x2 - x1)/(double)(y2-y1);
-        double xstart = x1;
-        for (int y = y1; y < y2; y++)
-        {
-            for (int x = round(xstart); x <= x_max; x++)
-            {
-
-                QColor color = image.pixelColor(x,y);
-                if (color == color_background)
-                {
-                    painter->setPen(color_shading);
-                }
-                else if (color == color_shading)
-                {
-                    painter->setPen(color_background);
-                }
-                else
-                {
-                    painter->setPen(color_border);
-                }
-                painter->drawPoint(x,y);
-            }
-            xstart += dx;
-
-            if (ui->slow_Button->isChecked())
-                repaint();
-
-            ui->draw_label->setPixmap(*scene);
-        }
-    }*/
 }

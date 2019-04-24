@@ -8,17 +8,16 @@
 #include <QPixmapCache>
 #include <iostream>
 //#include <windows.h>
+#include <stack>
 #include <math.h>
 #include <QColor>
 #include <QPainter>
 
-typedef struct line line_t;
-struct line
+typedef struct point point_t;
+struct point
 {
-    int x1;
-    int y1;
-    int x2;
-    int y2;
+    int x;
+    int y;
 };
 
 namespace Ui {
@@ -51,6 +50,8 @@ private slots:
     void on_main_button_clicked();
 
 private:
+    void find_next(std::stack<point_t> &stack, int &x_left, int &x_right, const int &y);
+
     Ui::MainWindow *ui;
     QPainter *painter;
     QPixmap *scene;
@@ -61,6 +62,10 @@ private:
 
     int x_prev = -1;
     int y_prev = -1;
+
+    int xz;
+    int yz;
+    bool zatravka_flag = false;
 
     int x0, y0;
     bool is_first = true;
