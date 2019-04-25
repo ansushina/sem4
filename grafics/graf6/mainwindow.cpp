@@ -199,7 +199,7 @@ void MainWindow::on_clear_button_clicked()
     delete painter;
     delete scene;
     ui->draw_label->clear();
-    scene = new QPixmap(851, 691);
+    scene = new QPixmap(851, 701);
     scene->fill(QColor(color_background));
     painter = new QPainter(scene);
     ui->draw_label->setPixmap(*scene);
@@ -272,11 +272,11 @@ void MainWindow::find_next(std::stack<point_t> &stack, int &x_left, int &x_right
     bool f = false;
     int x = x_left;
     int xn;
-    while (x < x_right)
+    while (x <= x_right)
     {
         f = false;
         QColor color = img.pixelColor(x,y);
-        while (color != color_border && color != color_shading && x < x_right)
+        while (color != color_border && color != color_shading && x <= x_right)
         {
             f = true;
             x++;
