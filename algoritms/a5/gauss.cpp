@@ -15,6 +15,7 @@
 #define ERR_SUM 7
 #define ERR_MULT 8
 #define ERR_GAUSS 9
+#define EPS 0.00001
 
 void free_matrix(double **data, int n)
 {
@@ -28,13 +29,13 @@ double **allocate_matrix(int n, int m)
 {
     if (n == 0 || m == 0)
         return NULL;
-    double **data = calloc(n, sizeof(double*));
+    double **data = (double **)calloc(n, sizeof(double*));
     if (!data)
         return NULL;
 
     for (int i = 0; i < n; i++)
     {
-        data[i] = calloc(m, sizeof(double));
+        data[i] = (double *)calloc(m, sizeof(double));
 
         if (!data[i])
         {
@@ -195,6 +196,17 @@ int find_main1(int *p2, double **a, int n, int k)
     return OK;
 }
 
+void zero_matrix(double **mt, int n, int m)
+{
+    for (int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            mt[i][j] = 0;
+        }
+    }
+}
+
 /**
  * @brief gauss
  * Реализует метод Гаусса
@@ -252,7 +264,7 @@ int do_gauss(double **a, int n, int m, double ***b)
     u = allocate_matrix(n, m);
     if (u)
     {
-        p2 = malloc(m * sizeof(int));
+        p2 = (int *)malloc(m * sizeof(int));
         if (p2)
         {
             *b = allocate_matrix(n, 1);

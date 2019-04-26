@@ -5,8 +5,10 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     io.cpp \
-    gauss.cpp
+    gauss.cpp \
+    interpolation.cpp
 
 HEADERS += \
     io.h \
-    gauss.h
+    gauss.h \
+    interpolation.h
