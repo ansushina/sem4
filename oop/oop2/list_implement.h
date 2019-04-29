@@ -1,0 +1,4 @@
+#ifndef LIST_IMPLEMENT_H
+#define LIST_IMPLEMENT_H
+
+#endif // LIST_IMPLEMENT_H
