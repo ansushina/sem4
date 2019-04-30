@@ -7,26 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>1200</width>
-    <height>775</height>
+    <height>800</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>120</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLabel" name="draw_label">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>700</width>
-      <height>700</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="Line" name="line">
     <property name="geometry">
      <rect>
@@ -38,6 +31,19 @@
     </property>
     <property name="orientation">
      <enum>Qt::Vertical</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="draw_label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>700</width>
+      <height>700</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
    <widget class="QWidget" name="verticalLayoutWidget">
@@ -160,10 +166,33 @@
         </spacer>
        </item>
        <item>
+        <widget class="QRadioButton" name="input_zatravka">
+         <property name="text">
+          <string>Ввод затравки</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="mouse_random_input">
+         <property name="text">
+          <string>Ввод произвольной фигуры мышкой</string>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
+        </widget>
+       </item>
+       <item>
         <widget class="QRadioButton" name="mouse_input">
          <property name="text">
-          <string>Мышиный ввод</string>
+          <string>Ввод многоугольника мышкой</string>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
         </widget>
        </item>
        <item>
@@ -171,6 +200,9 @@
          <property name="text">
           <string>Клавиатурный ввод</string>
          </property>
+         <attribute name="buttonGroup">
+          <string notr="true">buttonGroup</string>
+         </attribute>
         </widget>
        </item>
       </layout>
@@ -292,7 +324,7 @@
           <string>без задержки</string>
          </property>
          <attribute name="buttonGroup">
-          <string notr="true">buttonGroup</string>
+          <string notr="true">buttonGroup_2</string>
          </attribute>
         </widget>
        </item>
@@ -302,7 +334,7 @@
           <string>с задержкой</string>
          </property>
          <attribute name="buttonGroup">
-          <string notr="true">buttonGroup</string>
+          <string notr="true">buttonGroup_2</string>
          </attribute>
         </widget>
        </item>
@@ -362,5 +394,6 @@
  <connections/>
  <buttongroups>
   <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_2"/>
  </buttongroups>
 </ui>
