@@ -224,13 +224,6 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_new_point_button_clicked()
 {
-    if (!ui->button_input->isChecked())
-    {
-        QMessageBox mBox;
-        mBox.setIcon(QMessageBox::Information);
-        mBox.setInformativeText("Выберите кнопку 'Клавиатурный ввод' чтобы иметь возмжность вводить точки.");
-        mBox.exec();
-    }
     QString l_x = ui->x_lineedit->text();
     QString l_y = ui->y_lineedit->text();
     bool ok1 = true, ok2 = true;
@@ -245,6 +238,24 @@ void MainWindow::on_new_point_button_clicked()
     if (x < 0 || y < 0 || x > 700 || y > 700)
         return;
 
+    if (ui->input_zatravka->isChecked())
+    {
+        xz = x;
+        yz = y;
+        zatravka_flag = true;
+        painter->setPen(color_shading);
+        painter->drawPoint(xz,yz);
+        ui->draw_label->setPixmap(*scene);
+        return;
+
+    }
+    if (!ui->button_input->isChecked())
+    {
+        QMessageBox mBox;
+        mBox.setIcon(QMessageBox::Information);
+        mBox.setInformativeText("Выберите кнопку 'Клавиатурный ввод' чтобы иметь возмжность вводить точки.");
+        mBox.exec();
+    }
     painter->setPen(color_border);
 
     if (is_first)
