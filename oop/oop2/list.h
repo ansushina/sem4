@@ -35,6 +35,8 @@ public:
     List<T>& operator <<(const List<T> &list);
     List<T>& operator <<(const T &value);
 
+    T* to_array(size_t &size);
+
 
     //итераторы
     list_iterator<T> begin();
@@ -42,23 +44,36 @@ public:
     const_list_iterator<T> begin() const;
     const_list_iterator<T> end() const;
 
-    //push_back;
-    //pop_back;
-    //clear
-    //insert
-    //swap
-    //size
-    //front
-    //back
-    //at
-    //data
-    //is_empty
-    //*num
-    // num
-    // +num
+    void append(const List<T>& list);
+    void append(const T& elem);
+    void remove(const T& elem);
+
+    void clear();
+    bool compare(const List<T>& list);
+
+    void InsertAfter(const T& el, list_iterator<T>& insert_after);
+    void remove(list_iterator<T>& iter);
+
+    bool is_empty();
+    size_t size() const;
+    size_t lenght() const;
+    size_t count(const T& value);
+
+    T& first();
+    const T& first() const;
+    T& last();
+    const T& last() const;
+    T& pop_back();
+    T& pop_front();
+    void push_back(const T& value);
+    void push_front(const T& value);
+
+    void sort();
+    void reverse();
 
 
-
+    //T value(int i) const;
+    //const T& at(int i) const;
 
 
     ~List();
