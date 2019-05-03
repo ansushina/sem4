@@ -25,6 +25,10 @@ public:
     {
         return this->key;
     }
+    void set_obj(Key &key)
+    {
+        this->key = key;
+    }
 
     void set_next(Node<Key> *next)
     {

@@ -23,14 +23,15 @@ public:
 
 
     List<T>& operator +(const List<T> &list) const;
+    List<T>& operator +(const T &value);
     List<T>& operator +=(const List<T> &list);
     List<T>& operator +=(const T &value);
 
     List<T>& operator [](const int i);
     List<T>& operator [](const int i) const;
 
-    List<T>& operator ==(const List<T> &list) const;
-    List<T>& operator !=(const List<T> &list) const;
+    bool operator ==(const List<T> &list) const;
+    bool operator !=(const List<T> &list) const;
 
     List<T>& operator <<(const List<T> &list);
     List<T>& operator <<(const T &value);
@@ -49,7 +50,7 @@ public:
     void remove(const T& elem);
 
     void clear();
-    bool compare(const List<T>& list);
+    int compare(const List<T>& list);
 
     void InsertAfter(const T& el, list_iterator<T>& insert_after);
     void remove(list_iterator<T>& iter);

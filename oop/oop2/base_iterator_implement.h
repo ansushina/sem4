@@ -29,7 +29,7 @@ base_iterator<T>::~base_iterator()
 }
 
 template<typename T>
-base_iterator<T>& base_iterator<T>::operator =(const base_iterator<T>&)
+base_iterator<T>& base_iterator<T>::operator =(const base_iterator<T>& iter)
 {
     if (this != &iter)
         this->ptr = iter.ptr;
@@ -77,7 +77,7 @@ bool base_iterator<T>::operator ==(const base_iterator<T>& iter) const
     return (this->ptr->get_obj() == iter.ptr->get_obj());
 }
 template<typename T>
-bool base_iterator<T>::operator !=(const base_iterator<T>&) const
+bool base_iterator<T>::operator !=(const base_iterator<T>&iter) const
 {
     return (this->ptr->get_obj() != iter.ptr->get_obj());
 }

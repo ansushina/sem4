@@ -7,10 +7,10 @@ class const_list_iterator : public base_iterator<T>
 {
 public:
     const_list_iterator(const const_list_iterator<T>&);
-    const_list_iterator(T*);
+    const_list_iterator(Node<T>*);
 
-    const T& operator *() const;
-    const T* operator ->() const;
+    const Node<T>& operator *() const;
+    const Node<T>* operator ->() const;
 };
 
 #endif // CONST_LIST_ITERATOR_H

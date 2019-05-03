@@ -6,12 +6,12 @@ template<typename T>
 class list_iterator : public base_iterator<T>
 {
 public:
-    list_iterator(constlist_iterator<T>&);
-    list_iterator(T*);
-    T &operator *();
-    T *operator ->();
-    const T &operator *() const;
-    const T *operator ->() const;
+    list_iterator(const list_iterator<T>&);
+    list_iterator(Node<T>*);
+    Node<T> &operator *();
+    Node<T> *operator ->();
+    const Node<T> &operator *() const;
+    const Node<T> *operator ->() const;
 };
 
 #endif // LIST_ITERATOR_H

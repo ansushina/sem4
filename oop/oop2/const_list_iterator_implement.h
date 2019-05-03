@@ -9,17 +9,17 @@ const_list_iterator<T>::const_list_iterator(const const_list_iterator<T>& iter):
     base_iterator<T>(iter.ptr)
 {}
 template <typename T>
-const_list_iterator<T>::const_list_iterator(T* ptr):
+const_list_iterator<T>::const_list_iterator(Node<T>* ptr):
     base_iterator<T>(ptr)
 {}
 
 template <typename T>
-const T& const_list_iterator<T>::operator *() const
+const Node<T>& const_list_iterator<T>::operator *() const
 {
     return this->ptr->get_obj();
 }
 template <typename T>
-const T* const_list_iterator<T>::operator ->() const
+const Node<T>* const_list_iterator<T>::operator ->() const
 {
     return this->ptr;
 }
