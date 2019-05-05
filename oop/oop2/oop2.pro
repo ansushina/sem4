@@ -5,9 +5,7 @@ CONFIG -= qt
 
 SOURCES += main.cpp \
     list.cpp \
-    base_container.cpp \
-    exceptions.cpp \
-    node.cpp
+    base_container.cpp
 
 HEADERS += \
     list.h \

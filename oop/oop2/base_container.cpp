@@ -13,12 +13,12 @@ base_container::~base_container()
     len = 0;
 }
 
-base_container::is_empty()
+bool base_container::is_empty() const
 {
     return len == 0;
 }
 
-base_container::size()
+size_t base_container::size() const
 {
     return len;
 }

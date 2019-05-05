@@ -52,14 +52,10 @@ OBJECTS_DIR   = ./
 
 SOURCES       = ../oop2/main.cpp \
 		../oop2/list.cpp \
-		../oop2/base_container.cpp \
-		../oop2/exceptions.cpp \
-		../oop2/node.cpp 
+		../oop2/base_container.cpp 
 OBJECTS       = main.o \
 		list.o \
-		base_container.o \
-		exceptions.o \
-		node.o
+		base_container.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -114,6 +110,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		../oop2/.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -139,9 +136,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		exceptions.h \
 		node.h ../oop2/main.cpp \
 		../oop2/list.cpp \
-		../oop2/base_container.cpp \
-		../oop2/exceptions.cpp \
-		../oop2/node.cpp
+		../oop2/base_container.cpp
 QMAKE_TARGET  = oop2
 DESTDIR       = 
 TARGET        = oop2
@@ -207,6 +202,7 @@ Makefile: ../oop2/oop2.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf \
@@ -276,6 +272,7 @@ Makefile: ../oop2/oop2.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/qt_config.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_post.prf:
+.qmake.stash:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exclusive_builds.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/toolchain.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/default_pre.prf:
@@ -333,7 +330,15 @@ compiler_clean:
 
 ####### Compile
 
-main.o: ../oop2/main.cpp 
+main.o: ../oop2/main.cpp ../oop2/list_implement.h \
+		../oop2/list.h \
+		../oop2/base_container.h \
+		../oop2/list_iterator.h \
+		../oop2/base_iterator.h \
+		../oop2/node.h \
+		../oop2/base_iterator_implement.h \
+		../oop2/const_list_iterator.h \
+		../oop2/exceptions.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../oop2/main.cpp
 
 list.o: ../oop2/list.cpp ../oop2/list.h \
@@ -342,17 +347,12 @@ list.o: ../oop2/list.cpp ../oop2/list.h \
 		../oop2/base_iterator.h \
 		../oop2/node.h \
 		../oop2/base_iterator_implement.h \
-		../oop2/const_list_iterator.h
+		../oop2/const_list_iterator.h \
+		../oop2/exceptions.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o list.o ../oop2/list.cpp
 
 base_container.o: ../oop2/base_container.cpp ../oop2/base_container.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o base_container.o ../oop2/base_container.cpp
-
-exceptions.o: ../oop2/exceptions.cpp ../oop2/exceptions.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o exceptions.o ../oop2/exceptions.cpp
-
-node.o: ../oop2/node.cpp ../oop2/node.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o node.o ../oop2/node.cpp
 
 ####### Install
 

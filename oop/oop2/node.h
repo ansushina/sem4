@@ -21,11 +21,15 @@ public:
         prev(nullptr)
     {}
     ~Node(){}
-    Key& get_obj() const
+    const Key& get_obj() const
     {
         return this->key;
     }
-    void set_obj(Key &key)
+    Key& get_obj()
+    {
+        return this->key;
+    }
+    void set_obj(const Key &key)
     {
         this->key = key;
     }

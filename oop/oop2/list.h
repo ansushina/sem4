@@ -5,6 +5,10 @@
 #include "list_iterator.h"
 #include "const_list_iterator.h"
 #include "node.h"
+#include "exceptions.h"
+#include <time.h>
+#include <typeinfo>
+#include <memory>
 
 template <typename T>
 class List : public container::base_container
@@ -15,7 +19,7 @@ public:
     List(T* array, int n);
     List(const List<T> &list);
     List(List<T> && list);
-    //List(std::initializer_list<std::initializer_list<T>> lst);
+    List(std::initializer_list<T> lst);
 
     // операторы
     List<T>& operator =(const List<T> &list);
@@ -27,8 +31,8 @@ public:
     List<T>& operator +=(const List<T> &list);
     List<T>& operator +=(const T &value);
 
-    List<T>& operator [](const int i);
-    List<T>& operator [](const int i) const;
+    const T &operator [](const int i);
+    const T &operator [](const int i) const;
 
     bool operator ==(const List<T> &list) const;
     bool operator !=(const List<T> &list) const;
@@ -37,7 +41,6 @@ public:
     List<T>& operator <<(const T &value);
 
     T* to_array(size_t &size);
-
 
     //итераторы
     list_iterator<T> begin();

@@ -69,7 +69,9 @@ base_iterator<T> base_iterator<T>::operator --(int)
 template<typename T>
 base_iterator<T>::operator bool() const
 {
-
+    if (this->ptr)
+        return true;
+    return false;
 }
 template<typename T>
 bool base_iterator<T>::operator ==(const base_iterator<T>& iter) const
