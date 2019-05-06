@@ -6,6 +6,7 @@
 #include <QMessageBox>
 #include <QPixmapCache>
 #include <iostream>
+#include <QDebug>
 //#include <windows.h>
 #include <math.h>
 #include <stack>
@@ -71,13 +72,13 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         painter->setPen(color_otr);
         if (event->modifiers() == Qt::ShiftModifier)
         {
-            if (fabs(x - OFFSET_X - x_prev) < fabs(y - OFFSET_Y- y_prev))
+            if (fabs(x - OFFSET_X - x0) < fabs(y - OFFSET_Y- y0))
             {
-                x = x_prev + OFFSET_X;
+                x = x0 + OFFSET_X;
             }
             else
             {
-                y = y_prev + OFFSET_Y;
+                y = y0 + OFFSET_Y;
             }
 
         }
@@ -226,7 +227,7 @@ void MainWindow::on_pushButton_2_clicked()
     ui->draw_label->setPixmap(*scene);
 }
 
-void MainWindow::draw_line(int x1, int y1, int x2, int y2)
+void MainWindow::draw_line(double x1, double y1, double x2, double y2)
 {
     painter->drawLine(x1,y1,x2,y2);
     line_flag = true;
@@ -362,23 +363,26 @@ void MainWindow::on_main_button_clicked()
     }
 
     //img = scene->toImage();
-    painter->setPen(color_line);
+    painter->setPen(QPen(color_line,2));
 
     int xmax = x_up>x_down?x_up:x_down;
     int xmin = x_up>x_down?x_down:x_up;
     int ymax = y_up>y_down?y_up:y_down;
     int ymin = y_up>y_down?y_down:y_up;
-
+    qDebug() << xmin << xmax << ymax << ymin;
     for (size_t j = 0; j < lines.size(); j++)
     {
         int x1 = lines[j].x1;
         int x2 = lines[j].x2;
         int y1 = lines[j].y1;
         int y2 = lines[j].y2;
-        QPoint p1(x1,y1);
-        QPoint p2(x2,y2);
+        //QPoint p1(x1,y1);
+        //QPoint p2(x2,y2);
+        point p1(x1,y1);
+        point p2(x2,y2);
+        //qDebug() << p1 << p2;
         int i = 1;
-        double eps = sqrt(2);
+        double eps = 0.5;//sqrt(2);
         int T1[4], T2[4];
         int s1,s2;
         while(1)
@@ -390,20 +394,24 @@ void MainWindow::on_main_button_clicked()
 
             if (s1 == 0 && s2 == 0)
             {
+                qDebug() <<"полностью видим";
                 draw_line(p1.x(),p1.y(),p2.x(),p2.y());
                 break;
             }
             int p = get_p(T1,T2, 4);
             if (p)
             {
+                qDebug() <<"тривиально невидим";
                 break;
             }
-            QPoint r = p1;
+            //QPoint r = p1;
+            point r = p1;
             if (i > 2)
             {
                  int pr = get_p(T1,T2, 4);
                  if (pr)
                      break;
+                 //qDebug() << p1 << p2;
                  draw_line(p1.x(),p1.y(),p2.x(),p2.y());
                  break;
             }
@@ -416,12 +424,14 @@ void MainWindow::on_main_button_clicked()
             }
 
 
-            while (abs(p1.x() - p2.x()) > eps && abs(p1.y() - p2.y()) > eps)
+            while (fabs(p1.x() - p2.x()) > eps || fabs(p1.y() - p2.y()) > eps)
             {
-                QPoint pm;
-                pm.setX((p1.x()+p2.x())/2);
-                pm.setY((p1.y()+p2.y())/2);
-                QPoint tmp = p1;
+                //QPoint pm;
+                point pm;
+                pm.setX((p1.x()+p2.x())/(double)2);
+                pm.setY((p1.y()+p2.y())/(double)2);
+                //QPoint tmp = p1;
+                point tmp = p1;
                 p1 = pm;
                 set_bits(xmax,xmin,ymax,ymin,p1.x(),p1.y(),T1);
                 int pr = get_p(T1,T2, 4);
@@ -436,6 +446,7 @@ void MainWindow::on_main_button_clicked()
             i++;
         }
     }
+    painter->setPen(QPen(color_line,1));
 
    // painter->setPen(color_shading);
 

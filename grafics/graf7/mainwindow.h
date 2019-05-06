@@ -17,8 +17,22 @@
 typedef struct point point_t;
 struct point
 {
-    int x;
-    int y;
+    point():X(0),Y(0){}
+    point(double x, double y):X(x),Y(y){}
+    double X;
+    double Y;
+
+    double x() const {return this->X;}
+    double y() const {return this->Y;}
+    void setY(double y){this->Y = y;}
+    void setX(double x){this->X = x;}
+
+    point_t& operator =(const point_t &p)
+    {
+        this->X = p.x();
+        this->Y = p.y();
+        return *this;
+    }
 };
 
 struct line_t
@@ -61,7 +75,7 @@ private slots:
 
 private:
     //void find_next(std::stack<point_t> &stack, int &x_left, int &x_right, const int &y);
-    void draw_line(int x1, int y1, int x2, int y2);
+    void draw_line(double x1, double y1, double x2, double y2);
     void draw_rect(int x1, int y1, int x2, int y2);
 
     Ui::MainWindow *ui;
