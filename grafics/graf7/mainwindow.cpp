@@ -428,8 +428,8 @@ void MainWindow::on_main_button_clicked()
             {
                 //QPoint pm;
                 point pm;
-                pm.setX((p1.x()+p2.x())/(double)2);
-                pm.setY((p1.y()+p2.y())/(double)2);
+                pm.setX((p1.x()+p2.x())/2);
+                pm.setY((p1.y()+p2.y())/2);
                 //QPoint tmp = p1;
                 point tmp = p1;
                 p1 = pm;
