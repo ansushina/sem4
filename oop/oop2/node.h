@@ -8,17 +8,15 @@ class Node
 private:
     Key key;
     Node<Key> *next;
-    Node<Key> *prev;
+
 
 public:
     Node():
-        next(nullptr),
-        prev(nullptr)
+        next(nullptr)
     {}
     Node(Key &key):
         key(key),
-        next(nullptr),
-        prev(nullptr)
+        next(nullptr)
     {}
     ~Node(){}
     const Key& get_obj() const
@@ -38,19 +36,12 @@ public:
     {
         this->next = next;
     }
-    void set_prev(Node<Key> *prev)
-    {
-        this->prev = prev;
-    }
 
     Node<Key> *get_next() const
     {
         return next;
     }
-    Node<Key> *get_prev() const
-    {
-        return prev;
-    }
+
 };
 
 #endif // NODE_H

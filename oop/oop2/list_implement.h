@@ -9,40 +9,6 @@
 #include <stdio.h>
 
 template <typename T>
-List<T>::List(Node<T> *list)
-{
-    time_t t_time;
-    t_time = time(NULL);
-    if (!list)
-    {
-        this->head = nullptr;
-        this->tail = nullptr;
-    }
-    else
-    {
-        Node<T> *node, *tmp;
-        Node<T> *head = new Node<T>;
-        if (!head)
-            throw memory_allocate_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "Allocation error");
-        head->set_obj(list->get_obj());
-        this->head = head;
-        tmp = head;
-        this->len++;
-        for (node = list->get_next(); node; node = node->get_next())
-        {
-            Node<T> *new_node = new Node<T>;
-            if (!new_node)
-                throw memory_allocate_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "Allocation error");
-            tmp->set_next(new_node);
-            new_node->set_obj(node->get_obj());
-            this->tail = new_node;
-            tmp = tmp->get_next();
-            this->len++;
-        }
-    }
-
-}
-template <typename T>
 List<T>::List(T* array, int n)
 {
     time_t t_time;
@@ -202,7 +168,7 @@ List<T>& List<T>::operator =(List<T> &&list)
 }
 
 template <typename T>
-List<T>& List<T>::operator +(const List<T> &list) const
+List<T> List<T>::operator +(const List<T> &list) const
 {
     List<T> *tmp = new List<T>;
     *tmp = *this;
@@ -210,7 +176,7 @@ List<T>& List<T>::operator +(const List<T> &list) const
     return *tmp;
 }
 template <typename T>
-List<T>& List<T>::operator +(const T &value)
+List<T> List<T>::operator +(const T &value) const
 {
     List<T> *tmp = new List<T>;
     *tmp = *this;
@@ -231,38 +197,6 @@ List<T>& List<T>::operator +=(const T &value)
 }
 
 template <typename T>
-const T& List<T>::operator [](const int i)
-{
-    time_t t_time;
-    t_time = time(NULL);
-    if (!this->head)
-        throw list_index_out_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "List index out of range");
-    Node<T> *node = this->head;
-    int j = 0;
-    while(node->get_next() && j < i)
-    {
-        node = node->get_next();
-        j++;
-    }
-    return node->get_obj();
-}
-template <typename T>
-const T& List<T>::operator [](const int i) const
-{
-    time_t t_time;
-    t_time = time(NULL);
-    if (!this->head)
-        throw list_index_out_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "List index out of range");
-    Node<T> *node = this->head;
-    int j = 0;
-    while(node->get_next() && j < i)
-    {
-        node = node->get_next();
-        j++;
-    }
-    return node->get_obj();
-}
-template <typename T>
 bool List<T>::operator ==(const List<T> &list) const
 {
     Node<T> *nodet = this->head, *nodel = list.head;
@@ -281,12 +215,12 @@ bool List<T>::operator !=(const List<T> &list) const
 {
     return !(*this==list);
 }
-template <typename T>
+/*template <typename T>
 List<T>& List<T>::operator <<(const List<T> &list){}
 template <typename T>
-List<T>& List<T>::operator <<(const T &value){}
+List<T>& List<T>::operator <<(const T &value){}*/
 template <typename T>
-T* List<T>::to_array(size_t &size)
+T** List<T>::to_array(size_t &size)
 {
     time_t t_time;
     t_time = time(NULL);
@@ -301,7 +235,7 @@ T* List<T>::to_array(size_t &size)
     }
     size = this->lenght();
 
-    return arr;
+    return &arr;
 }
 
 
@@ -328,7 +262,7 @@ const_list_iterator<T> List<T>::end() const
 }
 
 template <typename T>
-void List<T>::append(const List<T>& list)
+List<T>& List<T>::append(const List<T>& list)
 {
     time_t t_time;
     t_time = time(NULL);
@@ -351,7 +285,7 @@ void List<T>::append(const List<T>& list)
 
 }
 template <typename T>
-void List<T>::append(const T& elem)
+List<T>& List<T>::append(const T& elem)
 {
     time_t t_time;
     t_time = time(NULL);
@@ -363,28 +297,12 @@ void List<T>::append(const T& elem)
     {
         this->head = node;
         this->tail = node;
-        return;
+        return *this;
     }
     this->tail->set_next(node);
     this->tail = node;
     this->len++;
-}
-template <typename T>
-void List<T>::remove(const T& elem)
-{
-    time_t t_time;
-    t_time = time(NULL);
-    if (!this->head)
-        throw list_index_out_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "List index out of range");
-    Node<T> *node = this->head;
-    while (node->get_next()->get_obj() != elem)
-    {
-        node = node->get_next();
-    }
-    Node<T> *next = node->get_next()->get_next();
-    delete node->get_next();
-    node->set_next(next);
-    this->len--;
+    return *this;
 }
 template <typename T>
 void List<T>::clear()
@@ -403,14 +321,14 @@ void List<T>::clear()
 
 //not all
 template <typename T>
-int List<T>::compare(const List<T>& list)
+bool List<T>::compare(const List<T>& list) const
 {
     if (*this == list)
-        return 0;
-    return 1;
+        return true;
+    return false;
 }
 template <typename T>
-void List<T>::InsertAfter(const T& el, list_iterator<T>& insert_after)
+List<T>& List<T>::InsertAfter(const T& el, list_iterator<T>& insert_after)
 {
     Node<T> *node = new Node<T>;
     node->set_obj(el);
@@ -419,7 +337,7 @@ void List<T>::InsertAfter(const T& el, list_iterator<T>& insert_after)
     this->len++;
 }
 template <typename T>
-void List<T>::remove(list_iterator<T>& iter)
+List<T>& List<T>::remove(list_iterator<T>& iter)
 {
     time_t t_time;
     t_time = time(NULL);
@@ -491,26 +409,6 @@ const T& List<T>::last() const
     return this->tail->get_obj();
 }
 template <typename T>
-T& List<T>::pop_back()
-{
-    time_t t_time;
-    t_time = time(NULL);
-    if (!this->tail)
-        throw list_index_out_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "List index out of range");
-    T *data = new T;
-    *data = this->tail->get_obj();
-    Node<T> *tmp = this->head;
-    while (tmp->get_next() != this->tail)
-    {
-        tmp = tmp->get_next();
-    }
-    delete this->tail;
-    this->tail = tmp;
-    this->len--;
-    return *data;
-
-}
-template <typename T>
 T& List<T>::pop_front()
 {
     time_t t_time;
@@ -527,7 +425,7 @@ T& List<T>::pop_front()
 
 }
 template <typename T>
-void List<T>::push_back(const T& value)
+List<T>& List<T>::push_back(const T& value)
 {
     time_t t_time;
     t_time = time(NULL);
@@ -539,14 +437,15 @@ void List<T>::push_back(const T& value)
     {
         this->head = node;
         this->tail = node;
-        return;
+        return *this;
     }
     this->tail->set_next(node);
     this->tail = node;
     this->len++;
+    return *this;
 }
 template <typename T>
-void List<T>::push_front(const T& value)
+List<T>& List<T>::push_front(const T& value)
 {
     time_t t_time;
     t_time = time(NULL);
@@ -558,57 +457,18 @@ void List<T>::push_front(const T& value)
     {
         this->head = node;
         this->tail = node;
-        return;
+        return *this;
     }
     node->set_next(this->head);
     this->head = node;
     this->len++;
-}
-template <typename T>
-void List<T>::sort()
-{
-    T* arr = this->to_array();
-    //qsort(arr, this->length(), sizeof(T), compfunc::comp_inc<T>);
-    Node<T>* tmp = this->head;
-    size_t i = 0;
-    for(; tmp ; tmp = tmp->next)
-    {
-        tmp->set_obj(arr[i]);
-        this->tail = tmp;
-        i++;
-    }
-    delete [] arr;
-}
-template <typename T>
-void List<T>::reverse()
-{
-    time_t t_time;
-    t_time = time(NULL);
-    if(this->size() < 3)
-       throw list_size_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "List size exception");
-    this->tail = this->head;
-    Node<T>* one = this->head;
-    Node<T>* two = one->get_next();
-    Node<T>* three = two->get_next();
-    do
-    {
-        two->set_next(one);
-        one = two;
-        two = three;
-        if (three)
-        {
-            three = three->get_next();
-        }
-    }
-    while(three != nullptr);
-    two->set_next(one);
-    this->head->set_next(nullptr);
-    this->head = two;
+    return *this;
 }
 
 
+
 template <typename T>
- List<T>::~List()
+List<T>::~List()
 {
     Node<T> *node;
     while (this->head != nullptr)

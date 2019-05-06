@@ -19,13 +19,11 @@ int main()
         std::cout<<"==";
     list1 += 1;
     list3 = list2 + 2;
-    std::cout << list1[6];
 
     size_t size = list1.size();
-    int *arr2 = list1.to_array(size);
-    delete[]arr2;
+   // int *arr2 = list1.to_array(size);
+   // delete[]arr2;
 
-    list3.remove(7);
     if (list3.is_empty())
         cout<<"empty";
     else
@@ -34,12 +32,11 @@ int main()
     cout<<count;
     cout<<list3.first();
     cout<<list3.last();
-    cout<<list3.pop_back();
     cout<<list3.pop_front();
     list3.push_back(3);
     list3.push_front(2);
 
-    list3.reverse();
+;
 
     return 0;
 }

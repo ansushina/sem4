@@ -15,32 +15,38 @@ class List : public container::base_container
 {
 public:
     List(): head(nullptr), tail(nullptr){}
-    List(Node<T> *list);
     List(T* array, int n);
     List(const List<T> &list);
     List(List<T> && list);
     List(std::initializer_list<T> lst);
 
-    // операторы
+    virtual ~List();
     List<T>& operator =(const List<T> &list);
     List<T>& operator =(List<T> &&list);
+    List<T>& operator =(std::initializer_list<T> lst);
 
+    List<T> unite(const List<T> &list) const;
+    List<T> operator +(const List<T> &list) const;
+    List<T> unite(const T &value) const;
+    List<T> operator +(const T &value) const;
 
-    List<T>& operator +(const List<T> &list) const;
-    List<T>& operator +(const T &value);
+    List<T>& append(const List<T>& list);
     List<T>& operator +=(const List<T> &list);
+
+    List<T>& append(const T& elem);
     List<T>& operator +=(const T &value);
 
-    const T &operator [](const int i);
-    const T &operator [](const int i) const;
+    List<T>& push_back(const T& value);
+    List<T>& push_front(const T& value);
 
+    List<T>& InsertAfter(const T& el, list_iterator<T>& insert_after);
+    List<T>& InsertAfter(const List<T> &list, list_iterator<T>& insert_after);
+
+    bool compare(const List<T>& list) const;
     bool operator ==(const List<T> &list) const;
     bool operator !=(const List<T> &list) const;
 
-    List<T>& operator <<(const List<T> &list);
-    List<T>& operator <<(const T &value);
-
-    T* to_array(size_t &size);
+    T** to_array(size_t &size);
 
     //итераторы
     list_iterator<T> begin();
@@ -48,15 +54,10 @@ public:
     const_list_iterator<T> begin() const;
     const_list_iterator<T> end() const;
 
-    void append(const List<T>& list);
-    void append(const T& elem);
-    void remove(const T& elem);
-
     void clear();
-    int compare(const List<T>& list);
 
-    void InsertAfter(const T& el, list_iterator<T>& insert_after);
-    void remove(list_iterator<T>& iter);
+    List<T>& remove(list_iterator<T>& iter);
+    T& pop_front();
 
     bool is_empty();
     size_t size() const;
@@ -67,20 +68,7 @@ public:
     const T& first() const;
     T& last();
     const T& last() const;
-    T& pop_back();
-    T& pop_front();
-    void push_back(const T& value);
-    void push_front(const T& value);
 
-    void sort();
-    void reverse();
-
-
-    //T value(int i) const;
-    //const T& at(int i) const;
-
-
-    ~List();
 private:
     Node<T> *head;
     Node<T> *tail;
