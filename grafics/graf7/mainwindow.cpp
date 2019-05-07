@@ -362,7 +362,6 @@ void MainWindow::on_main_button_clicked()
         return;
     }
 
-    //img = scene->toImage();
     painter->setPen(QPen(color_line,2));
 
     int xmax = x_up>x_down?x_up:x_down;
@@ -376,13 +375,11 @@ void MainWindow::on_main_button_clicked()
         int x2 = lines[j].x2;
         int y1 = lines[j].y1;
         int y2 = lines[j].y2;
-        //QPoint p1(x1,y1);
-        //QPoint p2(x2,y2);
         point p1(x1,y1);
         point p2(x2,y2);
         //qDebug() << p1 << p2;
         int i = 1;
-        double eps = 0.5;//sqrt(2);
+        double eps = sqrt(2);
         int T1[4], T2[4];
         int s1,s2;
         while(1)
@@ -404,7 +401,7 @@ void MainWindow::on_main_button_clicked()
                 qDebug() <<"тривиально невидим";
                 break;
             }
-            //QPoint r = p1;
+
             point r = p1;
             if (i > 2)
             {
@@ -426,11 +423,11 @@ void MainWindow::on_main_button_clicked()
 
             while (fabs(p1.x() - p2.x()) > eps || fabs(p1.y() - p2.y()) > eps)
             {
-                //QPoint pm;
+
                 point pm;
                 pm.setX((p1.x()+p2.x())/2);
                 pm.setY((p1.y()+p2.y())/2);
-                //QPoint tmp = p1;
+
                 point tmp = p1;
                 p1 = pm;
                 set_bits(xmax,xmin,ymax,ymin,p1.x(),p1.y(),T1);
@@ -447,7 +444,5 @@ void MainWindow::on_main_button_clicked()
         }
     }
     painter->setPen(QPen(color_line,1));
-
-   // painter->setPen(color_shading);
 
 }
