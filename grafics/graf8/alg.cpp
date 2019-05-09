@@ -20,9 +20,9 @@ bool CheckSigns( QVector<int> signs, int &obhod)
     if ((count_minus == 0 && count_plus == 0) || (count_minus&&count_plus))
         return false;
     if (count_minus == 0)
-        obhod = -1;
-    else
         obhod = 1;
+    else
+        obhod = -1;
     return true;
 
 }
@@ -74,12 +74,13 @@ void alg(point p1, point p2, int obhod, std::vector<line_t> &egles, QPainter &pa
    point D;
    D.setX(p2.x() - p1.x());
    D.setY(p2.y() - p1.y());
-   for (int i = 0; i < egles.size()-1; i++)
+   int size = egles.size();
+   for (int i = 0; i < size; i++)
    {
        point nVector;
-       if (i  = egles.size() - 1)
+       if (i  == size - 1)
        {
-           if (obhod == 1)
+           if (obhod == -1)
            {
                nVector.setX((egles[0].y1 - egles[i].y1));
                nVector.setY(-(egles[0].x1 - egles[i].x1));
@@ -93,7 +94,7 @@ void alg(point p1, point p2, int obhod, std::vector<line_t> &egles, QPainter &pa
        }
        else
        {
-           if (obhod == 1)
+           if (obhod == -1)
            {
                nVector.setX((egles[i + 1].y1 - egles[i].y1));
                nVector.setY(-(egles[i + 1].x1 - egles[i].x1));

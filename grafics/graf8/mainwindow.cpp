@@ -407,11 +407,9 @@ void MainWindow::on_main_button_clicked()
     {
         point p1(lines[i].x1,lines[i].y1);
         point p2(lines[i].x2,lines[i].y2);
-        alg(p1,p2,obhod,egles,*painter);
+        alg(p2,p1,obhod,egles,*painter);
         ui->draw_label->setPixmap(*scene);
     }
-
-
 
     painter->setPen(QPen(color_line,1));
 
