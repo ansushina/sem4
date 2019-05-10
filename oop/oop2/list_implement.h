@@ -225,28 +225,6 @@ bool List<T>::operator !=(const List<T> &list) const
 {
     return !(*this==list);
 }
-/*template <typename T>
-List<T>& List<T>::operator <<(const List<T> &list){}
-template <typename T>
-List<T>& List<T>::operator <<(const T &value){}*/
-/*template <typename T>
-T** List<T>::to_array(size_t &size)
-{
-    time_t t_time;
-    t_time = time(NULL);
-    T* arr = new T[this->lenght()];
-    if (!arr)
-        throw memory_allocate_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "Allocation error");
-    Node<T> *node = this->head;
-    for( size_t i  = 0; i < this->len; i++)
-    {
-         arr[i] = node->get_obj();
-         node = node->get_next();
-    }
-    size = this->lenght();
-
-    return &arr;
-}*/
 
 
 //итераторы
@@ -516,4 +494,24 @@ List<T>& List<T>::InsertAfter(std::shared_ptr<Node<T>> node, list_iterator<T>& i
     this->len++;
     return *this;
 }
+
+/*template <typename T>
+T** List<T>::to_array(size_t &size)
+{
+    time_t t_time;
+    t_time = time(NULL);
+    T* arr = new T[this->lenght()];
+    if (!arr)
+        throw memory_allocate_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "Allocation error");
+    Node<T> *node = this->head;
+    for( size_t i  = 0; i < this->len; i++)
+    {
+         arr[i] = node->get_obj();
+         node = node->get_next();
+    }
+    size = this->lenght();
+
+    return &arr;
+}*/
+
 #endif // LIST_IMPLEMENT_H

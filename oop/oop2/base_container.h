@@ -8,7 +8,7 @@ class base_container
 {
 public:
     explicit base_container();
-    explicit base_container(size_t len);
+//    explicit base_container(size_t len);
     virtual ~base_container();
 
     bool is_empty() const;

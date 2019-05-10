@@ -27,6 +27,7 @@ public:
 
     List<T> unite(const List<T> &list) const;
     List<T> operator +(const List<T> &list) const;
+
     List<T> unite(const T &value) const;
     List<T> operator +(const T &value) const;
 
@@ -46,8 +47,6 @@ public:
     bool operator ==(const List<T> &list) const;
     bool operator !=(const List<T> &list) const;
 
-    //T** to_array(size_t &size);
-
     //итераторы
     list_iterator<T> begin();
     list_iterator<T> end();
@@ -62,12 +61,14 @@ public:
     bool is_empty();
     size_t size() const;
     size_t lenght() const;
-    size_t count(const T& value);
+//    size_t count(const T& value);
 
     T& first();
     const T& first() const;
     T& last();
     const T& last() const;
+
+    //T** to_array(size_t &size);
 protected:
     List<T>& append_list(const List<T>& list);
     List<T>& append_el(const T& elem);
