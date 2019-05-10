@@ -1,13 +1,13 @@
 #ifndef NODE_H
 #define NODE_H
-
+#include <memory>
 
 template<typename Key>
 class Node
 {
 private:
     Key key;
-    Node<Key> *next;
+    std::shared_ptr<Node<Key>> next;
 
 
 public:
@@ -32,12 +32,12 @@ public:
         this->key = key;
     }
 
-    void set_next(Node<Key> *next)
+    void set_next(std::shared_ptr<Node<Key>>next)
     {
         this->next = next;
     }
 
-    Node<Key> *get_next() const
+    std::shared_ptr<Node<Key>> get_next() const
     {
         return next;
     }

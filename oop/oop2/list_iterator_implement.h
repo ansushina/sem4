@@ -1,7 +1,6 @@
 #ifndef LIST_ITERATOR_IMPLEMENT_H
 #define LIST_ITERATOR_IMPLEMENT_H
 
-#include "base_iterator.h"
 #include "list_iterator.h"
 using namespace iterator;
 template<typename T>
@@ -10,27 +9,27 @@ list_iterator<T>::list_iterator(const list_iterator<T>& iter):
 {}
 
 template<typename T>
-list_iterator<T>::list_iterator(Node<T> *ptr):
+list_iterator<T>::list_iterator(std::shared_ptr<Node<T>> ptr):
     base_iterator<T>(ptr)
 {}
 
 template<typename T>
-Node<T>& list_iterator<T>::operator *()
+T& list_iterator<T>::operator *()
 {
     return this->ptr->get_obj();
 }
 template<typename T>
-Node<T>* list_iterator<T>::operator ->()
+std::shared_ptr<Node<T>> list_iterator<T>::operator ->()
 {
     return this->ptr;
 }
 template<typename T>
-const Node<T>& list_iterator<T>::operator *() const
+const T& list_iterator<T>::operator *() const
 {
     return this->ptr->get_obj();
 }
 template<typename T>
-const Node<T>* list_iterator<T>::operator ->() const
+const std::shared_ptr<Node<T>> list_iterator<T>::operator ->() const
 {
     return this->ptr;
 }

@@ -20,7 +20,7 @@ int main()
     list1 += 1;
     list3 = list2 + 2;
 
-    size_t size = list1.size();
+    //size_t size = list1.size();
    // int *arr2 = list1.to_array(size);
    // delete[]arr2;
 
@@ -35,6 +35,13 @@ int main()
     cout<<list3.pop_front();
     list3.push_back(3);
     list3.push_front(2);
+
+    auto end = list3.end();
+    for(auto it = list3.begin(); it != list3.end(); ++it)
+    {
+        int i = *it;
+        cout << i << endl;
+    }
 
 ;
 

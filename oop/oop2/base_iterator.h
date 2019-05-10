@@ -11,21 +11,19 @@ namespace iterator
     public:
         base_iterator();
         base_iterator(const base_iterator<T>&);
-        base_iterator(T*);
+        base_iterator(std::shared_ptr<Node<T>> ptr);
         virtual ~base_iterator();
 
         base_iterator<T>&operator =(const base_iterator<T>&);
 
         base_iterator<T>& operator ++();
         base_iterator<T> operator ++(int);
-        base_iterator<T>& operator --();
-        base_iterator<T> operator --(int);
 
         operator bool() const;
         bool operator ==(const base_iterator<T>&) const;
         bool operator !=(const base_iterator<T>&) const;
     protected:
-        Node<T> *ptr;
+        std::shared_ptr<Node<T>> ptr;
     };
 }
 

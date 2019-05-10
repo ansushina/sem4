@@ -17,7 +17,7 @@ base_iterator<T>::base_iterator(const base_iterator<T> &iter)
 }
 
 template<typename T>
-base_iterator<T>::base_iterator(T*ptr)
+base_iterator<T>::base_iterator(std::shared_ptr<Node<T>> ptr)
 {
     this->ptr = ptr;
 }
@@ -52,21 +52,6 @@ base_iterator<T> base_iterator<T>::operator ++(int)
     return tmp;
 }
 template<typename T>
-base_iterator<T>& base_iterator<T>::operator --()
-{
-    if (this->ptr != nullptr)
-        this->ptr = this->ptr->get_prev();
-    return *this;
-}
-
-template<typename T>
-base_iterator<T> base_iterator<T>::operator --(int)
-{
-    base_iterator tmp = *this;
-    this->operator--;
-    return tmp;
-}
-template<typename T>
 base_iterator<T>::operator bool() const
 {
     if (this->ptr)
@@ -76,11 +61,11 @@ base_iterator<T>::operator bool() const
 template<typename T>
 bool base_iterator<T>::operator ==(const base_iterator<T>& iter) const
 {
-    return (this->ptr->get_obj() == iter.ptr->get_obj());
+    return (this->ptr == iter.ptr);
 }
 template<typename T>
 bool base_iterator<T>::operator !=(const base_iterator<T>&iter) const
 {
-    return (this->ptr->get_obj() != iter.ptr->get_obj());
+    return (this->ptr != iter.ptr);
 }
 #endif // BASE_ITERATOR_IMPLEMENT_H

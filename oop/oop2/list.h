@@ -2,8 +2,8 @@
 #define LIST_H
 
 #include "base_container.h"
-#include "list_iterator.h"
-#include "const_list_iterator.h"
+#include "list_iterator_implement.h"
+#include "const_list_iterator_implement.h"
 #include "node.h"
 #include "exceptions.h"
 #include <time.h>
@@ -46,7 +46,7 @@ public:
     bool operator ==(const List<T> &list) const;
     bool operator !=(const List<T> &list) const;
 
-    T** to_array(size_t &size);
+    //T** to_array(size_t &size);
 
     //итераторы
     list_iterator<T> begin();
@@ -68,10 +68,16 @@ public:
     const T& first() const;
     T& last();
     const T& last() const;
+protected:
+    List<T>& append_list(const List<T>& list);
+    List<T>& append_el(const T& elem);
+    List<T>& append(std::shared_ptr<Node<T>> el);
+    List<T>& InsertAfter(std::shared_ptr<Node<T>> el, list_iterator<T>& insert_after);
+    void free();
 
 private:
-    Node<T> *head;
-    Node<T> *tail;
+    std::shared_ptr<Node<T>> head;
+    std::shared_ptr<Node<T>> tail;
 };
 
 #endif // LIST_H
