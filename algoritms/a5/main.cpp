@@ -11,7 +11,7 @@ using namespace std;
 #define N 40
 
 const double E[4] = {12.13, 20.98, 31.00, 45.00};
-
+const double Z[5] = {0,1,2,3,4};
 const double QT[13] = {2000,4000,6000,8000,10000,12000,14000,16000,18000,20000,22000,24000,26000};
 const double Q[5][13] = {
     {1,1,1,1.0001, 1.0025, 1.0198, 1.0895, 1.2827, 1.6973, 2.4616, 3.6552, 5.3749, 7.6838},
@@ -52,37 +52,37 @@ double n_1(double p, double t)
     return 7242 * p / t;
 }
 
-const double Z[5] = {0,1,2,3,4};
+
 
 double find_deltae(int i, double t, double g)
 {
     if (i >= 4)
         cout << "find deltae going wrong" << endl;
-    double g2 = g/2;
-    return 8.61*pow(10, -5) * t * log((1 + Z[i+1]*Z[i+1] * g2) * (1 + g2) / (1 + Z[i]*Z[i]*g2));
+    double g2 = g*0.5;
+    return 8.61*10e-5 * t * log((1 + Z[i+1]*Z[i+1] * g2) * (1 + g2) / (1 + Z[i]*Z[i]*g2));
 }
 
 double find_k(int i, double t, double g)
 {
     if (i >= 4)
         cout << "find k going wrong" << endl;
-    return 4.83*pow(10,-3) * get_q(i+1,t)/get_q(i,t) * pow(t, 3/2) * exp(-(E[i] -
-                                                                           find_deltae(i,t,g))*11603/t);
+    return 4.83*10e-3 * get_q(i+1,t)/get_q(i,t) * pow(t, 1.5) * exp(-(E[i] -
+                                                                           find_deltae(i,t,g))*11603.0/t);
 }
 
 double find_alpha(double t, double g)
 {
-    return 0.285 *pow(10,-11) * pow(g*t,3);
+    return 0.285 * 10e-11 * pow(g*t,3);
 }
 
 double gamma(double g, double v, double x[5], double t)
 {
-    double s = exp(v)/(1+g/2);
+    double s = exp(v)/(1+g*0.5);
     for(int i = 1; i < 5; i++)
     {
-        s+=exp(x[i])*Z[i]*Z[i]/(1+Z[i]*Z[i] *g/2);
+        s+=exp(x[i])*Z[i]*Z[i]/(1+Z[i]*Z[i] * g*0.5);
     }
-    s *= 5.87 * pow(10,10)/t/t/t;
+    s *= 5.87 * 10e10 /t/t/t;
     return g*g - s;
 }
 
@@ -92,7 +92,7 @@ double find_gamma(double v, double x[5], double t)
     double g2 = 3;
     double g = (g2-g1)/2;
 
-    while((g2-g1) > EPS)
+    while(fabs(g2-g1) > EPS)
     {
         g = (g2-g1)/2;
         double f1 = gamma(g,v,x,t);
@@ -155,10 +155,10 @@ double n_2(double p, double t)
         matrix[1][6] = -(v + x[2] - x[1] - log(find_k(1,t,gamma)));
         matrix[2][6] = -(v + x[3] - x[2] - log(find_k(2,t,gamma)));
         matrix[3][6] = -(v + x[4] - x[3] - log(find_k(3,t,gamma)));
-        cout <<"k1 "<< find_k(0,t,gamma);
-        cout <<" k2 " <<find_k(1,t,gamma);
-        cout <<" k3 " <<find_k(2,t,gamma);
-        cout <<" k4 " <<find_k(3,t,gamma) << endl;
+        //cout <<"k1 "<< find_k(0,t,gamma);
+        //cout <<" k2 " <<find_k(1,t,gamma);
+        //cout <<" k3 " <<find_k(2,t,gamma);
+       // cout <<" k4 " <<find_k(3,t,gamma) << endl;
 
         matrix[4][6] = -(exp(v) - Z[1]*n[1] - Z[2]*n[2] - Z[3]*n[3] - Z[4]*n[4]);
         matrix[5][6] = -(7242*p/t + alpha - exp(v) - n[0] - n[1] - n[2] - n[3] - n[4]);
@@ -177,17 +177,17 @@ double n_2(double p, double t)
             x[i-1] = x[i-1] + delta[i][0];
         }
         free_matrix(delta,6);
-        cout <<"v "<<v;
+        //cout <<"v "<<v;
         for (int i  = 0; i < 5; i++)
         {
             n[i] = exp(x[i]);
-            cout <<"n"<<i<<" "<< n[i] << " "<<endl;
+            //cout <<"n"<<i<<" "<< n[i] << " "<<endl;
         }
 
         gamma = find_gamma(v,x,t);
         alpha = find_alpha(t,gamma);
     }
-    while (0&&fabs(deltav/v) < 0.0001 &&
+    while (0 &&fabs(deltav/v) < 0.0001 &&
            fabs(deltax1/x[0]) < 0.0001 &&
            fabs(deltax2/x[1]) < 0.0001 &&
            fabs(deltax3/x[2]) < 0.0001 &&
