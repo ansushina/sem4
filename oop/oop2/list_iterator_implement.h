@@ -16,22 +16,22 @@ list_iterator<T>::list_iterator(std::shared_ptr<Node<T>> ptr):
 template<typename T>
 T& list_iterator<T>::operator *()
 {
-    return this->ptr->get_obj();
+    return this->ptr.lock()->get_obj();
 }
 template<typename T>
-std::shared_ptr<Node<T>> list_iterator<T>::operator ->()
+Node<T>* list_iterator<T>::operator ->()
 {
-    return this->ptr;
+    return this->ptr.lock();
 }
 template<typename T>
 const T& list_iterator<T>::operator *() const
 {
-    return this->ptr->get_obj();
+    return this->ptr.lock()->get_obj();
 }
 template<typename T>
 const std::shared_ptr<Node<T>> list_iterator<T>::operator ->() const
 {
-    return this->ptr;
+    return this->ptr.lock();
 }
 
 

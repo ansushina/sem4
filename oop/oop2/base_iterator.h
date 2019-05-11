@@ -9,9 +9,9 @@ namespace iterator
     class base_iterator
     {
     public:
-        base_iterator();
         base_iterator(const base_iterator<T>&);
         base_iterator(std::shared_ptr<Node<T>> ptr);
+        base_iterator(std::weak_ptr<Node<T>> ptr);
         virtual ~base_iterator();
 
         base_iterator<T>&operator =(const base_iterator<T>&);
@@ -23,7 +23,7 @@ namespace iterator
         bool operator ==(const base_iterator<T>&) const;
         bool operator !=(const base_iterator<T>&) const;
     protected:
-        std::shared_ptr<Node<T>> ptr;
+        std::weak_ptr<Node<T>> ptr;
     };
 }
 

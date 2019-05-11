@@ -15,12 +15,14 @@ const_list_iterator<T>::const_list_iterator(std::shared_ptr<Node<T>> ptr):
 template <typename T>
 const T& const_list_iterator<T>::operator *() const
 {
-    return this->ptr->get_obj();
+    return this->ptr.lock()->get_obj();
 }
 template <typename T>
 const std::shared_ptr<Node<T>> const_list_iterator<T>::operator ->() const
 {
-    return this->ptr;
+    //if (this->ptr.expired())
+
+    return this->ptr.lock();
 }
 
 

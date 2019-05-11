@@ -3,9 +3,7 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-SOURCES += main.cpp \
-    list.cpp \
-    base_container.cpp
+SOURCES += main.cpp
 
 HEADERS += \
     list.h \

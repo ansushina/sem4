@@ -117,7 +117,6 @@ rc_type alloc_fig(figure_t &fig, size_t n)
     return rc;
 }
 
-
 rc_type create_fig(figure_t &fig, size_t n, stream_t f)
 {
     rc_type rc = OK;
@@ -133,9 +132,6 @@ int read_from_file(figure &fig, stream_t f)
         return ERR_EMPTY;
 
     rc_type rc = OK;
-
-
-
     figure work = init_fig();
 
     rc = count_points(work.n, f);

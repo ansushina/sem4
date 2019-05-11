@@ -59,9 +59,7 @@ public:
     T& pop_front();
 
     bool is_empty();
-    size_t size() const;
     size_t lenght() const;
-//    size_t count(const T& value);
 
     T& first();
     const T& first() const;

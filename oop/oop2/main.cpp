@@ -20,16 +20,10 @@ int main()
     list1 += 1;
     list3 = list2 + 2;
 
-    //size_t size = list1.size();
-   // int *arr2 = list1.to_array(size);
-   // delete[]arr2;
-
     if (list3.is_empty())
         cout<<"empty";
     else
         cout<<"notempty";
-    size_t count = list3.count(2);
-    cout<<count;
     cout<<list3.first();
     cout<<list3.last();
     cout<<list3.pop_front();
@@ -40,10 +34,10 @@ int main()
     for(auto it = list3.begin(); it != list3.end(); ++it)
     {
         int i = *it;
+        auto is = it.operator ->();
         cout << i << endl;
     }
-
-;
+    list_iterator<int> is = list3.begin();
 
     return 0;
 }

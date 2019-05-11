@@ -5,12 +5,6 @@
 using namespace iterator;
 
 template<typename T>
-base_iterator<T>::base_iterator()
-{
-    this->ptr = nullptr;
-}
-
-template<typename T>
 base_iterator<T>::base_iterator(const base_iterator<T> &iter)
 {
     this->ptr = iter.ptr;
@@ -21,11 +15,15 @@ base_iterator<T>::base_iterator(std::shared_ptr<Node<T>> ptr)
 {
     this->ptr = ptr;
 }
-
+template<typename T>
+base_iterator<T>::base_iterator(std::weak_ptr<Node<T>> ptr)
+{
+    this->ptr = ptr;
+}
 template<typename T>
 base_iterator<T>::~base_iterator()
 {
-    this->ptr = nullptr;
+    this->ptr.reset();
 }
 
 template<typename T>
@@ -39,8 +37,8 @@ base_iterator<T>& base_iterator<T>::operator =(const base_iterator<T>& iter)
 template<typename T>
 base_iterator<T>& base_iterator<T>::operator ++()
 {
-    if (this->ptr != nullptr)
-        this->ptr = this->ptr->get_next();
+    if (!this->ptr.expired())
+        this->ptr = this->ptr.lock()->get_next();
     return *this;
 }
 
@@ -54,18 +52,17 @@ base_iterator<T> base_iterator<T>::operator ++(int)
 template<typename T>
 base_iterator<T>::operator bool() const
 {
-    if (this->ptr)
-        return true;
-    return false;
+    return !this->ptr.expired();
 }
 template<typename T>
 bool base_iterator<T>::operator ==(const base_iterator<T>& iter) const
 {
-    return (this->ptr == iter.ptr);
+    return (this->ptr.lock() == iter.ptr.lock());
 }
 template<typename T>
 bool base_iterator<T>::operator !=(const base_iterator<T>&iter) const
 {
-    return (this->ptr != iter.ptr);
+    return !(this->ptr.lock() == iter.ptr.lock());
+
 }
 #endif // BASE_ITERATOR_IMPLEMENT_H

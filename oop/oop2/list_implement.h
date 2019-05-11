@@ -63,6 +63,7 @@ List<T>::List(List<T> &&list)
 {
     this->head = list.head;
     this->tail = list.tail;
+    this->len = list.len;
 }
 
 template <typename T>
@@ -136,6 +137,7 @@ List<T>& List<T>::operator =(List<T> &&list)
     this->clear();
     this->head = list.head;
     this->tail = list.tail;
+    this->len = list.len;
     return *this;
 }
 
@@ -159,8 +161,7 @@ List<T> List<T>::unite(const T &value) const
 template <typename T>
 List<T> List<T>::operator +(const List<T> &list) const
 {
-    List<T> *tmp = new List<T>;
-    *tmp = *this;
+    List<T> *tmp = new List<T>(this);
     tmp->append_list(list);
     return *tmp;
 }
@@ -281,6 +282,7 @@ List<T>& List<T>::InsertAfter(const List<T> &list, list_iterator<T>& insert_afte
             std::shared_ptr<Node<T>> new_node = std::shared_ptr<Node<T>>(new Node<T>);
             new_node->set_obj(node->get_obj());
             this->InsertAfter(new_node,insert_after);
+            ++insert_after;
         }
     }
     catch (std::bad_alloc)
@@ -314,31 +316,9 @@ bool List<T>::is_empty()
     return this->head == nullptr;
 }
 template <typename T>
-size_t List<T>::size() const
-{
-    return this->len;
-}
-template <typename T>
 size_t List<T>::lenght() const
 {
     return (this->len * sizeof(Node<T>));
-}
-
-template <typename T>
-
-size_t List<T>::count(const T& value)
-{
-    if(!this->head)
-        return 0;
-    std::shared_ptr<Node<T>> tmp = this->head;
-    size_t count = 0;
-    while (tmp)
-    {
-        if (tmp->get_obj() == value)
-            count++;
-        tmp = tmp->get_next();
-    }
-    return count;
 }
 
 template <typename T>
