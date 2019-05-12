@@ -50,12 +50,8 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../oop2/main.cpp \
-		../oop2/list.cpp \
-		../oop2/base_container.cpp 
-OBJECTS       = main.o \
-		list.o \
-		base_container.o
+SOURCES       = ../oop2/main.cpp 
+OBJECTS       = main.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -134,9 +130,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		const_list_iterator_implement.h \
 		list_implement.h \
 		exceptions.h \
-		node.h ../oop2/main.cpp \
-		../oop2/list.cpp \
-		../oop2/base_container.cpp
+		node.h ../oop2/main.cpp
 QMAKE_TARGET  = oop2
 DESTDIR       = 
 TARGET        = oop2
@@ -337,22 +331,11 @@ main.o: ../oop2/main.cpp ../oop2/list_implement.h \
 		../oop2/base_iterator.h \
 		../oop2/node.h \
 		../oop2/base_iterator_implement.h \
+		../oop2/list_iterator_implement.h \
 		../oop2/const_list_iterator.h \
+		../oop2/const_list_iterator_implement.h \
 		../oop2/exceptions.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../oop2/main.cpp
-
-list.o: ../oop2/list.cpp ../oop2/list.h \
-		../oop2/base_container.h \
-		../oop2/list_iterator.h \
-		../oop2/base_iterator.h \
-		../oop2/node.h \
-		../oop2/base_iterator_implement.h \
-		../oop2/const_list_iterator.h \
-		../oop2/exceptions.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o list.o ../oop2/list.cpp
-
-base_container.o: ../oop2/base_container.cpp ../oop2/base_container.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o base_container.o ../oop2/base_container.cpp
 
 ####### Install
 

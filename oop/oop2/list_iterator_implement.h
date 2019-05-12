@@ -2,6 +2,7 @@
 #define LIST_ITERATOR_IMPLEMENT_H
 
 #include "list_iterator.h"
+
 using namespace iterator;
 template<typename T>
 list_iterator<T>::list_iterator(const list_iterator<T>& iter):
@@ -19,7 +20,7 @@ T& list_iterator<T>::operator *()
     return this->ptr.lock()->get_obj();
 }
 template<typename T>
-Node<T>* list_iterator<T>::operator ->()
+std::shared_ptr<Node<T>> list_iterator<T>::operator ->()
 {
     return this->ptr.lock();
 }

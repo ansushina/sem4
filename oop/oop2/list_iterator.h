@@ -1,6 +1,6 @@
 #ifndef LIST_ITERATOR_H
 #define LIST_ITERATOR_H
-#include "base_iterator_implement.h"
+#include "base_iterator.h"
 using namespace iterator;
 template<typename T>
 class list_iterator : public base_iterator<T>
@@ -13,5 +13,5 @@ public:
     const T &operator *() const;
     const std::shared_ptr<Node<T>>  operator ->() const;
 };
-
+#include"list_iterator_implement.h"
 #endif // LIST_ITERATOR_H
