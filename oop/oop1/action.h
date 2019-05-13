@@ -22,7 +22,6 @@ struct data
     } scale ;
     struct
     {
-
         double dx;
         double dz;
         double dy;
