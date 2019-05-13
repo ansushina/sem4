@@ -5,8 +5,7 @@ CONFIG -= qt
 
 SOURCES += main.cpp
 
-HEADERS += \
-    list.h \
+HEADERS += list.h \
     base_container.h \
     base_iterator.h \
     base_iterator_implement.h \

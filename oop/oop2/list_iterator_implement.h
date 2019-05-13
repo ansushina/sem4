@@ -17,21 +17,37 @@ list_iterator<T>::list_iterator(std::shared_ptr<Node<T>> ptr):
 template<typename T>
 T& list_iterator<T>::operator *()
 {
+    time_t t_time;
+    t_time = time(NULL);
+    if (!this->ptr.expired())
+        throw iterator_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "Invalid iterator");
     return this->ptr.lock()->get_obj();
 }
 template<typename T>
 std::shared_ptr<Node<T>> list_iterator<T>::operator ->()
 {
+    time_t t_time;
+    t_time = time(NULL);
+    if (!this->ptr.expired())
+        throw iterator_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "Invalid iterator");
     return this->ptr.lock();
 }
 template<typename T>
 const T& list_iterator<T>::operator *() const
 {
+    time_t t_time;
+    t_time = time(NULL);
+    if (!this->ptr.expired())
+        throw iterator_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "Invalid iterator");
     return this->ptr.lock()->get_obj();
 }
 template<typename T>
 const std::shared_ptr<Node<T>> list_iterator<T>::operator ->() const
 {
+    time_t t_time;
+    t_time = time(NULL);
+    if (!this->ptr.expired())
+        throw iterator_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "Invalid iterator");
     return this->ptr.lock();
 }
 

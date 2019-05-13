@@ -1,6 +1,8 @@
 #ifndef BASE_ITERATOR_H
 #define BASE_ITERATOR_H
 #include <memory>
+#include "exceptions.h"
+#include <time.h>
 #include "node.h"
 
 namespace iterator

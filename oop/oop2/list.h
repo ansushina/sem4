@@ -59,14 +59,12 @@ public:
     T& pop_front();
 
     bool is_empty();
-    size_t lenght() const;
 
     T& first();
     const T& first() const;
     T& last();
     const T& last() const;
 
-    //T** to_array(size_t &size);
 protected:
     List<T>& append_list(const List<T>& list);
     List<T>& append_el(const T& elem);

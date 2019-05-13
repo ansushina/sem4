@@ -141,6 +141,34 @@ List<T>& List<T>::operator =(List<T> &&list)
     return *this;
 }
 
+template <typename T>
+List<T>& List<T>::operator =(std::initializer_list<T> lst)
+{
+    time_t t_time;
+    t_time = time(NULL);
+    if (!lst)
+    {
+        this->head = nullptr;
+        this->tail = nullptr;
+    }
+    else
+    {
+        try
+        {
+            for (int i = 0; i < lst.size(); i++)
+            {
+                std::shared_ptr<Node<T>> new_node = std::shared_ptr<Node<T>>(new Node<T>);
+                new_node->set_obj(lst[i]);
+                this->append(new_node);
+            }
+        }
+        catch (std::bad_alloc)
+        {
+            throw memory_allocate_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "Allocation error");
+        }
+    }
+    return *this;
+}
 
 template <typename T>
 List<T> List<T>::unite(const List<T> &list) const
@@ -315,11 +343,7 @@ bool List<T>::is_empty()
 {
     return this->head == nullptr;
 }
-template <typename T>
-size_t List<T>::lenght() const
-{
-    return (this->len * sizeof(Node<T>));
-}
+
 
 template <typename T>
  T& List<T>::first()
@@ -475,23 +499,5 @@ List<T>& List<T>::InsertAfter(std::shared_ptr<Node<T>> node, list_iterator<T>& i
     return *this;
 }
 
-/*template <typename T>
-T** List<T>::to_array(size_t &size)
-{
-    time_t t_time;
-    t_time = time(NULL);
-    T* arr = new T[this->lenght()];
-    if (!arr)
-        throw memory_allocate_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "Allocation error");
-    Node<T> *node = this->head;
-    for( size_t i  = 0; i < this->len; i++)
-    {
-         arr[i] = node->get_obj();
-         node = node->get_next();
-    }
-    size = this->lenght();
-
-    return &arr;
-}*/
 
 #endif // LIST_IMPLEMENT_H

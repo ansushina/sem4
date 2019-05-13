@@ -37,8 +37,11 @@ base_iterator<T>& base_iterator<T>::operator =(const base_iterator<T>& iter)
 template<typename T>
 base_iterator<T>& base_iterator<T>::operator ++()
 {
+    time_t t_time;
+    t_time = time(NULL);
     if (!this->ptr.expired())
-        this->ptr = this->ptr.lock()->get_next();
+        throw iterator_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "Invalid iterator");
+    this->ptr = this->ptr.lock()->get_next();
     return *this;
 }
 

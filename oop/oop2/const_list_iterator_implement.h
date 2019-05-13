@@ -15,13 +15,20 @@ const_list_iterator<T>::const_list_iterator(std::shared_ptr<Node<T>> ptr):
 template <typename T>
 const T& const_list_iterator<T>::operator *() const
 {
+    time_t t_time;
+    t_time = time(NULL);
+    if (!this->ptr.expired())
+        throw iterator_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "Invalid iterator");
+
     return this->ptr.lock()->get_obj();
 }
 template <typename T>
 const std::shared_ptr<Node<T>> const_list_iterator<T>::operator ->() const
 {
-    //if (this->ptr.expired())
-
+    time_t t_time;
+    t_time = time(NULL);
+    if (!this->ptr.expired())
+        throw iterator_exception(__FILE__, typeid(*this).name(), __LINE__ - 4, ctime(&t_time), "Invalid iterator");
     return this->ptr.lock();
 }
 
