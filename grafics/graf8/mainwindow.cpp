@@ -213,6 +213,7 @@ void MainWindow::on_background_button_clicked()
 void MainWindow::on_clear_button_clicked()
 {
     lines.clear();
+    egles.clear();
     delete painter;
     delete scene;
     ui->draw_label->clear();
@@ -224,11 +225,13 @@ void MainWindow::on_clear_button_clicked()
     line_flag = false;
     rect_flag = false;
     is_start_ots = true;
+
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    if (rect_flag)
+
+    if (1)
     {
         rect_flag = false;
         delete painter;
@@ -243,6 +246,7 @@ void MainWindow::on_pushButton_2_clicked()
         {
             draw_line(lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2);
         }
+        is_start_ots = true;
 
     }
     ui->draw_label->setPixmap(*scene);

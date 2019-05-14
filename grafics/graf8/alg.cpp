@@ -1,4 +1,4 @@
-#include "alg.h"
+  #include "alg.h"
 #include <QVector>
 #include "math.h"
 
@@ -68,16 +68,16 @@ bool is_convex(std::vector<line_t> egles, int &obhod)
 
 void alg(point p1, point p2, int obhod, std::vector<line_t> &egles, QPainter &painter)
 {
-   double tn = 0;
-   double tv = 1;
-   double t = 0;
-   point D;
+   double tn = 0; //нижняя
+   double tv = 1; //верхняя
+   double t = 0; //параметр
+   point D; // вектор ориентации
    D.setX(p2.x() - p1.x());
    D.setY(p2.y() - p1.y());
    int size = egles.size();
    for (int i = 0; i < size; i++)
    {
-       point nVector;
+       point nVector; //вектор нормали
        if (i  == size - 1)
        {
            if (obhod == -1)
@@ -105,13 +105,13 @@ void alg(point p1, point p2, int obhod, std::vector<line_t> &egles, QPainter &pa
                nVector.setY((egles[i + 1].x1 - egles[i].x1));
            }
        }
-       point W;
+       point W; // нек коэфицент(для определения знака)
        W.setX(p1.x() - egles[i].x1);
        W.setY(p1.y() - egles[i].y1);
 
        int Wsk = scalMult(W,nVector);
        int Dsk = scalMult(D,nVector);
-       if(Dsk == 0)
+       if(Dsk == 0) // отрезок вырождается в точку или параллелен
        {
            if (Wsk < 0)
                return;
