@@ -5,14 +5,38 @@
 #define END 8
 #define STEP 1
 
+static double a0 = 1;
+static double a1 = 2;
+static double a2 = 3;
+
 double F(double x)
 {
-    return 5 * x + 1/x/x;
+    return (a0 * x) / (a1 + a2 * x);
 }
 
 double F_pr(double x)
 {
-    return 5 - 2/x/x/x;
+    return (a0 * a1) / pow((a1 + a2 * x), 2);
+}
+
+double ksi(double x)
+{
+    return 1/x;
+}
+
+double ksi_x(double x)
+{
+    return -1/x/x;
+}
+
+double eta_y(double y)
+{
+    return -1/y/y;
+}
+
+double eta_ksi_diff()
+{
+    return a1/a0;
 }
 
 double * real(double *x, double *y, int n)
@@ -55,13 +79,50 @@ double *central_sub(double *x, double *y, int n, int h)
 
 double *runge(double *x, double *y, int n, int h)
 {
+    double *mas2 = left_sub(x,y,n,h);
+    double zn = 1;
     double *mas = (double *)calloc(n, sizeof(double));
-    for (int i = 1; i < n-1; i++)
+    for (int i = 2; i < n; i++)
     {
-        mas[i] = (y[i+1] - y[i-1])/h/2;
+        mas[i] = (y[i] - y[i-2])/h/2;
     }
+    for (int i = 0; i < 2; i++)
+    {
+        mas[i] = (y[i+2] - y[i])/h/2;
+    }
+
+    double *res = (double *)calloc(n, sizeof(double));
+
+    for (int i = 0; i < n; i++)
+    {
+        res[i] = mas2[i] + (mas2[i] - mas[i])/zn;
+    }
+    free(mas);
+    free(mas2);
+    return res;
+}
+double *align(double *x, double *y, int n, int h)
+{
+    double *mas = (double *)calloc(n, sizeof(double));
+    double tmp[n];
+    for (int i = 1; i < n; i++)
+    {
+        tmp[i] = ksi(x[i]);
+    }
+    double *newtmp = left_sub(x,tmp,n,h);
+    double ksi_derivate = newtmp[0];
+
+    for (int i = 0; i < n; i++ )
+    {
+        if (x[i] == 0)
+            mas[i] = 0;
+        else
+            mas[i] = (ksi_x(x[i])/eta_y(y[i]))*eta_ksi_diff();
+    }
+    free(newtmp);
     return mas;
 }
+
 double *bounds(double *x, double *y, int n, int h)
 {
     double *mas = (double *)calloc(n, sizeof(double));
@@ -108,10 +169,14 @@ int main()
     }
     printf("\n");
     print_line("real:", real(x,y,n),n);
+    printf("\n");
     print_line("right sub:", right_sub(x,y,n,h),n);
     print_line("left sub:", left_sub(x,y,n,h),n);
     print_line("central sub:", central_sub(x,y,n,h),n);
     print_line("bounds:", bounds(x,y,n,h),n);
+    print_line("runge:", runge(x,y,n,h),n);
+    print_line("align:", align(x,y,n,h),n);
+
 
 
 
