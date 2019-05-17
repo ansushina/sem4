@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
-#define START 2
-#define END 8
+
+#define START 1
+#define END 10
 #define STEP 1
 
 static double a0 = 1;
@@ -135,7 +137,10 @@ void print_line(const char *str, double *mas, int n)
     printf("%15s",str);
     for (int i = 0; i < n; i++)
     {
-        printf("%10f", mas[i]);
+		if (mas[i] == 0.)
+			printf("%10s", "-----");
+		else
+            printf("%10f", mas[i]);
 
     }
     printf("\n");
@@ -143,7 +148,7 @@ void print_line(const char *str, double *mas, int n)
 }
 int main()
 {
-    printf("Hello World!\n");
+    //printf("!\n");
     //20-10-10-10-10
     printf("%15s","x:");
     int n = (END-START)/STEP;
@@ -168,14 +173,23 @@ int main()
 
     }
     printf("\n");
+	printf("\n");
+	
+    print_line("right diff:", right_sub(x,y,n,h),n);
+	printf("\n");
+    print_line("left diff:", left_sub(x,y,n,h),n);
+	printf("\n");
+	print_line("bounds:", bounds(x,y,n,h),n);
+	printf("\n");
+    print_line("central diff:", central_sub(x,y,n,h),n);
+	printf("\n");
+    
+    print_line("runge(left):", runge(x,y,n,h),n);
+	printf("\n");
+    print_line("align:", align(x,y,n,h),n);
+	printf("\n");
     print_line("real:", real(x,y,n),n);
     printf("\n");
-    print_line("right sub:", right_sub(x,y,n,h),n);
-    print_line("left sub:", left_sub(x,y,n,h),n);
-    print_line("central sub:", central_sub(x,y,n,h),n);
-    print_line("bounds:", bounds(x,y,n,h),n);
-    print_line("runge:", runge(x,y,n,h),n);
-    print_line("align:", align(x,y,n,h),n);
 
 
 
