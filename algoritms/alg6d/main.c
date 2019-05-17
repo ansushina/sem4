@@ -88,12 +88,12 @@ double *runge(double *x, double *y, int n, int h)
     }
     for (int i = 0; i < 2; i++)
     {
-        mas[i] = (y[i+2] - y[i])/h/2;
+        //mas[i] = (y[i+2] - y[i])/h/2;
     }
 
     double *res = (double *)calloc(n, sizeof(double));
 
-    for (int i = 0; i < n; i++)
+    for (int i = 2; i < n; i++)
     {
         res[i] = mas2[i] + (mas2[i] - mas[i])/zn;
     }
