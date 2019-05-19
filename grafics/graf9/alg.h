@@ -32,4 +32,6 @@ struct point
     }
 };
 
+bool is_convex(std::vector<line_t> egles, int &obhod);
+
 #endif // ALG_H

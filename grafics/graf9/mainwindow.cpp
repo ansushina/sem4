@@ -398,8 +398,59 @@ void MainWindow::on_main_button_clicked()
         mBox.exec();
         return;
     }
+    int obhod;
+    if(!is_convex(egles, obhod))
+    {
+        QMessageBox mBox;
+        mBox.setIcon(QMessageBox::Information);
+        mBox.setInformativeText("Невыпуклый многоугольник.");
+        mBox.exec();
+        return;
+    }
 
     painter->setPen(QPen(color_line,2));
+    int xmax = x_up>x_down?x_up:x_down;
+    int xmin = x_up>x_down?x_down:x_up;
+    int ymax = y_up>y_down?y_up:y_down;
+    int ymin = y_up>y_down?y_down:y_up;
+    std::vector<point> c;
+    c.push_back(point(xmin,ymin));
+    c.push_back(point(xmax,ymin));
+    c.push_back(point(xmax,ymax));
+    c.push_back(point(xmin,ymax));
+    c.push_back(point(xmin,ymin));
+    size_t Nc = c.size();
+
+    std::vector<point> p;
+    for(int i = 0; i < lines.size(); i++)
+    {
+        point p1(lines[i].x1,lines[i].y1);
+        p.push_back(p1);
+    }
+   // point p1(lines[0].x1, lines[0].y1);
+    //p.push_back(p1);
+    size_t Np = p.size(), Nq;
+
+
+    for (int i = 1; i < Nc; i++)
+    {
+        Nq = 0;
+        point F;
+        for (int j = 0; j < Np; j++)
+        {
+            if (j == 0)
+            {
+                F = P[j]
+            }
+            else
+            {
+
+            }
+
+
+        }
+    }
+
 
 
     painter->setPen(QPen(color_line,1));
