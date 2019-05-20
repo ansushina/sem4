@@ -53,6 +53,7 @@ private:
     //void find_next(std::stack<point_t> &stack, int &x_left, int &x_right, const int &y);
     void draw_line(double x1, double y1, double x2, double y2);
     void draw_rect(int x1, int y1, int x2, int y2);
+    void del_polygon();
 
     Ui::MainWindow *ui;
     QPainter *painter;

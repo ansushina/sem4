@@ -64,3 +64,38 @@ bool is_convex(std::vector<line_t> egles, int &obhod)
     signs.append(msign);
     return CheckSigns(signs, obhod);
 }
+
+int is_visible(point p, point c1, point c2)
+{
+    int w1 = (p.x() - c1.x()) * (c2.y() - c1.y());
+    int w2 = (p.y() - c1.y()) * (c2.x() - c1.x());
+    int w3 = w1-w2;
+    return sign(w3);
+}
+
+bool is_crossing(point p1, point p2, point c1, point c2)
+{
+    int vis1 = is_visible(p1,c1,c2);
+    int vis2 = is_visible(p2,c1,c2);
+    if ((vis1 > 0 && vis2 < 0) ||(vis1 < 0 && vis2 > 0))
+        return true;
+    return false;
+}
+
+point find_cross_point(point p1, point p2, point c1, point c2)
+{
+    double a = p2.x() - p1.x();
+    double b = c1.x() - c2.x();
+    double c = c1.x() - p1.x();
+
+    double d = p2.y() - p1.y();
+    double e = c1.y() - c2.y();
+    double f = c2.y() - p1.y();
+
+    double det = a*e - b*d;
+    double t = (c*e - b * f) / det;
+    point I;
+    I.setX(p1.x() + (p2.x() - p1.x()) * t);
+    I.setY(p1.y() + (p2.y() - p1.y()) * t);
+    return I;
+}

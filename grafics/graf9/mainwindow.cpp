@@ -10,6 +10,7 @@
 //#include <windows.h>
 #include <math.h>
 #include <stack>
+#include <stdlib.h>
 
 #define OFFSET_X 10
 #define OFFSET_Y 20
@@ -61,6 +62,24 @@ MainWindow::~MainWindow()
     delete scene;
 }
 
+void MainWindow::del_polygon()
+{
+    line_flag = false;
+    delete painter;
+    delete scene;
+    lines.clear();
+    ui->draw_label->clear();
+    scene = new QPixmap(851, 701);
+    scene->fill(QColor(Qt::white));
+    painter = new QPainter(scene);
+    painter->setPen(color_ots);
+    draw_rect(x_up,y_up, x_down, y_down);
+
+    ui->draw_label->setPixmap(*scene);
+    painter->setPen(color_otr);
+    is_first = true;
+}
+
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
     int x = event->x();
@@ -74,7 +93,9 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
 
         if (is_first)
         {
-            //on_pushButton_2_clicked();
+           //on_pushButton_2_clicked();
+            del_polygon();
+
             x0 = x - OFFSET_X;
             y0 = y - OFFSET_Y;
             x_prev = x - OFFSET_X;
@@ -96,6 +117,35 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
             {
                 y = y_prev + OFFSET_Y;
             }
+        }
+        if (event->modifiers() == Qt::CTRL)
+        {
+            int xmax = x_up>x_down?x_up:x_down;
+            int xmin = x_up>x_down?x_down:x_up;
+            int ymax = y_up>y_down?y_up:y_down;
+            int ymin = y_up>y_down?y_down:y_up;
+            int fxmin = fabs(x - OFFSET_X - xmin);
+            int fymin =  fabs(y - OFFSET_Y- ymin);
+            int fxmax = fabs(x - OFFSET_X - xmax);
+            int fymax =  fabs(y - OFFSET_Y- ymax);
+
+            int fmin = std::min(std::min(fxmin, fxmax), std::min(fymin, fymax));
+            if (fmin == fxmin)
+            {
+                x = xmin + OFFSET_X;
+            }
+            else if (fmin == fxmax)
+            {
+                x = xmax + OFFSET_X;
+            }
+            else if (fmin == fymin)
+            {
+                y = ymin + OFFSET_Y;
+            }
+            else
+            {
+                y = ymax + OFFSET_Y;
+            }
 
         }
 
@@ -112,37 +162,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         y_prev = y - OFFSET_Y;
 
         ui->draw_label->setPixmap(*scene);
-/*
-        if (event->modifiers() == Qt::ShiftModifier)
-        {
-            if (fabs(x - OFFSET_X - x0) < fabs(y - OFFSET_Y- y0))
-            {
-                x = x0 + OFFSET_X;
-            }
-            else
-            {
-                y = y0 + OFFSET_Y;
-            }
 
-        }
-        if (is_first)
-        {
-            x0 = x - OFFSET_X;
-            y0 = y - OFFSET_Y;
-            is_first = false;
-            painter->drawEllipse(x0,y0, 1,1);
-            ui->draw_label->setPixmap(*scene);
-            return;
-        }
-        else
-        {
-            is_first = true;
-            draw_line(x0,y0,x - OFFSET_X,y - OFFSET_Y);
-            line_t line(x0,x - OFFSET_X,y0,y - OFFSET_Y);
-            lines.push_back(line);
-            return;
-        }
-*/
     }
     if (!ui->input_otsek->isChecked())
     {
@@ -214,6 +234,7 @@ void MainWindow::on_clear_button_clicked()
 {
     lines.clear();
     //egles.clear();
+
     delete painter;
     delete scene;
     ui->draw_label->clear();
@@ -399,7 +420,7 @@ void MainWindow::on_main_button_clicked()
         return;
     }
     int obhod;
-    if(!is_convex(egles, obhod))
+    if(!is_convex(lines, obhod))
     {
         QMessageBox mBox;
         mBox.setIcon(QMessageBox::Information);
@@ -408,7 +429,6 @@ void MainWindow::on_main_button_clicked()
         return;
     }
 
-    painter->setPen(QPen(color_line,2));
     int xmax = x_up>x_down?x_up:x_down;
     int xmin = x_up>x_down?x_down:x_up;
     int ymax = y_up>y_down?y_up:y_down;
@@ -419,7 +439,7 @@ void MainWindow::on_main_button_clicked()
     c.push_back(point(xmax,ymax));
     c.push_back(point(xmin,ymax));
     c.push_back(point(xmin,ymin));
-    size_t Nc = c.size();
+    size_t Nc = c.size()-1;
 
     std::vector<point> p;
     for(int i = 0; i < lines.size(); i++)
@@ -430,29 +450,57 @@ void MainWindow::on_main_button_clicked()
    // point p1(lines[0].x1, lines[0].y1);
     //p.push_back(p1);
     size_t Np = p.size(), Nq;
+    point F,S,I;
+    std::vector<point> Q;
 
-
-    for (int i = 1; i < Nc; i++)
+    for (int i = 0; i < Nc; i++)
     {
         Nq = 0;
-        point F;
         for (int j = 0; j < Np; j++)
         {
             if (j == 0)
             {
-                F = P[j]
+                F = p[j];
             }
             else
             {
-
+                if (is_crossing(S,p[j],c[i],c[i+1]))
+                {
+                    Nq++;
+                    I = find_cross_point(S,p[j],c[i],c[i+1]);
+                    Q.push_back(I);
+                }
             }
-
-
+            S = p[j];
+            int vis = is_visible(S,c[i],c[i+1]);
+            if ((vis  >= 0 && obhod == -1) || (vis <= 0 && obhod == 1))
+            {
+                Q.push_back(S);
+                Nq++;
+            }
         }
+        if (Nq != 0)
+        {
+            if (is_crossing(S, F, c[i], c[i+1]))
+            {
+                Nq++;
+                I = find_cross_point(S,F,c[i],c[i+1]);
+                Q.push_back(I);
+            }
+        }
+        Np = Nq;
+        p = Q;
+        Q.clear();
     }
 
 
 
+    painter->setPen(QPen(color_line,2));
+    for (size_t i = 0; i < p.size()-1; i++)
+    {
+         draw_line(p[i].x(), p[i].y(), p[i+1].x(), p[i+1].y());
+    }
+    draw_line(p[p.size()-1].x(), p[p.size()-1].y(), p[0].x(), p[0].y());
     painter->setPen(QPen(color_line,1));
 
 }

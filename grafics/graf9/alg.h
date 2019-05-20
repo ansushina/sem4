@@ -1,9 +1,11 @@
 #ifndef ALG_H
 #define ALG_H
 
+#include <vector>
+#include <QVector>
 struct line_t
 {
-    line_t(): x1(0), x2(0), y1(0), y2(0) {};
+    line_t(): x1(0), x2(0), y1(0), y2(0) {}
     line_t(int x1, int x2, int y1, int y2): x1(x1), x2(x2), y1(y1), y2(y2){}
     int x1;
     int x2;
@@ -33,5 +35,8 @@ struct point
 };
 
 bool is_convex(std::vector<line_t> egles, int &obhod);
+bool is_crossing(point p1, point p2, point c1, point c2);
+point find_cross_point(point p1, point p2, point c1, point c2);
+int is_visible(point p, point c1, point c2);
 
 #endif // ALG_H
