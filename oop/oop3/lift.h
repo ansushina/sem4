@@ -6,11 +6,12 @@
 #include"ldoors.h"
 #include"lcontroller.h"
 
-class lift
+class Lift
 {
     Q_OBJECT
 public:
-    lift();
+    Lift();
+    void set_floor(int i);
 private:
     ldoors doors;
     lcabin cabin;

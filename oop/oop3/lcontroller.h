@@ -9,12 +9,14 @@ class lcontroller
 public:
     explicit lcontroller(QObject *parent = 0);
     virtual ~lcontroller();
-    enum DoorsState
+    enum ControllerState
     {
         IN_PROCESS,
         FREE
     };
 
+    void set_new_target(int floor);
+public slots:
 private slots:
 
 signals:

@@ -10,10 +10,11 @@ public:
     virtual ~lcabin();
     enum CabinState
     {
-      FULL,
+      BUZY,
       MOVING,
-      FREE
+      STAY
     };
+public slots:
 private slots:
 
 signals:
