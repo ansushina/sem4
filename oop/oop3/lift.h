@@ -6,7 +6,7 @@
 #include"ldoors.h"
 #include"lcontroller.h"
 
-class Lift
+class Lift: public QObject
 {
     Q_OBJECT
 public:

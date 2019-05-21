@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-class lcontroller
+class lcontroller: public QObject
 {
     Q_OBJECT
 public:
