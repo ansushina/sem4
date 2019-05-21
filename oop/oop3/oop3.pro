@@ -36,7 +36,8 @@ HEADERS += \
     lift.h \
     ldoors.h \
     lcabin.h \
-    lcontroller.h
+    lcontroller.h \
+    common.h
 
 FORMS += \
         mainwindow.ui

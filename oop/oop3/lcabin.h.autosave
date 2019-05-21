@@ -2,7 +2,7 @@
 #define LCABIN_H
 
 #include "ldoors.h"
-class lcabin
+class lcabin : public QObject
 {
     Q_OBJECT
 public:

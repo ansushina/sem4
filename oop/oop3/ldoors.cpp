@@ -1,20 +1,20 @@
 #include "ldoors.h"
 
-#define DOORS_TIME 2000
 
-ldoors::ldoors(QObject *parent = 0)
+
+ldoors::ldoors(QObject *parent = 0):
+    state(CLOSE)
 {
-    state = CLOSE;
     openingTimer.setSingleShot(true);
     closingTimer.setSingleShot(true);
     stayopenTimer.setSingleShot(true);
     waitTimer.setSingleShot(true);
 
-    QObject::connect(this, SIGNAL(open_doors()), this, SLOT(open()));
+    QObject::connect(this, SIGNAL(opened_doors()), this, SLOT(open()));
     QObject::connect(&openingTimer, SIGNAL(timeout()), this, SLOT(open()));
     QObject::connect(&closingTimer, SIGNAL(timeout()), this, SLOT(close()));
     QObject::connect(&stayopenTimer, SIGNAL(timeout()), this, SLOT(start_closing()));
-    QObject::connect(&waitTimer, SIGNAL(timeout()), this, SLOT(open())); //
+    //QObject::connect(&waitTimer, SIGNAL(timeout()), this, SLOT(open()));
 }
 
 void ldoors::start_closing()

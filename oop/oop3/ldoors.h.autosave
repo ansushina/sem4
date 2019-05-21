@@ -6,7 +6,7 @@
 
 #include "common.h"
 
-class ldoors
+class ldoors: public QObject
 {
     Q_OBJECT
 public:
