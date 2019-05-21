@@ -13,7 +13,7 @@
 #include <stdlib.h>
 
 #define OFFSET_X 10
-#define OFFSET_Y 20
+#define OFFSET_Y 15
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -73,7 +73,10 @@ void MainWindow::del_polygon()
     scene->fill(QColor(Qt::white));
     painter = new QPainter(scene);
     painter->setPen(color_ots);
-    draw_rect(x_up,y_up, x_down, y_down);
+    for (size_t i = 0; i <egles.size(); i++)
+    {
+        draw_line(egles[i].x1, egles[i].y1, egles[i].x2, egles[i].y2);
+    }
 
     ui->draw_label->setPixmap(*scene);
     painter->setPen(color_otr);
@@ -118,36 +121,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
                 y = y_prev + OFFSET_Y;
             }
         }
-        if (event->modifiers() == Qt::CTRL)
-        {
-            int xmax = x_up>x_down?x_up:x_down;
-            int xmin = x_up>x_down?x_down:x_up;
-            int ymax = y_up>y_down?y_up:y_down;
-            int ymin = y_up>y_down?y_down:y_up;
-            int fxmin = fabs(x - OFFSET_X - xmin);
-            int fymin =  fabs(y - OFFSET_Y- ymin);
-            int fxmax = fabs(x - OFFSET_X - xmax);
-            int fymax =  fabs(y - OFFSET_Y- ymax);
 
-            int fmin = std::min(std::min(fxmin, fxmax), std::min(fymin, fymax));
-            if (fmin == fxmin)
-            {
-                x = xmin + OFFSET_X;
-            }
-            else if (fmin == fxmax)
-            {
-                x = xmax + OFFSET_X;
-            }
-            else if (fmin == fymin)
-            {
-                y = ymin + OFFSET_Y;
-            }
-            else
-            {
-                y = ymax + OFFSET_Y;
-            }
-
-        }
 
         line_t l;
         l.x1 = x_prev;
@@ -162,6 +136,7 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         y_prev = y - OFFSET_Y;
 
         ui->draw_label->setPixmap(*scene);
+        return;
 
     }
     if (!ui->input_otsek->isChecked())
@@ -169,30 +144,48 @@ void MainWindow::mousePressEvent(QMouseEvent *event)
         return;
     }
 
-    x_prev = x - OFFSET_X;
-    y_prev = y - OFFSET_Y;
-
-    ui->draw_label->setPixmap(*scene);
-
     painter->setPen(color_ots);
+
     if (is_start_ots)
     {
         on_pushButton_2_clicked();
-        x_up = x - OFFSET_X;
-        y_up = y - OFFSET_Y;
+        x0_o = x - OFFSET_X;
+        y0_o = y - OFFSET_Y;
+        x_prev_o = x - OFFSET_X;
+        y_prev_o = y - OFFSET_Y;
+       // is_first = false;
         is_start_ots = false;
-
-        painter->drawEllipse(x - OFFSET_X,y - OFFSET_Y,1,1);
+        painter->drawEllipse(x-OFFSET_X,y-OFFSET_Y,1,1);
         ui->draw_label->setPixmap(*scene);
         return;
     }
 
-    painter->setPen(color_ots);
+    if (event->modifiers() == Qt::ShiftModifier)
+    {
+        if (fabs(x - OFFSET_X - x_prev_o) < fabs(y - OFFSET_Y- y_prev_o))
+        {
+            x = x_prev_o + OFFSET_X;
+        }
+        else
+        {
+            y = y_prev_o + OFFSET_Y;
+        }
 
-    x_down = x - OFFSET_X;
-    y_down = y - OFFSET_Y;
-    is_start_ots = true;
-    draw_rect(x_up,y_up, x_down, y_down);
+    }
+
+    line_t l;
+    l.x1 = x_prev_o;
+    l.y1 = y_prev_o;
+    l.x2 = x - OFFSET_X;
+    l.y2 = y - OFFSET_Y;
+
+    egles.push_back(l);
+
+    painter->drawLine(l.x1, l.y1, l.x2, l.y2);
+    x_prev_o = x - OFFSET_X;
+    y_prev_o = y - OFFSET_Y;
+
+    ui->draw_label->setPixmap(*scene);
     return;
 }
 
@@ -233,7 +226,7 @@ void MainWindow::on_background_button_clicked()
 void MainWindow::on_clear_button_clicked()
 {
     lines.clear();
-    //egles.clear();
+    egles.clear();
 
     delete painter;
     delete scene;
@@ -257,7 +250,7 @@ void MainWindow::on_pushButton_2_clicked()
         rect_flag = false;
         delete painter;
         delete scene;
-        //egles.clear();
+        egles.clear();
         ui->draw_label->clear();
         scene = new QPixmap(851, 701);
         scene->fill(QColor(Qt::white));
@@ -407,7 +400,7 @@ void MainWindow::on_main_button_clicked()
     {
         QMessageBox mBox;
         mBox.setIcon(QMessageBox::Information);
-        mBox.setInformativeText("Отрезок не дорисован.");
+        mBox.setInformativeText("Многоугольник не дорисован.");
         mBox.exec();
         return;
     }
@@ -415,30 +408,28 @@ void MainWindow::on_main_button_clicked()
     {
         QMessageBox mBox;
         mBox.setIcon(QMessageBox::Information);
-        mBox.setInformativeText("Недостаточно данных. Введите отрезок и отсекатель");
+        mBox.setInformativeText("Недостаточно данных. Введите многоугольник и отсекатель");
         mBox.exec();
         return;
     }
-    int obhod;
-    if(!is_convex(lines, obhod))
+    int obhod1;
+    if(!is_convex(egles, obhod1))
     {
         QMessageBox mBox;
         mBox.setIcon(QMessageBox::Information);
-        mBox.setInformativeText("Невыпуклый многоугольник.");
+        mBox.setInformativeText("Невыпуклый отсекатель.");
         mBox.exec();
         return;
     }
 
-    int xmax = x_up>x_down?x_up:x_down;
-    int xmin = x_up>x_down?x_down:x_up;
-    int ymax = y_up>y_down?y_up:y_down;
-    int ymin = y_up>y_down?y_down:y_up;
     std::vector<point> c;
-    c.push_back(point(xmin,ymin));
-    c.push_back(point(xmax,ymin));
-    c.push_back(point(xmax,ymax));
-    c.push_back(point(xmin,ymax));
-    c.push_back(point(xmin,ymin));
+    for(int i = 0; i < egles.size(); i++)
+    {
+        point p1(egles[i].x1,egles[i].y1);
+        c.push_back(p1);
+    }
+    point p1(egles[0].x1,egles[0].y1);
+    c.push_back(p1);
     size_t Nc = c.size()-1;
 
     std::vector<point> p;
@@ -473,7 +464,7 @@ void MainWindow::on_main_button_clicked()
             }
             S = p[j];
             int vis = is_visible(S,c[i],c[i+1]);
-            if ((vis  >= 0 && obhod == -1) || (vis <= 0 && obhod == 1))
+            if ((vis  >= 0 && obhod1 == -1) || (vis <= 0 && obhod1 == 1))
             {
                 Q.push_back(S);
                 Nq++;
@@ -494,7 +485,14 @@ void MainWindow::on_main_button_clicked()
     }
 
 
-
+    if (Np == 0)
+    {
+        QMessageBox mBox;
+        mBox.setIcon(QMessageBox::Information);
+        mBox.setInformativeText("Полностью невидимый многоугольник!");
+        mBox.exec();
+        return;
+    }
     painter->setPen(QPen(color_line,2));
     for (size_t i = 0; i < p.size()-1; i++)
     {
@@ -507,6 +505,33 @@ void MainWindow::on_main_button_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    if (ui->input_otsek->isChecked())
+    {
+        if (is_start_ots)
+            return;
+        if (egles.size() < 2)
+            return;
+        if (egles.back().x1 == x0_o && egles.back().y1 == y0_o)
+            return;
+        line_t l;
+        l.x1 = x_prev_o;
+        l.y1 = y_prev_o;
+        l.x2 = x0_o;
+        l.y2 = y0_o;
+
+        egles.push_back(l);
+
+        x_prev_o = -1;
+        y_prev_o = -1;
+        //is_first = true;
+        is_start_ots = true;
+        rect_flag = true;
+        //line_flag = true;
+
+        painter->drawLine(l.x1, l.y1, l.x2, l.y2);
+        ui->draw_label->setPixmap(*scene);
+        return;
+    }
     if (is_first)
         return;
     if (lines.size() < 2)
@@ -531,4 +556,9 @@ void MainWindow::on_pushButton_3_clicked()
     painter->drawLine(l.x1, l.y1, l.x2, l.y2);
     ui->draw_label->setPixmap(*scene);
 
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    del_polygon();
 }

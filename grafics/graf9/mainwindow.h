@@ -49,6 +49,8 @@ private slots:
 
     void on_pushButton_3_clicked();
 
+    void on_pushButton_4_clicked();
+
 private:
     //void find_next(std::stack<point_t> &stack, int &x_left, int &x_right, const int &y);
     void draw_line(double x1, double y1, double x2, double y2);
@@ -65,12 +67,15 @@ private:
 
     int x_prev = -1;
     int y_prev = -1;
+    int x_prev_o = -1;
+    int y_prev_o = -1;
 
     int x_up,y_up,x_down,y_down;
     bool is_start_ots = true;
 
 
     int x0, y0;
+    int x0_o, y0_o;
     bool is_first = true;
     //bool is_ready = false;
     bool line_flag = false;

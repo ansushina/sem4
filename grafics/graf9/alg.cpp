@@ -90,7 +90,7 @@ point find_cross_point(point p1, point p2, point c1, point c2)
 
     double d = p2.y() - p1.y();
     double e = c1.y() - c2.y();
-    double f = c2.y() - p1.y();
+    double f = c1.y() - p1.y();
 
     double det = a*e - b*d;
     double t = (c*e - b * f) / det;
