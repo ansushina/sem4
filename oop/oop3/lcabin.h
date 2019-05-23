@@ -7,13 +7,14 @@ class lcabin : public QObject
     Q_OBJECT
 public:
     explicit lcabin(QObject *parent = 0);
-    virtual ~lcabin();
+    //virtual ~lcabin();
     enum CabinState
     {
       BUZY,
       MOVING,
       STAY
     };
+    void set_text_edit(QTextEdit *t);
 public slots:
     void set_target(int floor);
     void cabin_stopping();

@@ -11,7 +11,6 @@ class ldoors: public QObject
     Q_OBJECT
 public:
     explicit ldoors(QObject *parent = 0);
-    virtual ~ldoors();
     enum DoorsState
     {
       CLOSE,
@@ -19,6 +18,7 @@ public:
       IN_CLOSE,
       IN_OPEN
     };
+    void set_text_edit(QTextEdit *t);
 public slots:
     void start_closing();
     void start_opening();
@@ -26,7 +26,6 @@ private slots:
     void open();
     void close();
 signals:
-    void opened_doors();
     void closed_doors();
 
 private:
@@ -34,7 +33,6 @@ private:
     QTimer openingTimer;
     QTimer closingTimer;
     QTimer stayopenTimer;
-    QTimer waitTimer;
 
     QTextEdit *text;
 };

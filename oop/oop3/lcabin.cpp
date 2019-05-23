@@ -1,8 +1,8 @@
 #include "lcabin.h"
 
-lcabin::lcabin():
+lcabin::lcabin(QObject *parent):
     state(STAY),
-    current_floor(0),
+    current_floor(1),
     d(NONE)
 {
     one_floor_Timer.setSingleShot(true);
@@ -14,12 +14,18 @@ lcabin::lcabin():
     QObject::connect(this, SIGNAL(pass_target_floor(int)), this, SLOT(cabin_stopping()));
     QObject::connect(this, SIGNAL(cabin_stopped(int)), &doors, SLOT(start_opening()));
 }
+void lcabin::set_text_edit(QTextEdit *t)
+{
+    text = t;
+    doors.set_text_edit(text);
+    text->append("Кабина подключена.");
+}
 
 void lcabin::set_target(int floor)
 {
     state = BUZY;
     target_floor = floor;
-    if (current_floor = target_floor)
+    if (current_floor == target_floor)
     {
         emit pass_target_floor(current_floor);
     }
@@ -36,26 +42,22 @@ void lcabin::set_target(int floor)
 }
 void lcabin::cabin_stopping()
 {
-    if (state == MOVING)
+    if (state == MOVING || state == BUZY)
     {
         state = STAY;
-        one_floor_Timer.stop();
-        text->append("stopped at"+QString(current_floor));
         emit cabin_stopped(current_floor);
     }
 }
 void lcabin::cabin_moving()
 {
-    if (state == STAY)
-        return;
-    if (current_floor = target_floor)
+    if (current_floor == target_floor)
     {
         emit pass_target_floor(current_floor);
     }
     if (state == BUZY)
     {
         state = MOVING;
-
+        emit go();
     }
     else if (state == MOVING)
     {

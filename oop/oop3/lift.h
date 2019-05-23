@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include"lcabin.h"
-#include"ldoors.h"
 #include"lcontroller.h"
 
 class Lift: public QObject
@@ -12,10 +11,11 @@ class Lift: public QObject
 public:
     Lift();
     void set_floor(int i);
+    void set_text_edit(QTextEdit *t);
 private:
-    ldoors doors;
     lcabin cabin;
     lcontroller control;
+    QTextEdit *text;
 };
 
 #endif // LIFT_H
