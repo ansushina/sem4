@@ -32,7 +32,7 @@ void print_mtr(double *mtr[7])
     for (int i = 0; i < 6; i++)
     {
         for (int j = 0; j < 7; j++)
-            printf("%15e ", mtr[i][j]);
+            printf("%12e ", mtr[i][j]);
         printf("\n");
     }
 }
@@ -119,29 +119,36 @@ double find_gamma(double v, double x[5], double t)
     }
     return g;
 }
-
-void fill_matrix(double *mt[7], double *x, double v)
+#define CONST_SIZE 5
+void fill_matrix(double *mtr[7], double *x, double v)
 {
-    for(int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++)
     {
-        mt[i][0] = 1;
+        for (int j = 0; j < 6; j++)
+        {
+            if (j == 0)
+                mtr[i][j] = 1;
+            else
+                mtr[i][j] = 0;
+        }
     }
     int j = 1;
     for (int i = 0; i < 4; i++)
     {
-         mt[i][j] = -1;
-         mt[i][j + 1] = 1;
-         j++;
+        mtr[i][j] = -1;
+        mtr[i][j + 1] = 1;
+        j++;
     }
-    mt[4][0] = exp(v);
-    for (int i = 1; i < 5; i++)
-       mt[4][i + 1] = -Z[i] * exp(x[i]);
-    mt[5][0] = -exp(v);
-    for (int i = 0; i < 5; i++)
-       mt[5][i + 1] = -exp(x[i]);
+    mtr[4][0] = exp(v);
+    mtr[4][1] = 0.0;
+    for (int i = 1; i < CONST_SIZE; i++)
+        mtr[4][i + 1] = -Z[i] * exp(x[i]);
+    mtr[5][0] = -exp(v);
+    for (int i = 0; i < CONST_SIZE; i++)
+        mtr[5][i + 1] = -exp(x[i]);
 }
 
-double n_2(double p, double t)
+double n_2(double p, double t, bool flag)
 {
     double v = -1;
     double x[5] = {2,-1,-2,-25,-35};
@@ -169,23 +176,24 @@ double n_2(double p, double t)
     matrix[3] = m4;
     matrix[4] = m5;
     matrix[5] = m6;
+    fill_matrix(matrix,x,v);
+    for (int i = 0; i < 4; i++)
+    {
+        matrix[i][6] = -(v + x[i+1] - x[i] - log(find_k(i,t,gamma)));
+    }
 
+    matrix[4][6] = -(exp(v) - Z[1]*n[1] - Z[2]*n[2] - Z[3]*n[3] - Z[4]*n[4]);
+    matrix[5][6] = -(7242*p/t + alpha - exp(v) - n[0] - n[1] - n[2] - n[3] - n[4]);
 
+    double K[4] = {0};
+    for (int i = 0; i < 4; i++)
+        K[i] = find_k(i,t,gamma);
     double **delta = NULL;
     do
     {
-        fill_matrix(matrix,x,v);
-        for (int i = 0; i < 4; i++)
-        {
-            matrix[i][6] = -(v + x[i+1] - x[i] - log(find_k(i,t,gamma)));
-        }
-
-        matrix[4][6] = -(exp(v) - Z[1]*n[1] - Z[2]*n[2] - Z[3]*n[3] - Z[4]*n[4]);
-        matrix[5][6] = -(7242*p/t + alpha - exp(v) - n[0] - n[1] - n[2] - n[3] - n[4]);
-
         int rc = do_gauss(matrix, 6, 7, &delta);
         if (rc) break;
-        v = v + delta[0][0];
+
         deltav = delta[0][0];
         deltax1 = delta[1][0];
         deltax2 = delta[2][0];
@@ -193,6 +201,7 @@ double n_2(double p, double t)
         deltax4 = delta[4][0];
         deltax5 = delta[5][0];
 
+        v = v + delta[0][0];
         for (int i = 1; i <= 5; i++)
         {
             x[i-1] = x[i-1] + delta[i][0];
@@ -203,18 +212,29 @@ double n_2(double p, double t)
             n[i] = exp(x[i]);
         }
 
+
         gamma = find_gamma(v,x,t);
         alpha = find_alpha(t,gamma);
         free_matrix(delta,6);
+        for (int i = 0; i < 4; i++)
+            K[i] = find_k(i,t,gamma);
+        fill_matrix(matrix,x,v);
+        for (int i = 0; i < 4; i++)
+        {
+            matrix[i][6] = -(v + x[i+1] - x[i] - log(K[i]));
+        }
 
-        printf("v-x:\n");
+        matrix[4][6] = -(exp(v) - Z[1]*n[1] - Z[2]*n[2] - Z[3]*n[3] - Z[4]*n[4]);
+        matrix[5][6] = -(7242*p/t + alpha - exp(v) - n[0] - n[1] - n[2] - n[3] - n[4]);
+
+        /*printf("v-x:\n");
         printf("%15e ", v);
         print_array(x, 5);
         printf("delta:\n");
         printf("%15e %15e %15e %15e %15e %15e\n", deltav, deltax1, deltax2, deltax3, deltax4,deltax5);
         printf("gamma = %lf\n", gamma);
         printf("matrix:\n");
-        print_mtr(matrix);
+        print_mtr(matrix);*/
 
     }
     while (fabs(deltav/v) > 0.0001 &&
@@ -228,9 +248,16 @@ double n_2(double p, double t)
     {
         n[i] = exp(x[i]);
     }
-    printf("ne n1-5:\n");
-    printf("%15e ", exp(v));
-    print_array(n, 5);
+    if (flag)
+    {
+         printf("ne n1-5:\n");
+         printf("%15e ", exp(v));
+         print_array(n, 5);
+         printf("gamma = %lf\n", gamma);
+    }
+   // printf("ne n1-5:\n");
+//    printf("%15e ", exp(v));
+    //print_array(n, 5);
 
     double nt = 0;
     for (int i  = 0; i < 5; i++)
@@ -264,7 +291,14 @@ double find_f(double p, double t0, double tw, int m, double pn, double tn)
     {
         z = i * h;
         t = T(z, t0, tw, m);
-        nt[i] = n_2(p,t);
+        if (i == 0)
+        {
+            nt[i] = n_2(p,t, true);
+        }
+        else
+        {
+            nt[i] = n_2(p,t, false);
+        }
     }
     for (int i = 0; i < N+1; i++)
     {
@@ -272,6 +306,9 @@ double find_f(double p, double t0, double tw, int m, double pn, double tn)
         nt[i] *= z;
     }
     double integral = Simpson_method(nt);
+    printf("integral %lf\n", integral);
+    printf("nt\n");
+    print_array(nt, 40);
     double f = F(integral,pn,tn);
     return f;
 }
@@ -309,13 +346,17 @@ int main()
     cout << "Hello World!" << endl;
     double t0,tw,pn,tn;
     int m;
-    int rc = input_all(t0,tw,m,pn,tn);
+    //int rc = input_all(t0,tw,m,pn,tn);
+    int rc = 0;
     if (rc)
     {
         cout << "Input error" << endl;
         return 0;
     }
-    rc = process(t0,tw,m,pn,tn);
+    //rc = process(t0,tw,m,pn,tn);
+
+    double res = find_f(17, 10000,3000,48,0.5,300);
+    printf("%lf\n", res);
 
     return 0;
 }
