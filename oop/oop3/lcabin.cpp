@@ -45,6 +45,7 @@ void lcabin::cabin_stopping()
     if (state == MOVING || state == BUZY)
     {
         state = STAY;
+        one_floor_Timer.stop();
         emit cabin_stopped(current_floor);
     }
 }
