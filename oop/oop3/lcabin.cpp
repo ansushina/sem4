@@ -45,12 +45,12 @@ void lcabin::cabin_stopping()
     if (state == MOVING)
     {
         text->append("Лифт остановился на " + QString::number(current_floor) + " этаже. ");
-
+        one_floor_Timer.stop();
     }
     if (state == MOVING || state == SET_TARGET)
     {
         state = STAY;
-        one_floor_Timer.stop();
+
         emit cabin_stopped(current_floor);
 
     }
@@ -70,6 +70,10 @@ void lcabin::cabin_moving()
     {
         current_floor += d;
         emit passing_floor(current_floor,d);
-        one_floor_Timer.start(ONE_FLOOR_TIME);
+        if (!one_floor_Timer.isActive())
+        {
+             one_floor_Timer.start(ONE_FLOOR_TIME);
+        }
+
     }
 }
