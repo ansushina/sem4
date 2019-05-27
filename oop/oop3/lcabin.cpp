@@ -23,7 +23,7 @@ void lcabin::set_text_edit(QTextEdit *t)
 
 void lcabin::set_target(int floor)
 {
-    state = BUZY;
+    state = SET_TARGET;
     target_floor = floor;
     if (current_floor == target_floor)
     {
@@ -42,11 +42,17 @@ void lcabin::set_target(int floor)
 }
 void lcabin::cabin_stopping()
 {
-    if (state == MOVING || state == BUZY)
+    if (state == MOVING)
+    {
+        text->append("Лифт остановился на " + QString::number(current_floor) + " этаже. ");
+
+    }
+    if (state == MOVING || state == SET_TARGET)
     {
         state = STAY;
         one_floor_Timer.stop();
         emit cabin_stopped(current_floor);
+
     }
 }
 void lcabin::cabin_moving()
@@ -55,7 +61,7 @@ void lcabin::cabin_moving()
     {
         emit pass_target_floor(current_floor);
     }
-    if (state == BUZY)
+    if (state == SET_TARGET)
     {
         state = MOVING;
         emit go();

@@ -10,7 +10,7 @@ public:
     //virtual ~lcabin();
     enum CabinState
     {
-      BUZY,
+      SET_TARGET,
       MOVING,
       STAY
     };

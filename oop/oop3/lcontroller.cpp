@@ -28,7 +28,7 @@ void lcontroller::pass_floor(int floor, Direction d)
 {
     cur_floor = floor;
     cur_d = d;
-    text->append("Лифт на " + QString::number(floor) + " этаже. ");
+    text->append("Лифт на " + QString::number(floor-d) + " этаже. ");
 }
 void lcontroller::achive_floor(int floor)
 {
