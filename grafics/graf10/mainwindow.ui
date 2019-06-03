@@ -155,6 +155,21 @@
          <string>cos^2(x) - sin^2(z)</string>
         </property>
        </item>
+       <item>
+        <property name="text">
+         <string>cos(x)*sin(z)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>exp(cos(x))</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>cos(x)*sin(z) * z *z </string>
+        </property>
+       </item>
       </widget>
      </item>
      <item>
@@ -297,6 +312,9 @@
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout_4">
+       <item row="0" column="1">
+        <widget class="QSpinBox" name="alphax"/>
+       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_19">
          <property name="text">
@@ -311,9 +329,6 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="3">
-        <widget class="QLineEdit" name="alphay"/>
-       </item>
        <item row="0" column="2">
         <widget class="QLabel" name="label_20">
          <property name="text">
@@ -321,11 +336,11 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="5">
-        <widget class="QLineEdit" name="alphaz"/>
+       <item row="0" column="3">
+        <widget class="QSpinBox" name="alphay"/>
        </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="alphax"/>
+       <item row="0" column="5">
+        <widget class="QSpinBox" name="alphay_2"/>
        </item>
       </layout>
      </item>
@@ -385,76 +400,6 @@
      <enum>Qt::Vertical</enum>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
-    <property name="geometry">
-     <rect>
-      <x>790</x>
-      <y>820</y>
-      <width>359</width>
-      <height>150</height>
-     </rect>
-    </property>
-    <property name="sizePolicy">
-     <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-      <horstretch>0</horstretch>
-      <verstretch>0</verstretch>
-     </sizepolicy>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>0</width>
-      <height>150</height>
-     </size>
-    </property>
-    <property name="title">
-     <string>Введите координаты следующей точки</string>
-    </property>
-    <widget class="QWidget" name="formLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>30</y>
-       <width>191</width>
-       <height>80</height>
-      </rect>
-     </property>
-     <layout class="QFormLayout" name="formLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>x: </string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>y:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="x_lineedit"/>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="y_lineedit"/>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QPushButton" name="new_point_button">
-     <property name="geometry">
-      <rect>
-       <x>90</x>
-       <y>120</y>
-       <width>171</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Добавить точку</string>
-     </property>
-    </widget>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -462,7 +407,7 @@
      <x>0</x>
      <y>0</y>
      <width>1200</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

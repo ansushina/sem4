@@ -143,38 +143,17 @@ void MainWindow::on_pushButton_3_clicked()
 
     on_clear_button_clicked();
 
-    alphax = 0;
-    alphay = 0;
-    alphaz = 0;
+    int ax = 0, ay = 0, az = 0;
 
     params p(xbegin,xend,xdelta,ybegin,yend,ydelta);
-    p.alphax =alphax;
-    p.alphay = alphay;
-    p.alphaz = alphaz;
+    p.alphax =ax;
+    p.alphay = ay;
+    p.alphaz = az;
     int i = ui->comboBox->currentIndex();
     p.func = Func.get_f(i);
+    painter->setPen(color_line);
     horizon_alg(p,*painter);
-    ui->draw_label->setPixmap(*scene);
+    
 
 }
 
-
-void MainWindow::on_pushButton_2_clicked()
-{
-    int ax = ui->alphax->value();
-    int ay = ui->alphay->value();
-    int az = ui->alphay_2->value();
-
-    on_clear_button_clicked();
-    alphax += ax;
-    alphay += ay;
-    alphaz += az;
-    params p(xbegin,xend,xdelta,ybegin,yend,ydelta);
-    p.alphax =alphax;
-    p.alphay = alphay;
-    p.alphaz = alphaz;
-    int i = ui->comboBox->currentIndex();
-    p.func = Func.get_f(i);
-    horizon_alg(p,*painter);
-    ui->draw_label->setPixmap(*scene);
-}
