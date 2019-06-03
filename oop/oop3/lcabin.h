@@ -7,7 +7,6 @@ class lcabin : public QObject
     Q_OBJECT
 public:
     explicit lcabin(QObject *parent = 0);
-    //virtual ~lcabin();
     enum CabinState
     {
       SET_TARGET,

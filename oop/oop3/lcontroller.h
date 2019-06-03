@@ -9,7 +9,6 @@ class lcontroller: public QObject
     Q_OBJECT
 public:
     explicit lcontroller(QObject *parent = 0);
-    //virtual ~lcontroller();
     enum ControllerState
     {
         IN_PROCESS,

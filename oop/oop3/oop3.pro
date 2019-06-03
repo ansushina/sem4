@@ -29,7 +29,8 @@ SOURCES += \
     lift.cpp \
     ldoors.cpp \
     lcabin.cpp \
-    lcontroller.cpp
+    lcontroller.cpp \
+    ldoors.cpp
 
 HEADERS += \
         mainwindow.h \
