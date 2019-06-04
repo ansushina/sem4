@@ -34,22 +34,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->draw_label->setPixmap(*scene);
 
     QPalette Pal(palette());
-    Pal.setColor(QPalette::Background, Qt::black);
-
-    ui->frame_otr->setAutoFillBackground(true);
-    ui->frame_otr->setPalette(Pal);
-
-    Pal.setColor(QPalette::Background, Qt::red);
-    ui->frame_ots->setAutoFillBackground(true);
-    ui->frame_ots->setPalette(Pal);
-    color_ots = QColor(Qt::red);
-
     color_line = QColor(Qt::blue);
-    color_otr = QColor(Qt::black);
+
 
     Pal.setColor(QPalette::Background, Qt::blue);
-    ui->frame_line->setAutoFillBackground(true);
-    ui->frame_line->setPalette(Pal);
+    ui->frame_otr->setAutoFillBackground(true);
+    ui->frame_otr->setPalette(Pal);
 
 }
 
@@ -62,33 +52,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    color_otr = QColorDialog::getColor(Qt::black, this);
+    color_line = QColorDialog::getColor(Qt::blue, this);
     QPalette Pal(palette());
-    Pal.setColor(QPalette::Background, color_otr);
+    Pal.setColor(QPalette::Background, color_line);
     ui->frame_otr->setAutoFillBackground(true);
     ui->frame_otr->setPalette(Pal);
     ui->frame_otr->show();
 }
 
-void MainWindow::on_shading_button_clicked()
-{
-    color_ots = QColorDialog::getColor(Qt::red, this);
-    QPalette Pal(palette());
-    Pal.setColor(QPalette::Background, color_ots);
-    ui->frame_ots->setAutoFillBackground(true);
-    ui->frame_ots->setPalette(Pal);
-    ui->frame_ots->show();
-}
 
-void MainWindow::on_background_button_clicked()
-{
-    color_line = QColorDialog::getColor(Qt::white, this);
-    QPalette Pal(palette());
-    Pal.setColor(QPalette::Background, color_line);
-    ui->frame_line->setAutoFillBackground(true);
-    ui->frame_line->setPalette(Pal);
-    ui->frame_line->show();
-}
 
 void MainWindow::on_clear_button_clicked()
 {
@@ -100,12 +72,56 @@ void MainWindow::on_clear_button_clicked()
     scene->fill(QColor(Qt::white));
     painter = new QPainter(scene);
     ui->draw_label->setPixmap(*scene);
+    fig_flag = false;
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *event)
+{
 
+    if (!fig_flag)
+        return;
+
+    if (event->key() == Qt::Key_S)
+    {
+        alphax -= 5;
+    }
+    else if (event->key() == Qt::Key_D)
+    {
+        alphay -= 5;
+    }
+    else if (event->key() == Qt::Key_A)
+    {
+        alphay += 5;
+    }
+    else if (event->key() == Qt::Key_W)
+    {
+        alphax += 5;
+    }
+    else if (event->key() == Qt::Key_E)
+    {
+        alphaz += 5;
+    }
+    else if (event->key() == Qt::Key_Z)
+    {
+        alphaz -= 5;
+    }
+    on_clear_button_clicked();
+    params p(xbegin,xend,xdelta,ybegin,yend,ydelta);
+    p.alphax =alphax;
+    p.alphay = alphay;
+    p.alphaz = alphaz;
+    int i = ui->comboBox->currentIndex();
+    p.func = Func.get_f(i);
+    painter->setPen(color_line);
+    horizon_alg(p,*painter);
+    ui->draw_label->setPixmap(*scene);
+    fig_flag = true;
+
+}
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    painter->setPen(color_line);
     QString l_x = ui->xbegin->text();
     QString l_x1 = ui->xend->text();
     QString l_x2 = ui->dx->text();
@@ -153,14 +169,18 @@ void MainWindow::on_pushButton_3_clicked()
     p.alphaz = alphaz;
     int i = ui->comboBox->currentIndex();
     p.func = Func.get_f(i);
+    painter->setPen(color_line);
     horizon_alg(p,*painter);
     ui->draw_label->setPixmap(*scene);
+    fig_flag = true;
 
 }
 
 
 void MainWindow::on_pushButton_2_clicked()
 {
+    if (!fig_flag)
+        return;
     int ax = ui->alphax->value();
     int ay = ui->alphay->value();
     int az = ui->alphay_2->value();
@@ -175,6 +195,8 @@ void MainWindow::on_pushButton_2_clicked()
     p.alphaz = alphaz;
     int i = ui->comboBox->currentIndex();
     p.func = Func.get_f(i);
+    painter->setPen(color_line);
     horizon_alg(p,*painter);
     ui->draw_label->setPixmap(*scene);
+    fig_flag = true;
 }

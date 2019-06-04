@@ -12,6 +12,7 @@ public:
         arr[1] = &f2;
         arr[2] = &f3;
         arr[3] = &f4;
+        arr[4] = &f5;
     }
 
     myfunc get_f(int i)
@@ -34,7 +35,11 @@ private:
     }
     static double f4(double x, double y)
     {
-        return cos(x)*cos(x)*y*y;
+        return cos(x)*cos(x)*y;
+    }
+    static double f5(double x, double y)
+    {
+        return abs(cos(x)*x + cos(y)*y);
     }
 
 };

@@ -3,6 +3,7 @@
 #include <QPoint>
 #include <QDebug>
 
+
 #define WINDOW_WIDTH 700
 #define PI 3.14
 
@@ -15,11 +16,11 @@ int sign(int n)
     return -1;
 }
 
-int is_visible(QPoint p, std::vector<int> &top, std::vector<int> &down)
+int is_visible(int x, int y, std::vector<int> &top, std::vector<int> &down)
 {
-    if (p.x() >= WINDOW_WIDTH || p.x() < 0) return 0;
-    if (p.y() < top[int(p.x())] && p.y() > down[int(p.x())]) return 0;
-    if (p.y() >= top[int(p.x())]) return 1;
+    if (x > WINDOW_WIDTH || x < 0) return 0;
+    if (y < top[x] && y > down[x]) return 0;
+    if (y >= top[x]) return 1;
     return -1;
 }
 
@@ -38,8 +39,8 @@ void horizon(int x1, int y1, int x2, int y2, std::vector<int> &top, std::vector<
     }
     if (x2 == x1)
     {
-        top[x2] = top[x2]>y2?top[x2]:y2;
-        down[x2] = down[x2]<y2?down[x2]:y2;
+        top[x2] = qMax(top[x2],y2);
+        down[x2] = qMin(down[x2],y2);
         if (x2 >= 0 && x2 <= WINDOW_WIDTH)
         {
             painter.drawLine(x1,y1,x2,y2);
@@ -53,8 +54,8 @@ void horizon(int x1, int y1, int x2, int y2, std::vector<int> &top, std::vector<
         for (int x = x1; x < x2 && x < WINDOW_WIDTH; x++)
         {
             int y = round(m * (x - x1)+y1);
-            top[x] = top[x]>y?top[x]:y;
-            down[x] = down[x]<y?down[x]:y;
+            top[x] = qMax(top[x],y);
+            down[x] = qMin(down[x],y);
             if (x >= 0 && x <= WINDOW_WIDTH)
             {
                 painter.drawLine(x_prev, y_prev,x,y);
@@ -75,26 +76,26 @@ void EdgeWhatcher(int &x, int &y, int &edgex, int &edgey,  std::vector<int> &top
     edgey = y;
 }
 
-QPoint FindIntersection(int x1, int y1, QPoint p2, std::vector<int> &vector)
+QPoint FindIntersection(int x1, int y1, int x2, int y2, std::vector<int> &vector)
 {
     QPoint a(x1,y1);
-    int dx = p2.x() - x1;
-    int dy_c = p2.y() - y1; //сurrent
-    if (x1 > WINDOW_WIDTH || p2.x() > WINDOW_WIDTH || x1 < 0 || p2.x() < 0)
+    int dx = x2 - x1;
+    int dy_c = y2 - y1; //сurrent
+    if (x1 > WINDOW_WIDTH || x2 > WINDOW_WIDTH || x1 < 0 || x2 < 0)
     {
         qDebug() << "вышли за границы поля при поиске пересечения";
         return a;
     }
     int vx1 = vector[x1];
-    int vx2 = vector[int(p2.x())];
+    int vx2 = vector[x2];
     int dy_p = vx2- vx1; //previous
     double m = dy_c/(double)dx;
     if (dx == 0)
     {
-        a.setX(p2.x());
-        a.setY(vector[p2.x()]);
+        a.setX(x2);
+        a.setY(vx2);
     }
-    else if (y1 == vx1  && p2.y() == vx2)
+    else if (y1 == vx1  && y2 == vx2)
     {
         a.setX(x1);
         a.setY(y1);
@@ -154,7 +155,7 @@ void rotation_az(struct point &a, double az)
     a.setX(x);
     a.setY(y);
 }
-QPoint rotation(point &b, params p)
+QPoint rotation(point b, params p)
 {
     double xc = WINDOW_WIDTH/2 - 100;
     double yc = WINDOW_WIDTH/2;
@@ -164,10 +165,7 @@ QPoint rotation(point &b, params p)
     double az = p.alphaz;
     point a(b);
     QPoint c;
-    if (az != 0)
-    {
-         rotation_az(a,az);
-    }
+
     if (ax != 0)
     {
          rotation_ax(a,ax);
@@ -175,6 +173,10 @@ QPoint rotation(point &b, params p)
     if (ay != 0)
     {
          rotation_ay(a,ay);
+    }
+    if (az != 0)
+    {
+         rotation_az(a,az);
     }
 
     c.setX(round(a.x()*20 + xc));
@@ -206,14 +208,14 @@ void horizon_alg(params Params, QPainter &painter)
         x_prev = pr.x();
         y_prev = pr.y();
         EdgeWhatcher(x_prev,y_prev,x_left,y_left,top,down,painter);
-        P = is_visible(pr,top,down);
-        for (x = Params.xbegin; x < Params.xend; x += Params.xdelta)
+        P = is_visible(x_prev,y_prev,top,down);
+        for (x = Params.xbegin; x <= Params.xend; x += Params.xdelta)
         {
             QPoint curr(0,0);
             y_p = Params.func(x,z);
             point p(x,y_p,z);
             curr = rotation(p,Params);
-            T = is_visible(curr,top,down);
+            T = is_visible(curr.x(),curr.y(),top,down);
             if (T == P)
             {
                 if (T == 1 || T == -1)
@@ -225,11 +227,11 @@ void horizon_alg(params Params, QPainter &painter)
             {
                 if (P == 1)
                 {
-                    i = FindIntersection(x_prev, y_prev,curr,top);
+                    i = FindIntersection(x_prev, y_prev,curr.x(),curr.y(),top);
                 }
                 else
                 {
-                    i = FindIntersection(x_prev, y_prev,curr,down);
+                    i = FindIntersection(x_prev, y_prev,curr.x(),curr.y(),down);
                 }
                 horizon(x_prev, y_prev,i.x(),i.y(),top,down,painter);
             }
@@ -237,14 +239,14 @@ void horizon_alg(params Params, QPainter &painter)
             {
                 if (P == 0)
                 {
-                     i = FindIntersection(x_prev, y_prev,curr,top);
+                     i = FindIntersection(x_prev, y_prev,curr.x(),curr.y(),top);
                      horizon(x_prev, y_prev,i.x(),i.y(),top,down,painter);
                 }
                 else
                 {
-                    i = FindIntersection(x_prev, y_prev,curr,top);
+                    i = FindIntersection(x_prev, y_prev,curr.x(),curr.y(),top);
                     horizon(x_prev, y_prev,i.x(),i.y(),top,down,painter);
-                    i = FindIntersection(x_prev, y_prev,curr,top);
+                    i = FindIntersection(x_prev, y_prev,curr.x(),curr.y(),down);
                     horizon(i.x(), i.y(),curr.x(),curr.y(),top,down,painter);
                 }
             }
@@ -252,14 +254,14 @@ void horizon_alg(params Params, QPainter &painter)
             {
                 if (P == 0)
                 {
-                     i = FindIntersection(x_prev, y_prev,curr,top);
+                     i = FindIntersection(x_prev, y_prev,curr.x(),curr.y(),down);
                      horizon(x_prev, y_prev,i.x(),i.y(),top,down,painter);
                 }
                 else
                 {
-                    i = FindIntersection(x_prev, y_prev,curr,top);
+                    i = FindIntersection(x_prev, y_prev,curr.x(),curr.y(),top);
                     horizon(x_prev, y_prev,i.x(),i.y(),top,down,painter);
-                    i = FindIntersection(x_prev, y_prev,curr,top);
+                    i = FindIntersection(x_prev, y_prev,curr.x(),curr.y(),down);
                     horizon(i.x(), i.y(),curr.x(),curr.y(),top,down,painter);
                 }
             }

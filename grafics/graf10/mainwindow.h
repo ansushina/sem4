@@ -28,6 +28,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+   void keyPressEvent(QKeyEvent *event);
 
 private slots:
     void on_pushButton_clicked();
@@ -41,6 +42,8 @@ private slots:
     void on_pushButton_3_clicked();
 
     void on_pushButton_2_clicked();
+
+
 
 private:
 
@@ -57,6 +60,8 @@ private:
     double xbegin, xend, xdelta;
     double ybegin, yend, ydelta;
     double alphax, alphay, alphaz;
+    bool fig_flag = false;
+
 
     QImage img;
 };
