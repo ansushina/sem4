@@ -34,7 +34,7 @@ private:
     }
     static double f4(double x, double y)
     {
-        return cos(x)*sin(y)*y*y;
+        return cos(x)*cos(x)*y*y;
     }
 
 };

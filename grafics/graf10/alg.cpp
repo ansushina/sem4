@@ -59,8 +59,8 @@ void horizon(int x1, int y1, int x2, int y2, std::vector<int> &top, std::vector<
             {
                 painter.drawLine(x_prev, y_prev,x,y);
             }
-            x_prev = x;
-            y_prev = y;
+            //x_prev = x;
+            //y_prev = y;
         }
     }
 }
@@ -91,8 +91,8 @@ QPoint FindIntersection(int x1, int y1, QPoint p2, std::vector<int> &vector)
     double m = dy_c/(double)dx;
     if (dx == 0)
     {
-        a.setX((int)p2.x());
-        a.setY(vector[int(p2.x())]);
+        a.setX(p2.x());
+        a.setY(vector[p2.x()]);
     }
     else if (y1 == vx1  && p2.y() == vx2)
     {
@@ -117,45 +117,40 @@ QPoint FindIntersection(int x1, int y1, QPoint p2, std::vector<int> &vector)
 
 void rotation_ax(struct point &a,  double ax)
 {
-    double yc = 0;
-    double zc = 0;
     double ya = a.y();
     double za = a.z();
     double alpha = ax * PI / 180;
     double cosa = cos(alpha);
     double sina = sin(alpha);
-    double z = zc + (za- zc) * cosa + (ya - yc) * sina;
-    double y = yc - (za - zc) * sina + (ya - yc) * cosa;
+    double z = za * cosa + ya * sina;
+    double y = za * sina + ya * cosa;
     a.setY(y);
     a.setZ(z);
 }
 
 void rotation_ay(struct point &a, double ay)
 {
-    double xc = 0;
-    double zc = 0;
     double xa = a.x();
     double za = a.z();
     double alpha = ay * PI / 180;
     double cosa = cos(alpha);
     double sina = sin(alpha);
-    double x = xc + (xa- xc) * cosa + (za - zc) * sina;
-    double z = zc - (xa - xc) * sina + (za - zc) * cosa;
+    double x = xa* cosa + za * sina;
+    double z = xa * sina + za* cosa;
     a.setX(x);
     a.setZ(z);
 }
 void rotation_az(struct point &a, double az)
 {
-    double xc = 0;
-    double yc = 0;
+
     double xa = a.x();
     double ya = a.y();
     double alpha = az * PI / 180;
     double cosaz = cos(alpha);
     double sinaz = sin(alpha);
 
-    double x = xc + (xa- xc) * cosaz + (ya - yc) * sinaz;
-    double y = yc - (xa - xc) * sinaz + (ya - yc) * cosaz;
+    double x = xa * cosaz + ya * sinaz;
+    double y = xa * sinaz + ya * cosaz;
     a.setX(x);
     a.setY(y);
 }
@@ -250,7 +245,7 @@ void horizon_alg(params Params, QPainter &painter)
                     i = FindIntersection(x_prev, y_prev,curr,top);
                     horizon(x_prev, y_prev,i.x(),i.y(),top,down,painter);
                     i = FindIntersection(x_prev, y_prev,curr,top);
-                    horizon(x_prev, y_prev,curr.x(),curr.y(),top,down,painter);
+                    horizon(i.x(), i.y(),curr.x(),curr.y(),top,down,painter);
                 }
             }
             else
@@ -265,7 +260,7 @@ void horizon_alg(params Params, QPainter &painter)
                     i = FindIntersection(x_prev, y_prev,curr,top);
                     horizon(x_prev, y_prev,i.x(),i.y(),top,down,painter);
                     i = FindIntersection(x_prev, y_prev,curr,top);
-                    horizon(x_prev, y_prev,curr.x(),curr.y(),top,down,painter);
+                    horizon(i.x(), i.y(),curr.x(),curr.y(),top,down,painter);
                 }
             }
             P = T;
