@@ -13,6 +13,7 @@ public:
         arr[2] = &f3;
         arr[3] = &f4;
         arr[4] = &f5;
+        arr[5] = &f6;
     }
 
     myfunc get_f(int i)
@@ -20,7 +21,7 @@ public:
         return arr[i];
     }
 private:
-    myfunc arr[5];
+    myfunc arr[10];
     static double f1(double x, double y)
     {
         return cos(x)*cos(x) - sin(y)*sin(y);
@@ -35,12 +36,17 @@ private:
     }
     static double f4(double x, double y)
     {
-        return cos(x)*cos(x)*y;
+        return x*x + y*y;
     }
     static double f5(double x, double y)
     {
-        return abs(cos(x)*x + cos(y)*y);
+        return fabs(cos(x)*x + cos(y)*y);
     }
+    static double f6(double x, double y)
+    {
+        return fabs(cos(x)-sin(y));
+    }
+
 
 };
 #endif // F_H

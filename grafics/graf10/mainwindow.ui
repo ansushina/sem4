@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>900</height>
+    <width>1400</width>
+    <height>1100</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>700</width>
-      <height>700</height>
+      <width>900</width>
+      <height>900</height>
      </rect>
     </property>
     <property name="text">
@@ -30,8 +30,8 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>790</x>
-      <y>20</y>
+      <x>980</x>
+      <y>70</y>
       <width>361</width>
       <height>701</height>
      </rect>
@@ -66,7 +66,7 @@
          <item row="0" column="1">
           <widget class="QPushButton" name="pushButton">
            <property name="text">
-            <string>Выбрать цвет отрезка </string>
+            <string>Выбрать цвет рисования </string>
            </property>
           </widget>
          </item>
@@ -92,6 +92,17 @@
      </item>
      <item>
       <widget class="QComboBox" name="comboBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <item>
         <property name="text">
          <string>cos^2(x) - sin^2(z)</string>
@@ -109,12 +120,17 @@
        </item>
        <item>
         <property name="text">
-         <string>cos(x)*sin(z) * z *z </string>
+         <string>x*x + z*z</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>abs(cos(x)*sin(z))</string>
+         <string>fabs(cos(x)*x + cos(y)*y)</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>fabs(cos(x)-sin(y))</string>
         </property>
        </item>
       </widget>
@@ -149,15 +165,6 @@
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout_2">
-       <item row="1" column="3">
-        <widget class="QLineEdit" name="yend"/>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="ybegin"/>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="xbegin"/>
-       </item>
        <item row="0" column="4">
         <widget class="QLabel" name="label_7">
          <property name="text">
@@ -178,9 +185,6 @@
           <string>dZ</string>
          </property>
         </widget>
-       </item>
-       <item row="0" column="3">
-        <widget class="QLineEdit" name="xend"/>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label_3">
@@ -203,11 +207,89 @@
          </property>
         </widget>
        </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="zbegin">
+         <property name="minimum">
+          <double>-10.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>-5.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QDoubleSpinBox" name="zend">
+         <property name="minimum">
+          <double>-10.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>5.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QDoubleSpinBox" name="xbegin">
+         <property name="minimum">
+          <double>-10.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>-5.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QDoubleSpinBox" name="xend">
+         <property name="minimum">
+          <double>-10.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>5.000000000000000</double>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="5">
-        <widget class="QLineEdit" name="dx"/>
+        <widget class="QDoubleSpinBox" name="xdelta">
+         <property name="minimum">
+          <double>-10.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>0.100000000000000</double>
+         </property>
+        </widget>
        </item>
        <item row="1" column="5">
-        <widget class="QLineEdit" name="dy"/>
+        <widget class="QDoubleSpinBox" name="zdelta">
+         <property name="minimum">
+          <double>-10.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>10.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>0.100000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -369,8 +451,8 @@
    <widget class="Line" name="line">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>10</y>
+      <x>960</x>
+      <y>0</y>
       <width>16</width>
       <height>861</height>
      </rect>
@@ -385,8 +467,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1200</width>
-     <height>18</height>
+     <width>1400</width>
+     <height>22</height>
     </rect>
    </property>
   </widget>

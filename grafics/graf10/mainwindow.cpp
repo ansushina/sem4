@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->draw_label->setMouseTracking(true);
     this->setMouseTracking(true);
 
-    scene = new QPixmap(851, 701);
+    scene = new QPixmap(900, 900);
     scene->fill(QColor("transparent"));
     scene->fill(QColor(Qt::white));
 
@@ -34,10 +34,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->draw_label->setPixmap(*scene);
 
     QPalette Pal(palette());
-    color_line = QColor(Qt::blue);
+    color_line = QColor(Qt::black);
 
 
-    Pal.setColor(QPalette::Background, Qt::blue);
+    Pal.setColor(QPalette::Background, Qt::black);
     ui->frame_otr->setAutoFillBackground(true);
     ui->frame_otr->setPalette(Pal);
 
@@ -52,7 +52,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-    color_line = QColorDialog::getColor(Qt::blue, this);
+    color_line = QColorDialog::getColor(Qt::black, this);
     QPalette Pal(palette());
     Pal.setColor(QPalette::Background, color_line);
     ui->frame_otr->setAutoFillBackground(true);
@@ -68,7 +68,7 @@ void MainWindow::on_clear_button_clicked()
     delete painter;
     delete scene;
     ui->draw_label->clear();
-    scene = new QPixmap(851, 701);
+    scene = new QPixmap(900,900);
     scene->fill(QColor(Qt::white));
     painter = new QPainter(scene);
     ui->draw_label->setPixmap(*scene);
@@ -118,37 +118,21 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     fig_flag = true;
 
 }
+void MainWindow::on_shading_button_clicked()
+{
+
+}
+void MainWindow::on_background_button_clicked(){}
 
 void MainWindow::on_pushButton_3_clicked()
 {
     painter->setPen(color_line);
-    QString l_x = ui->xbegin->text();
-    QString l_x1 = ui->xend->text();
-    QString l_x2 = ui->dx->text();
-     bool ok1 = true, ok2 = true, ok3 = true;
-    int x = l_x.toDouble(&ok1);
-    int x1 = l_x1.toDouble(&ok2);
-    int x2 = l_x2.toDouble(&ok3);
-    if (!ok1 || !ok2 || !ok3)
-    {
-        ui->xbegin->clear();
-        ui->xend->clear();
-        ui->dx->clear();
-        return;
-    }
-    QString l_y = ui->ybegin->text();
-    QString l_y1 = ui->yend->text();
-    QString l_y2 = ui->dy->text();
-    int y = l_y.toDouble(&ok1);
-    int y1 = l_y1.toDouble(&ok2);
-    int y2 = l_y2.toDouble(&ok3);
-    if (!ok1 || !ok2 || !ok3)
-    {
-        ui->ybegin->clear();
-        ui->yend->clear();
-        ui->dy->clear();
-        return;
-    }
+    double x = ui->xbegin->value();
+    double x1 = ui->xend->value();
+    double x2 = ui->xdelta->value();
+    double y = ui->zbegin->value();
+    double y1 = ui->zend->value();
+    double y2 = ui->zdelta->value();
 
     xbegin = x;
     xend = x1;
@@ -173,7 +157,6 @@ void MainWindow::on_pushButton_3_clicked()
     horizon_alg(p,*painter);
     ui->draw_label->setPixmap(*scene);
     fig_flag = true;
-
 }
 
 
