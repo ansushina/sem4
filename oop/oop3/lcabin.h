@@ -14,7 +14,9 @@ public:
       STAY
     };
     void set_text_edit(QTextEdit *t);
+
 public slots:
+
     void set_target(int floor);
     void cabin_stopping();
     void cabin_moving();
@@ -22,12 +24,15 @@ public slots:
 private slots:
 
 signals:
+
     void passing_floor(int floor, Direction d);
     void pass_target_floor(int floor);
-    void cabin_stopped(int floor);
+    void cabin_stop();
+    //void cabin_stopped(int floor);
     void go();
+
 private:
-    CabinState state;
+     CabinState state;
     int current_floor;
     int target_floor;
 

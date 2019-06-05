@@ -9,6 +9,7 @@ ldoors::ldoors(QObject *parent):
     closingTimer.setSingleShot(true);
     stayopenTimer.setSingleShot(true);
 
+    QObject::connect(this, SIGNAL(open_doors()), this, SLOT(start_opening()));
     QObject::connect(&openingTimer, SIGNAL(timeout()), this, SLOT(open()));
     QObject::connect(&closingTimer, SIGNAL(timeout()), this, SLOT(close()));
     QObject::connect(&stayopenTimer, SIGNAL(timeout()), this, SLOT(start_closing()));

@@ -2,7 +2,7 @@
 
 Lift::Lift()
 {
-    QObject::connect(&cabin, SIGNAL(cabin_stopped(int)), &control, SLOT(achive_floor(int)));
+    QObject::connect(&cabin, SIGNAL(pass_target_floor(int)), &control, SLOT(achive_floor(int)));
     QObject::connect(&cabin, SIGNAL(passing_floor(int,Direction)), &control, SLOT(pass_floor(int,Direction)));
     QObject::connect(&control, SIGNAL(set_target(int)), &cabin, SLOT(set_target(int)));
 }

@@ -28,13 +28,14 @@ void lcontroller::pass_floor(int floor, Direction d)
 {
     cur_floor = floor;
     cur_d = d;
-    text->append("Лифт на " + QString::number(floor-d) + " этаже. ");
+    text->append("Лифт на " + QString::number(floor) + " этаже. ");
 }
 void lcontroller::achive_floor(int floor)
 {
     if (state == IN_PROCESS)
     {
         targets[floor-1] = false;
+        state = FREE;
         if (find_next(floor))
             emit set_target(floor);
         else

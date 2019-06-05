@@ -19,14 +19,20 @@ public:
       IN_OPEN
     };
     void set_text_edit(QTextEdit *t);
+
 public slots:
+
     void start_closing();
     void start_opening();
+
 private slots:
+
     void open();
     void close();
+
 signals:
     void closed_doors();
+    void open_doors();
 
 private:
     DoorsState state;

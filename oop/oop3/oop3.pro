@@ -30,7 +30,6 @@ SOURCES += \
     ldoors.cpp \
     lcabin.cpp \
     lcontroller.cpp \
-    ldoors.cpp
 
 HEADERS += \
         mainwindow.h \

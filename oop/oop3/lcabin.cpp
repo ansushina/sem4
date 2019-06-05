@@ -8,11 +8,9 @@ lcabin::lcabin(QObject *parent):
     one_floor_Timer.setSingleShot(true);
 
     QObject::connect(&one_floor_Timer,SIGNAL(timeout()),this, SLOT(cabin_moving()));
-    QObject::connect(&doors, SIGNAL(closed_doors()),this, SLOT(cabin_moving()));
-
-    QObject::connect(this, SIGNAL(go()), &doors, SLOT(start_closing()));
-    QObject::connect(this, SIGNAL(pass_target_floor(int)), this, SLOT(cabin_stopping()));
-    QObject::connect(this, SIGNAL(cabin_stopped(int)), &doors, SLOT(start_opening()));
+    QObject::connect(&doors, SIGNAL(closed_doors()),this, SLOT(cabin_stopping()));
+    QObject::connect(this, SIGNAL(cabin_stop()), this, SLOT(cabin_stopping()));
+    QObject::connect(this, SIGNAL(go()), this, SLOT(cabin_moving()));
 }
 void lcabin::set_text_edit(QTextEdit *t)
 {
@@ -24,10 +22,11 @@ void lcabin::set_text_edit(QTextEdit *t)
 void lcabin::set_target(int floor)
 {
     state = SET_TARGET;
+    //text->append("set tsrget" + QString::number(floor));
     target_floor = floor;
     if (current_floor == target_floor)
     {
-        emit pass_target_floor(current_floor);
+        emit cabin_stop();
     }
     else if (current_floor < target_floor)
     {
@@ -44,37 +43,54 @@ void lcabin::cabin_stopping()
 {
     if (state == MOVING || state == SET_TARGET)
     {
-        text->append("Лифт стоит на " + QString::number(current_floor) + " этаже. ");
+        //text->append("Лифт стоит на " + QString::number(current_floor) + " этаже. ");
         one_floor_Timer.stop();
-    }
-    if (state == MOVING || state == SET_TARGET)
-    {
         state = STAY;
-
-        emit cabin_stopped(current_floor);
-
+        emit doors.open_doors();
+    }
+    else if (state == STAY)
+    {
+         emit pass_target_floor(current_floor);
     }
 }
 void lcabin::cabin_moving()
 {
-    if (current_floor == target_floor)
-    {
-        emit pass_target_floor(current_floor);
-    }
     if (state == SET_TARGET)
     {
         state = MOVING;
-        emit go();
+        if (current_floor == target_floor)
+        {
+            emit cabin_stop();
+        }
+        else if (!one_floor_Timer.isActive())
+        {
+             one_floor_Timer.start(ONE_FLOOR_TIME);
+             //emit passing_floor(current_floor,d);
+        }
     }
     else if (state == MOVING)
     {
 
-        if (!one_floor_Timer.isActive())
+        if (current_floor < target_floor)
         {
-            current_floor += d;
-            emit passing_floor(current_floor,d);
-            one_floor_Timer.start(ONE_FLOOR_TIME);
+            d = UP;
+        }
+        else
+        {
+            d = DOWN;
         }
 
+        current_floor += d;
+        emit passing_floor(current_floor,d);
+        one_floor_Timer.start(ONE_FLOOR_TIME);
+
+        if (current_floor == target_floor)
+        {
+            emit cabin_stop();
+        }
+        else
+        {
+            one_floor_Timer.start(ONE_FLOOR_TIME);
+        }
     }
 }
