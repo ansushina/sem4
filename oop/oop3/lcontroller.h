@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "common.h"
+#include "ldoors.h"
 
 class lcontroller: public QObject
 {

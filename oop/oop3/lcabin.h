@@ -28,11 +28,10 @@ signals:
     void passing_floor(int floor, Direction d);
     void pass_target_floor(int floor);
     void cabin_stop();
-    //void cabin_stopped(int floor);
     void go();
 
 private:
-     CabinState state;
+    CabinState state;
     int current_floor;
     int target_floor;
 

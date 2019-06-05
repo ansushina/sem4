@@ -35,7 +35,6 @@ void lcontroller::achive_floor(int floor)
     if (state == IN_PROCESS)
     {
         targets[floor-1] = false;
-        state = FREE;
         if (find_next(floor))
             emit set_target(floor);
         else

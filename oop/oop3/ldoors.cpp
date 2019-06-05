@@ -28,10 +28,6 @@ void ldoors::start_closing()
         text->append("Двери закрываются.");
         closingTimer.start(DOORS_TIME);
     }
-    else if (state == CLOSE)
-    {
-       emit closed_doors();
-    }
 }
 void ldoors::start_opening()
 {

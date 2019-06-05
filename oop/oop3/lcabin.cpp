@@ -22,7 +22,6 @@ void lcabin::set_text_edit(QTextEdit *t)
 void lcabin::set_target(int floor)
 {
     state = SET_TARGET;
-    //text->append("set tsrget" + QString::number(floor));
     target_floor = floor;
     if (current_floor == target_floor)
     {
@@ -43,7 +42,6 @@ void lcabin::cabin_stopping()
 {
     if (state == MOVING || state == SET_TARGET)
     {
-        //text->append("Лифт стоит на " + QString::number(current_floor) + " этаже. ");
         one_floor_Timer.stop();
         state = STAY;
         emit doors.open_doors();
@@ -65,7 +63,7 @@ void lcabin::cabin_moving()
         else if (!one_floor_Timer.isActive())
         {
              one_floor_Timer.start(ONE_FLOOR_TIME);
-             //emit passing_floor(current_floor,d);
+             emit passing_floor(current_floor,d);
         }
     }
     else if (state == MOVING)
