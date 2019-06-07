@@ -1,13 +1,13 @@
 <H2> Кофемашина </H2> </br>
 
 1. Модель взаимодействия объектов</br>
-![](https://github.com/ansushina/sem4/blob/master/oop/oop5/actingmodel.png)
+![](https://github.com/ansushina/sem4/blob/master/oop/oop5/actingmodel.png)</br>
 2. Диаграмма Сущность-связь</br>
 
-![](https://github.com/ansushina/sem4/blob/master/oop/oop5/ER.png)
+![](https://github.com/ansushina/sem4/blob/master/oop/oop5/ER.png)</br>
 3. Диаграмма потоков данных действий (ДПДД)</br>
-![](https://github.com/ansushina/sem4/blob/master/oop/oop5/DDPD.png)
+![](https://github.com/ansushina/sem4/blob/master/oop/oop5/DDPD.png)</br>
 4. Диаграмма состояний</br>
-![](https://github.com/ansushina/sem4/blob/master/oop/oop5/state.png)
+![](https://github.com/ansushina/sem4/blob/master/oop/oop5/state.png)</br>
 5. Канал управления</br>
-![](https://github.com/ansushina/sem4/blob/master/oop/oop5/canal.png)
+![](https://github.com/ansushina/sem4/blob/master/oop/oop5/canal.png)</br>
