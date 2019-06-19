@@ -4,7 +4,7 @@
  Диаграмма Сущность-связь</br>
 ![](https://github.com/ansushina/sem4/blob/master/oop/oop5/ER1.png)</br></br></br></br></br>
  Диаграмма состояний</br>
-![](https://github.com/ansushina/sem4/blob/master/oop/oop5/state1.png)</br></br></br></br></br>
+![](https://github.com/ansushina/sem4/blob/master/oop/oop5/state2.png)</br></br></br></br></br>
 
  Модель взаимодействия объектов</br>
 ![](https://github.com/ansushina/sem4/blob/master/oop/oop5/actingmodel1.png)</br></br></br></br></br>
@@ -27,4 +27,4 @@
 
 
 
-![](https://github.com/ansushina/sem4/blob/master/oop/oop5/canal.png)</br>
+![](https://github.com/ansushina/sem4/blob/master/oop/oop5/canal2.png)</br>
