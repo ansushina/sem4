@@ -80,7 +80,6 @@ void lcabin::cabin_moving()
 
         current_floor += d;
         emit passing_floor(current_floor,d);
-        one_floor_Timer.start(ONE_FLOOR_TIME);
 
         if (current_floor == target_floor)
         {

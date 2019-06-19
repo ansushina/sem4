@@ -17,6 +17,7 @@ public:
     };
     void set_text_edit(QTextEdit *t);
     void set_new_target(int floor);
+
 public slots:
     void pass_floor(int floor, Direction d);
     void achive_floor(int floor);

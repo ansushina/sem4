@@ -1,7 +1,5 @@
 #include "ldoors.h"
 
-
-
 ldoors::ldoors(QObject *parent):
     state(CLOSE)
 {
