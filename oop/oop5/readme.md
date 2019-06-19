@@ -1,15 +1,18 @@
 <H2> Кофемашина </H2> </br>
 
-1. Модель взаимодействия объектов</br>
-![](https://github.com/ansushina/sem4/blob/master/oop/oop5/actingmodel1.png)</br></br></br></br></br>
-2. Диаграмма Сущность-связь</br>
 
-![](https://github.com/ansushina/sem4/blob/master/oop/oop5/ER.png)</br></br></br></br></br>
-3. Диаграмма потоков данных действий (ДПДД)</br>
+ Диаграмма Сущность-связь</br>
+![](https://github.com/ansushina/sem4/blob/master/oop/oop5/ER1.png)</br></br></br></br></br>
+ Диаграмма состояний</br>
+![](https://github.com/ansushina/sem4/blob/master/oop/oop5/state1.png)</br></br></br></br></br>
+
+ Модель взаимодействия объектов</br>
+![](https://github.com/ansushina/sem4/blob/master/oop/oop5/actingmodel1.png)</br></br></br></br></br>
+
+ Диаграмма потоков данных действий (ДПДД)</br>
 ![](https://github.com/ansushina/sem4/blob/master/oop/oop5/DDPD.png)</br></br></br></br></br>
-4. Диаграмма состояний</br>
-![](https://github.com/ansushina/sem4/blob/master/oop/oop5/state.png)</br></br></br></br></br>
-5. Канал управления</br>
+
+  Канал управления</br>
 '''
 1. Ввести параметры в интерфейс(темпаратура, объем воды, количество зерен)
 2. Засыпать нужное количество зерен в кофемолку
