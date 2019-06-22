@@ -27,4 +27,4 @@
 
 
 
-![](https://github.com/ansushina/sem4/blob/master/oop/oop5/canal2)</br>
+![](https://github.com/ansushina/sem4/blob/master/oop/oop5/canal2.png)</br>
