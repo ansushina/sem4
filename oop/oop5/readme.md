@@ -7,7 +7,7 @@
 ![](https://github.com/ansushina/sem4/blob/master/oop/oop5/state2.png)</br></br></br></br></br>
 
  Модель взаимодействия объектов</br>
-![](https://github.com/ansushina/sem4/blob/master/oop/oop5/actingmodel1.png)</br></br></br></br></br>
+![](https://github.com/ansushina/sem4/blob/master/oop/oop5/actingmodel2)</br></br></br></br></br>
 
  Диаграмма потоков данных действий (ДПДД)</br>
 ![](https://github.com/ansushina/sem4/blob/master/oop/oop5/DDPD.png)</br></br></br></br></br>
