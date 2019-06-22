@@ -10,7 +10,7 @@
 ![](https://github.com/ansushina/sem4/blob/master/oop/oop5/actingmodel2)</br></br></br></br></br>
 
  Диаграмма потоков данных действий (ДПДД)</br>
-![](https://github.com/ansushina/sem4/blob/master/oop/oop5/DDPD.png)</br></br></br></br></br>
+![](https://github.com/ansushina/sem4/blob/master/oop/oop5/dpdd2.png)</br></br></br></br></br>
 
   Канал управления</br>
 '''
@@ -20,7 +20,7 @@
 4. Высыпать перемолотый кофе в фильтр 
 5. Забрать необходимое количество воды 
 6. Нагреть воду
-7. Вылить воду в фильтр 
+7. Пропустить воду через фильтр
 8. Кофе готов
 
 '''
